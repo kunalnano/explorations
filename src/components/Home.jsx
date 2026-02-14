@@ -2,11 +2,11 @@ import { useCallback } from "react";
 
 const EXPLORATIONS = [
   {
-    id: "ancient-wisdom",
-    title: "Ancient Wisdom · Decision Map",
-    description: "An interactive concept map connecting six major philosophical traditions through their shared decision-making principles.",
-    color: "#3B82F6",
-    date: "2025",
+    id: "software-theory",
+    title: "The Software Theory of Civilization",
+    description: "Civilization doesn't just use software — civilization IS software. A framework tracing humanity's operating system from oral tradition to probabilistic intelligence.",
+    color: "#9b8fff",
+    date: "Feb 2026",
   },
   {
     id: "boltzmann-brain",
@@ -14,6 +14,41 @@ const EXPLORATIONS = [
     description: "A visual essay on thermodynamics, consciousness, and the unsettling parallel between cosmological fluctuations and next-token prediction.",
     color: "#ff4d2e",
     date: "Feb 2026",
+  },
+  {
+    id: "multi-agent-civ",
+    title: "Multi-Agent Civilization",
+    description: "Put autonomous AI agents in a shared environment. Watch them reinvent property rights, markets, law, and governance from first principles.",
+    color: "#34d399",
+    date: "Feb 2026",
+  },
+  {
+    id: "path-dependency",
+    title: "Path Dependency of Innovation",
+    description: "Why Tesla and Waymo built completely different self-driving architectures — and why both were 'correct.' Your ecosystem chooses your solution.",
+    color: "#fbbf24",
+    date: "2025",
+  },
+  {
+    id: "tech-entropy",
+    title: "Technology as Entropy",
+    description: "Technology is a thermodynamic force. Once complex enough to become self-improving, its march toward ASI becomes structurally inevitable.",
+    color: "#ff4d2e",
+    date: "2025",
+  },
+  {
+    id: "jwst-dominoes",
+    title: "The Cosmic Domino Collapse",
+    description: "JWST discovered galaxies that shouldn't exist. If these findings hold, 20 flagship results of modern cosmology are thrown into question.",
+    color: "#6ee7f0",
+    date: "2025",
+  },
+  {
+    id: "ancient-wisdom",
+    title: "Ancient Wisdom · Decision Map",
+    description: "An interactive concept map connecting six major philosophical traditions through their shared decision-making principles.",
+    color: "#3B82F6",
+    date: "2025",
   },
 ];
 
@@ -56,19 +91,20 @@ export default function Home({ onNavigate }) {
       <p style={{
         fontSize: 16,
         color: "#4a4860",
-        maxWidth: 400,
+        maxWidth: 440,
         textAlign: "center",
         lineHeight: 1.6,
         marginBottom: 64,
       }}>
-        Interactive visual explorations of ideas, philosophy, and frameworks.
+        Interactive visual explorations of ideas, philosophy, frameworks,
+        and the conversations that sparked them.
       </p>
 
       <div style={{
         display: "grid",
-        gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))",
+        gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))",
         gap: 20,
-        maxWidth: 720,
+        maxWidth: 960,
         width: "100%",
       }}>
         {EXPLORATIONS.map((exp) => (
@@ -79,7 +115,7 @@ export default function Home({ onNavigate }) {
               background: "rgba(255,255,255,0.02)",
               border: `1px solid rgba(255,255,255,0.06)`,
               borderRadius: 16,
-              padding: "32px 28px",
+              padding: "28px 24px",
               textAlign: "left",
               cursor: "pointer",
               transition: "all 0.3s ease",
@@ -88,10 +124,12 @@ export default function Home({ onNavigate }) {
             onMouseEnter={(e) => {
               e.currentTarget.style.background = "rgba(255,255,255,0.05)";
               e.currentTarget.style.borderColor = exp.color + "33";
+              e.currentTarget.style.transform = "translateY(-2px)";
             }}
             onMouseLeave={(e) => {
               e.currentTarget.style.background = "rgba(255,255,255,0.02)";
               e.currentTarget.style.borderColor = "rgba(255,255,255,0.06)";
+              e.currentTarget.style.transform = "translateY(0)";
             }}
           >
             <div style={{
@@ -99,29 +137,29 @@ export default function Home({ onNavigate }) {
               fontSize: 10,
               letterSpacing: 2,
               color: exp.color,
-              marginBottom: 12,
+              marginBottom: 10,
               textTransform: "uppercase",
             }}>
               {exp.date}
             </div>
             <div style={{
-              fontSize: 20,
+              fontSize: 18,
               fontWeight: 600,
-              marginBottom: 10,
+              marginBottom: 8,
               lineHeight: 1.3,
             }}>
               {exp.title}
             </div>
             <div style={{
-              fontSize: 14,
+              fontSize: 13,
               color: "#4a4860",
               lineHeight: 1.6,
             }}>
               {exp.description}
             </div>
             <div style={{
-              marginTop: 20,
-              fontSize: 12,
+              marginTop: 16,
+              fontSize: 11,
               color: exp.color,
               fontFamily: "monospace",
               letterSpacing: 1,
