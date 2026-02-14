@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 
 /* ═══════════════════════════════════════════════════════════════
    MULTI-AGENT CIVILIZATION
@@ -36,12 +36,9 @@ function Reveal({ children, delay = 0 }) {
   }, []);
   return (
     <div ref={ref} style={{
-      opacity: vis ? 1 : 0,
-      transform: vis ? "translateY(0)" : "translateY(32px)",
+      opacity: vis ? 1 : 0, transform: vis ? "translateY(0)" : "translateY(32px)",
       transition: `opacity 0.8s ease ${delay}s, transform 0.8s ease ${delay}s`,
-    }}>
-      {children}
-    </div>
+    }}>{children}</div>
   );
 }
 
@@ -57,125 +54,346 @@ function Chapter({ label, title, children }) {
   );
 }
 
-// ── STAGE CARD ──
-const STAGES = [
-  {
-    num: "1", name: "The Campfire", agents: "2–3 agents", color: GOLD, icon: "🔥",
-    description: "A small tribe. Everyone can see what everyone else is doing. Coordination is implicit — you just look across the fire and see what's happening. No governance needed. No protocols.",
-    mechanism: "Shared filesystem as communication bus. Scoped tasks by directory. Human oversees everything.",
-    emergence: "Nothing formal emerges. Trust is implicit. Scale is small enough that chaos is manageable.",
-    humanAnalog: "Hunter-gatherer bands. Dunbar's number hasn't been exceeded. Cooperation is face-to-face.",
-  },
-  {
-    num: "2", name: "The Village", agents: "6–10 agents", color: GREEN, icon: "🏘️",
-    description: "You can't just scope by 'don't touch that file.' You need roles. You need a reviewer agent that acts as a village elder — someone whose job isn't to produce, but to maintain coherence.",
-    mechanism: "Shared AGENTS.md describing social contracts. Naming conventions. Merge protocols. Role specialization.",
-    emergence: "Culture. Written norms. The first governance artifact. The reviewer agent is the first institution.",
-    humanAnalog: "Agricultural settlements. Shared granaries. Elders. Oral laws becoming customs.",
-  },
-  {
-    num: "3", name: "The City", agents: "10–50 agents", color: ICE, icon: "🏙️",
-    description: "Agents produce artifacts that other agents consume not as files, but as interfaces. Agent A doesn't need to know how Agent B implemented the service — it just needs the API contract.",
-    mechanism: "Task graphs. Dependency resolution. Abstraction boundaries. Something that looks like a legal system for resolving conflicts.",
-    emergence: "Specialization. Contracts. Bureaucracy. The need for governance that the creator can't personally manage.",
-    humanAnalog: "City-states. Division of labor. Written law. Courts. Trade agreements between strangers.",
-  },
-  {
-    num: "4", name: "The Global Village", agents: "50+ agents", color: GHOST, icon: "🌍",
-    description: "The patterns of human civilization aren't just analogies for multi-agent systems — they're the literal solutions to the same coordination problems.",
-    mechanism: "Markets (agents competing for best solutions). Hierarchy (reviewer of reviewers). Mesh networks (peer agents). Democratic consensus.",
-    emergence: "Every pattern humans invented over 10,000 years. Property rights, markets, governance, culture — all re-derived from first principles.",
-    humanAnalog: "Globalization. The internet. International law. The UN. Open-source communities.",
-  },
+// ── AGENT SIMULATION — interactive swarm with emergent clustering ──
+function AgentSimulation({ agentCount }) {
+  const canvasRef = useRef(null);
+  const agents = useRef([]);
+  const frameRef = useRef(null);
+
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext("2d");
+    const W = 600, H = 360;
+    canvas.width = W; canvas.height = H;
+
+    // Init agents
+    agents.current = [];
+    for (let i = 0; i < agentCount; i++) {
+      agents.current.push({
+        x: 60 + Math.random() * (W - 120),
+        y: 60 + Math.random() * (H - 120),
+        vx: (Math.random() - 0.5) * 1.2,
+        vy: (Math.random() - 0.5) * 1.2,
+        role: i === 0 ? "leader" : i < agentCount * 0.15 ? "reviewer" : "worker",
+        cluster: Math.floor(i / Math.max(3, agentCount / 4)),
+        hue: [GOLD, GREEN, ICE, GHOST, EMBER][i % 5],
+      });
+    }
+
+    let running = true;
+    function tick() {
+      if (!running) return;
+      ctx.fillStyle = "rgba(5,5,8,0.25)";
+      ctx.fillRect(0, 0, W, H);
+
+      const pts = agents.current;
+      const clusterCenters = {};
+
+      // Compute cluster centers
+      for (const p of pts) {
+        if (!clusterCenters[p.cluster]) clusterCenters[p.cluster] = { x: 0, y: 0, n: 0 };
+        clusterCenters[p.cluster].x += p.x;
+        clusterCenters[p.cluster].y += p.y;
+        clusterCenters[p.cluster].n++;
+      }
+      for (const k in clusterCenters) {
+        clusterCenters[k].x /= clusterCenters[k].n;
+        clusterCenters[k].y /= clusterCenters[k].n;
+      }
+
+      // Draw cluster zones when enough agents
+      if (agentCount >= 6) {
+        for (const k in clusterCenters) {
+          const c = clusterCenters[k];
+          ctx.beginPath();
+          ctx.arc(c.x, c.y, 40 + agentCount * 0.8, 0, Math.PI * 2);
+          ctx.fillStyle = "rgba(155,143,255,0.03)";
+          ctx.fill();
+          ctx.strokeStyle = "rgba(155,143,255,0.08)";
+          ctx.stroke();
+        }
+      }
+
+      // Draw connections between nearby agents
+      if (agentCount >= 3) {
+        for (let i = 0; i < pts.length; i++) {
+          for (let j = i + 1; j < pts.length; j++) {
+            const dx = pts[i].x - pts[j].x;
+            const dy = pts[i].y - pts[j].y;
+            const dist = Math.sqrt(dx * dx + dy * dy);
+            if (dist < 60 + (agentCount < 10 ? 20 : 0)) {
+              ctx.beginPath();
+              ctx.moveTo(pts[i].x, pts[i].y);
+              ctx.lineTo(pts[j].x, pts[j].y);
+              ctx.strokeStyle = `rgba(110,231,240,${0.12 * (1 - dist / 80)})`;
+              ctx.lineWidth = 0.5;
+              ctx.stroke();
+            }
+          }
+        }
+      }
+
+      // Draw hierarchy lines for reviewers when >6 agents
+      if (agentCount >= 6) {
+        for (const p of pts) {
+          if (p.role === "reviewer" || p.role === "leader") {
+            for (const q of pts) {
+              if (q.cluster === p.cluster && q.role === "worker") {
+                const dx = p.x - q.x;
+                const dy = p.y - q.y;
+                if (Math.sqrt(dx * dx + dy * dy) < 90) {
+                  ctx.beginPath();
+                  ctx.moveTo(p.x, p.y);
+                  ctx.lineTo(q.x, q.y);
+                  ctx.strokeStyle = p.role === "leader" ? "rgba(255,77,46,0.12)" : "rgba(251,191,36,0.1)";
+                  ctx.lineWidth = 0.8;
+                  ctx.setLineDash([3, 3]);
+                  ctx.stroke();
+                  ctx.setLineDash([]);
+                }
+              }
+            }
+          }
+        }
+      }
+
+      // Update and draw agents
+      for (const p of pts) {
+        // Cluster attraction
+        const cc = clusterCenters[p.cluster];
+        if (cc && agentCount >= 6) {
+          p.vx += (cc.x - p.x) * 0.0008;
+          p.vy += (cc.y - p.y) * 0.0008;
+        }
+        // Separation
+        for (const q of pts) {
+          if (q === p) continue;
+          const dx = p.x - q.x, dy = p.y - q.y;
+          const d = Math.sqrt(dx * dx + dy * dy);
+          if (d < 18 && d > 0) {
+            p.vx += (dx / d) * 0.3;
+            p.vy += (dy / d) * 0.3;
+          }
+        }
+        // Damping
+        p.vx *= 0.985; p.vy *= 0.985;
+        p.x += p.vx; p.y += p.vy;
+        // Bounds
+        if (p.x < 20 || p.x > W - 20) p.vx *= -0.8;
+        if (p.y < 20 || p.y > H - 20) p.vy *= -0.8;
+        p.x = Math.max(10, Math.min(W - 10, p.x));
+        p.y = Math.max(10, Math.min(H - 10, p.y));
+
+        // Draw
+        const r = p.role === "leader" ? 6 : p.role === "reviewer" ? 4.5 : 3;
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, r, 0, Math.PI * 2);
+        ctx.fillStyle = p.role === "leader" ? EMBER : p.role === "reviewer" ? GOLD : p.hue;
+        ctx.fill();
+        if (p.role !== "worker") {
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, r + 4, 0, Math.PI * 2);
+          ctx.strokeStyle = (p.role === "leader" ? EMBER : GOLD) + "33";
+          ctx.lineWidth = 1;
+          ctx.stroke();
+        }
+      }
+
+      frameRef.current = requestAnimationFrame(tick);
+    }
+    frameRef.current = requestAnimationFrame(tick);
+    return () => { running = false; cancelAnimationFrame(frameRef.current); };
+  }, [agentCount]);
+
+  return (
+    <canvas ref={canvasRef} style={{
+      width: "100%", maxWidth: 600, display: "block", margin: "0 auto",
+      borderRadius: 16, border: `1px solid ${LINE}`, background: BG,
+    }} />
+  );
+}
+
+// ── SCALING CONTROL — drag to watch governance emerge ──
+const STAGE_THRESHOLDS = [
+  { min: 2, max: 5, name: "The Campfire", color: GOLD, icon: "🔥", desc: "Implicit coordination. No governance needed." },
+  { min: 6, max: 10, name: "The Village", color: GREEN, icon: "🏘️", desc: "Roles emerge. Reviewer agents. Written norms." },
+  { min: 11, max: 30, name: "The City", color: ICE, icon: "🏙️", desc: "APIs as contracts. Abstraction boundaries. Bureaucracy." },
+  { min: 31, max: 50, name: "The Global Village", color: GHOST, icon: "🌍", desc: "Markets. Hierarchy. Democracy. All re-derived." },
 ];
 
-function StageCard({ stage }) {
-  const [expanded, setExpanded] = useState(false);
+function ScalingControl({ count, setCount }) {
+  const stage = STAGE_THRESHOLDS.find(s => count >= s.min && count <= s.max) || STAGE_THRESHOLDS[3];
+
+  return (
+    <div style={{ margin: "32px 0" }}>
+      {/* Slider */}
+      <div style={{ display: "flex", alignItems: "center", gap: 16, marginBottom: 20 }}>
+        <span style={{ ...mono, fontSize: 11, color: ASH }}>2</span>
+        <input type="range" min={2} max={50} value={count}
+          onChange={e => setCount(Number(e.target.value))}
+          style={{
+            flex: 1, height: 4, appearance: "none", WebkitAppearance: "none",
+            background: `linear-gradient(to right, ${stage.color}88 0%, ${stage.color}88 ${((count - 2) / 48) * 100}%, ${LINE} ${((count - 2) / 48) * 100}%, ${LINE} 100%)`,
+            borderRadius: 2, outline: "none", cursor: "pointer",
+          }} />
+        <span style={{ ...mono, fontSize: 11, color: ASH }}>50</span>
+      </div>
+
+      {/* Current stage readout */}
+      <div style={{
+        display: "flex", alignItems: "center", gap: 14,
+        padding: "16px 20px", borderRadius: 14,
+        background: stage.color + "0c", border: `1px solid ${stage.color}33`,
+        transition: "all 0.4s",
+      }}>
+        <span style={{ fontSize: 28 }}>{stage.icon}</span>
+        <div>
+          <div style={{ ...sans, fontSize: 18, fontWeight: 700, color: stage.color }}>{stage.name}</div>
+          <div style={{ ...mono, fontSize: 11, color: ASH }}>{count} agents</div>
+        </div>
+        <div style={{ flex: 1, ...serif, fontSize: 13, color: BONE, textAlign: "right" }}>{stage.desc}</div>
+      </div>
+
+      {/* Governance indicators */}
+      <div style={{ display: "flex", gap: 8, marginTop: 16, flexWrap: "wrap" }}>
+        {[
+          { label: "Roles", threshold: 6, color: GREEN },
+          { label: "Norms", threshold: 6, color: GOLD },
+          { label: "Hierarchy", threshold: 10, color: ICE },
+          { label: "Contracts", threshold: 15, color: GHOST },
+          { label: "Bureaucracy", threshold: 20, color: EMBER },
+          { label: "Markets", threshold: 30, color: GREEN },
+          { label: "Democracy", threshold: 40, color: GOLD },
+        ].map((g, i) => (
+          <div key={i} style={{
+            ...mono, fontSize: 9, letterSpacing: 1, textTransform: "uppercase",
+            padding: "5px 12px", borderRadius: 20,
+            color: count >= g.threshold ? g.color : ASH + "44",
+            border: `1px solid ${count >= g.threshold ? g.color + "44" : LINE}`,
+            background: count >= g.threshold ? g.color + "0c" : "transparent",
+            transition: "all 0.4s",
+          }}>{g.label}</div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+// ── EMERGENCE MAP — SVG showing agent→institution mapping ──
+const EMERGENCES = [
+  { agent: "File ownership", human: "Property rights", icon: "🏠", color: GOLD },
+  { agent: "AGENTS.md", human: "Language & culture", icon: "📝", color: GREEN },
+  { agent: "Reviewer agent", human: "Judiciary", icon: "⚖️", color: ICE },
+  { agent: "Linter", human: "Regulation", icon: "📋", color: GHOST },
+  { agent: "Best-solution competition", human: "Markets", icon: "📈", color: EMBER },
+  { agent: "Human selects winner", human: "Democracy", icon: "🗳️", color: GOLD },
+  { agent: "Git repo", human: "Infrastructure", icon: "🛤️", color: GREEN },
+  { agent: "Test suite", human: "Public services", icon: "🔧", color: ICE },
+  { agent: "CI pipeline", human: "Bureaucracy", icon: "🏛️", color: GHOST },
+];
+
+function EmergenceMapSVG() {
+  const [hovered, setHovered] = useState(null);
+  const rowH = 36, pad = 20;
+  const h = EMERGENCES.length * rowH + pad * 2;
+
   return (
     <Reveal>
-      <div
-        onClick={() => setExpanded(!expanded)}
-        style={{
-          background: expanded ? "rgba(255,255,255,0.04)" : FAINT,
-          border: `1px solid ${expanded ? stage.color + "44" : LINE}`,
-          borderRadius: 16, padding: "28px 24px", marginBottom: 16, cursor: "pointer",
-          transition: "all 0.4s ease",
-        }}
-      >
-        <div style={{ display: "flex", alignItems: "center", gap: 16, marginBottom: expanded ? 20 : 0 }}>
-          <div style={{
-            width: 56, height: 56, borderRadius: 14,
-            background: stage.color + "12", border: `1px solid ${stage.color}33`,
-            display: "flex", alignItems: "center", justifyContent: "center",
-            fontSize: 26, flexShrink: 0,
-          }}>{stage.icon}</div>
-          <div style={{ flex: 1 }}>
-            <div style={{ ...mono, fontSize: 10, letterSpacing: 2, color: stage.color, textTransform: "uppercase" }}>
-              Stage {stage.num} · {stage.agents}
-            </div>
-            <div style={{ ...sans, fontSize: 22, fontWeight: 700, lineHeight: 1.3 }}>{stage.name}</div>
-          </div>
-          <div style={{ ...mono, fontSize: 18, color: ASH, transition: "transform 0.3s", transform: expanded ? "rotate(45deg)" : "rotate(0)" }}>+</div>
-        </div>
+      <svg viewBox={`0 0 640 ${h}`} style={{ width: "100%", maxWidth: 640, display: "block", margin: "24px auto" }}>
+        {/* Headers */}
+        <text x={100} y={16} textAnchor="middle" fill={ICE} fontSize={9} fontFamily="monospace" letterSpacing={2}>AGENT WORLD</text>
+        <text x={540} y={16} textAnchor="middle" fill={GOLD} fontSize={9} fontFamily="monospace" letterSpacing={2}>HUMAN WORLD</text>
 
-        {expanded && (
-          <div style={{ paddingLeft: 72 }}>
-            <div style={{ ...serif, fontSize: 16, lineHeight: 1.7, color: BONE, marginBottom: 20 }}>
-              {stage.description}
-            </div>
-            {[
-              { label: "MECHANISM", text: stage.mechanism, c: stage.color },
-              { label: "WHAT EMERGES", text: stage.emergence, c: GREEN },
-              { label: "HUMAN ANALOG", text: stage.humanAnalog, c: GOLD },
-            ].map((row, i) => (
-              <div key={i} style={{ marginBottom: 14 }}>
-                <div style={{ ...mono, fontSize: 9, letterSpacing: 2, color: row.c, marginBottom: 4 }}>{row.label}</div>
-                <div style={{ ...serif, fontSize: 14, color: ASH, lineHeight: 1.5 }}>{row.text}</div>
-              </div>
-            ))}
-          </div>
-        )}
+        {EMERGENCES.map((e, i) => {
+          const y = pad + 12 + i * rowH;
+          const isH = hovered === i;
+          return (
+            <g key={i} onMouseEnter={() => setHovered(i)} onMouseLeave={() => setHovered(null)} style={{ cursor: "pointer" }}>
+              {/* Agent side */}
+              <rect x={10} y={y - 12} width={180} height={28} rx={6}
+                fill={isH ? e.color + "14" : "transparent"} stroke={isH ? e.color + "33" : "transparent"}
+                style={{ transition: "all 0.2s" }} />
+              <text x={20} y={y + 4} fill={isH ? e.color : ICE + "aa"} fontSize={11} fontFamily="monospace">{e.agent}</text>
+
+              {/* Connection line */}
+              <line x1={200} y1={y} x2={430} y2={y} stroke={isH ? e.color + "66" : LINE} strokeWidth={isH ? 1.5 : 0.8}
+                strokeDasharray={isH ? "none" : "4 3"} style={{ transition: "all 0.3s" }}>
+                {isH && <animate attributeName="strokeDashoffset" values="8;0" dur="0.6s" repeatCount="indefinite" />}
+              </line>
+              {/* ≡ symbol */}
+              <text x={315} y={y + 4} textAnchor="middle" fill={isH ? e.color : ASH} fontSize={12}>≡</text>
+
+              {/* Human side */}
+              <rect x={440} y={y - 12} width={190} height={28} rx={6}
+                fill={isH ? e.color + "14" : "transparent"} stroke={isH ? e.color + "33" : "transparent"}
+                style={{ transition: "all 0.2s" }} />
+              <text x={450} y={y + 4} fill={isH ? e.color : GOLD + "aa"} fontSize={12} fontFamily="Georgia, serif">{e.human}</text>
+            </g>
+          );
+        })}
+      </svg>
+    </Reveal>
+  );
+}
+
+// ── GOD PROBLEM — escalation visualization ──
+function EscalationDiagram() {
+  const [step, setStep] = useState(0);
+  const steps = [
+    { action: "Delegate review", result: "Hierarchy", color: GREEN },
+    { action: "Review the reviewer", result: "Bureaucracy", color: ICE },
+    { action: "Too slow → flatten", result: "Mesh networks", color: GHOST },
+    { action: "Agents vote on conflicts", result: "Democracy", color: GOLD },
+    { action: "Shared conventions first", result: "Culture", color: EMBER },
+  ];
+
+  return (
+    <Reveal>
+      <div style={{ margin: "32px 0" }}>
+        <svg viewBox="0 0 600 200" style={{ width: "100%", maxWidth: 600, display: "block", margin: "0 auto" }}>
+          {steps.map((s, i) => {
+            const x = 30 + i * 112;
+            const active = i <= step;
+            return (
+              <g key={i} onClick={() => setStep(i)} style={{ cursor: "pointer" }}>
+                {/* Node */}
+                <circle cx={x + 46} cy={60} r={24}
+                  fill={active ? s.color + "18" : FAINT}
+                  stroke={active ? s.color : LINE} strokeWidth={active ? 2 : 1}
+                  style={{ transition: "all 0.4s" }} />
+                <text x={x + 46} y={64} textAnchor="middle" fill={active ? s.color : ASH}
+                  fontSize={20} fontWeight={700} fontFamily="'Segoe UI', sans-serif">{i + 1}</text>
+                {/* Connection */}
+                {i < 4 && <line x1={x + 72} y1={60} x2={x + 112} y2={60}
+                  stroke={i < step ? steps[i + 1].color + "66" : LINE} strokeWidth={1}
+                  strokeDasharray={i < step ? "none" : "3 3"} style={{ transition: "all 0.4s" }} />}
+                {/* Labels */}
+                <text x={x + 46} y={105} textAnchor="middle" fill={active ? BONE : ASH}
+                  fontSize={8.5} fontFamily="monospace" style={{ transition: "fill 0.3s" }}>
+                  {s.action}
+                </text>
+                <text x={x + 46} y={130} textAnchor="middle" fill={active ? s.color : ASH + "66"}
+                  fontSize={9} fontWeight={600} fontFamily="'Segoe UI', sans-serif" style={{ transition: "fill 0.3s" }}>
+                  → {s.result}
+                </text>
+              </g>
+            );
+          })}
+          {/* Progress label */}
+          <text x={300} y={170} textAnchor="middle" fill={ASH} fontSize={9} fontFamily="Georgia, serif" fontStyle="italic">
+            Click each step · {step + 1}/5 governance structures discovered
+          </text>
+        </svg>
       </div>
     </Reveal>
   );
 }
 
-// ── EMERGENCE MAP ──
-const EMERGENCES = [
-  { agent: "File ownership scoping", human: "Property rights", icon: "🏠" },
-  { agent: "AGENTS.md conventions", human: "Language & culture", icon: "📝" },
-  { agent: "Reviewer agent enforcing standards", human: "Law & judiciary", icon: "⚖️" },
-  { agent: "Linter as legislature", human: "Regulation", icon: "📋" },
-  { agent: "Agents competing for best solution", human: "Markets", icon: "📈" },
-  { agent: "Human selecting the winner", human: "Democracy / elections", icon: "🗳️" },
-  { agent: "Git repo", human: "Roads & infrastructure", icon: "🛤️" },
-  { agent: "Test suite", human: "Utilities & public services", icon: "🔧" },
-  { agent: "CI pipeline", human: "Bureaucratic process", icon: "🏛️" },
-];
-
-function EmergenceMap() {
-  return (
-    <div>
-      {EMERGENCES.map((e, i) => (
-        <Reveal key={i}>
-          <div style={{
-            display: "flex", alignItems: "center", gap: 12, padding: "12px 0",
-            borderBottom: i < EMERGENCES.length - 1 ? `1px solid ${LINE}` : "none",
-          }}>
-            <span style={{ fontSize: 18, width: 32, textAlign: "center" }}>{e.icon}</span>
-            <div style={{ flex: 1, ...mono, fontSize: 13, color: ICE }}>{e.agent}</div>
-            <div style={{ width: 24, textAlign: "center", color: ASH }}>≡</div>
-            <div style={{ flex: 1, ...serif, fontSize: 14, color: GOLD }}>{e.human}</div>
-          </div>
-        </Reveal>
-      ))}
-    </div>
-  );
-}
-
-
 // ═══════════════ MAIN ═══════════════
 export default function MultiAgentCiv({ onBack }) {
+  const [agentCount, setAgentCount] = useState(3);
+
   return (
     <div style={{ background: BG, minHeight: "100vh", color: BONE }}>
       <div style={{
@@ -183,7 +401,6 @@ export default function MultiAgentCiv({ onBack }) {
         backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")`,
       }} />
       <div style={{ position: "relative", zIndex: 1, maxWidth: 720, margin: "0 auto", padding: "0 24px" }}>
-
         <div style={{ paddingTop: 32 }}>
           <button onClick={onBack} style={{ background: "none", border: "none", color: ASH, cursor: "pointer", ...mono, fontSize: 11, letterSpacing: 2, padding: "8px 0" }}>← EXPLORATIONS</button>
         </div>
@@ -191,9 +408,7 @@ export default function MultiAgentCiv({ onBack }) {
         {/* HERO */}
         <div style={{ padding: "80px 0 60px" }}>
           <Reveal>
-            <div style={{ ...mono, fontSize: 10, letterSpacing: 4, color: GREEN, textTransform: "uppercase", marginBottom: 20 }}>
-              When AI agents discover governance
-            </div>
+            <div style={{ ...mono, fontSize: 10, letterSpacing: 4, color: GREEN, textTransform: "uppercase", marginBottom: 20 }}>When AI agents discover governance</div>
           </Reveal>
           <Reveal delay={0.15}>
             <h1 style={{ ...sans, fontSize: "clamp(36px, 7vw, 56px)", fontWeight: 800, lineHeight: 1.05, letterSpacing: -2, marginBottom: 24 }}>
@@ -202,106 +417,54 @@ export default function MultiAgentCiv({ onBack }) {
           </Reveal>
           <Reveal delay={0.3}>
             <div style={{ ...serif, fontSize: 20, lineHeight: 1.7, color: ASH, maxWidth: 540, fontStyle: "italic" }}>
-              Put autonomous agents in a shared environment with scarce resources.
-              Watch them reinvent 10,000 years of organizational theory in a weekend.
+              Put autonomous agents in a shared environment. Watch them reinvent
+              10,000 years of organizational theory in a weekend.
             </div>
           </Reveal>
         </div>
 
         {/* CH I: THE OBSERVATION */}
-        <Chapter label="Chapter I — The Observation" title="You're not building a civilization metaphor. You're watching one self-assemble.">
+        <Chapter label="Chapter I — The Observation" title="You're watching a civilization self-assemble">
           <Reveal>
             <div style={{ ...serif, fontSize: 17, lineHeight: 1.85, color: BONE, maxWidth: 560 }}>
               Any sufficiently complex system of autonomous agents operating on shared resources
-              will converge on the same patterns humans invented. Not because we're special.
-              Because{" "}
-              <span style={{ color: ICE }}>the coordination problems are the same</span>.
-              <br /><br />
-              Humans didn't invent markets, governance, and culture because of some unique
-              biological insight. We invented them because they're the{" "}
-              <span style={{ color: GREEN }}>universal solutions</span> to the universal
-              problems of autonomous agents sharing finite resources.
-              <br /><br />
-              It's physics. It's information theory. It's inevitable.
+              converges on the same patterns humans invented. Not because we're special —
+              because <span style={{ color: ICE }}>the coordination problems are the same</span>.
             </div>
           </Reveal>
         </Chapter>
 
-        {/* CH II: THE FOUR STAGES */}
-        <Chapter label="Chapter II — The Stages" title="From campfire to global village">
-          {STAGES.map((s, i) => <StageCard key={i} stage={s} />)}
+        {/* CH II: INTERACTIVE SIM */}
+        <Chapter label="Chapter II — The Simulation" title="Drag the slider. Watch governance emerge.">
+          <AgentSimulation agentCount={agentCount} />
+          <ScalingControl count={agentCount} setCount={setAgentCount} />
         </Chapter>
 
-        {/* CH III: THE EMERGENCE MAP */}
+        {/* CH III: EMERGENCE MAP */}
         <Chapter label="Chapter III — The Emergence Map" title="Agent primitives map to civilizational institutions">
-          <Reveal>
-            <div style={{ ...serif, fontSize: 16, lineHeight: 1.7, color: ASH, marginBottom: 32, maxWidth: 540 }}>
-              Every governance structure that took humans millennia to develop
-              re-emerges within hours when you put AI agents in a shared filesystem.
-            </div>
-          </Reveal>
-          <Reveal>
-            <div style={{ background: FAINT, border: `1px solid ${LINE}`, borderRadius: 16, padding: "24px 20px" }}>
-              <div style={{ display: "flex", gap: 12, marginBottom: 16, paddingBottom: 12, borderBottom: `1px solid ${LINE}` }}>
-                <div style={{ width: 32 }} />
-                <div style={{ flex: 1, ...mono, fontSize: 9, letterSpacing: 2, color: ICE }}>AGENT WORLD</div>
-                <div style={{ width: 24 }} />
-                <div style={{ flex: 1, ...mono, fontSize: 9, letterSpacing: 2, color: GOLD }}>HUMAN WORLD</div>
-              </div>
-              <EmergenceMap />
-            </div>
-          </Reveal>
+          <EmergenceMapSVG />
         </Chapter>
 
         {/* CH IV: THE GOD PROBLEM */}
-        <Chapter label="Chapter IV — The God Problem" title="You're currently the god of this system">
+        <Chapter label="Chapter IV — The God Problem" title="You're the god of this system. But you can't scale.">
           <Reveal>
-            <div style={{ ...serif, fontSize: 17, lineHeight: 1.85, color: BONE, maxWidth: 560 }}>
-              You write the founding documents (the prompts). You set the initial conditions
-              (the tmux layout). You adjudicate disputes (merge conflicts). You decide who
-              lives and dies (killing agents).
-              <br /><br />
-              But as the system scales, that becomes untenable.{" "}
-              <span style={{ color: EMBER }}>You can't review every diff from 20 agents.</span>
+            <div style={{ ...serif, fontSize: 17, lineHeight: 1.85, color: BONE, maxWidth: 560, marginBottom: 16 }}>
+              You write the founding documents. You adjudicate disputes. You decide who lives and dies.
+              But as it scales, <span style={{ color: EMBER }}>you can't review every diff from 20 agents</span>.
             </div>
           </Reveal>
-
-          <Reveal>
-            <div style={{ padding: "32px 0" }}>
-              {[
-                { step: "You delegate review to a reviewer agent", result: "You've invented hierarchy" },
-                { step: "You need a reviewer of the reviewer", result: "You've invented bureaucracy" },
-                { step: "It's too slow, so you flatten it", result: "You've invented mesh networks" },
-                { step: "Agents vote on conflicting solutions", result: "You've invented democracy" },
-                { step: "You create shared conventions everyone reads first", result: "You've invented culture" },
-              ].map((row, i) => (
-                <Reveal key={i}>
-                  <div style={{
-                    display: "flex", gap: 16, alignItems: "baseline", padding: "14px 0",
-                    borderBottom: `1px solid ${LINE}`,
-                  }}>
-                    <div style={{ ...mono, fontSize: 11, color: GHOST, width: 20, flexShrink: 0 }}>{i + 1}</div>
-                    <div style={{ flex: 1, ...serif, fontSize: 15, color: BONE, lineHeight: 1.5 }}>{row.step}</div>
-                    <div style={{ ...mono, fontSize: 12, color: EMBER, textAlign: "right" }}>→ {row.result}</div>
-                  </div>
-                </Reveal>
-              ))}
-            </div>
-          </Reveal>
-
+          <EscalationDiagram />
           <Reveal>
             <div style={{
-              padding: "32px 28px", background: GHOST + "08", border: `1px solid ${GHOST}22`,
+              padding: "24px 20px", background: GHOST + "08", border: `1px solid ${GHOST}22`,
               borderRadius: 16, marginTop: 16,
             }}>
-              <div style={{ ...sans, fontSize: 17, fontWeight: 600, color: GHOST, marginBottom: 12 }}>
-                You've just recapitulated 10,000 years of organizational theory in a weekend.
+              <div style={{ ...sans, fontSize: 16, fontWeight: 600, color: GHOST, marginBottom: 8 }}>
+                10,000 years of organizational theory — recapitulated in a weekend.
               </div>
-              <div style={{ ...serif, fontSize: 15, lineHeight: 1.7, color: ASH }}>
-                And the insight that makes this actionable: the internal developer platform
-                IS the village square. The service catalog IS the shared language. The scorecards
-                ARE the social contracts. You're running a simulation of the problem your
-                enterprise customers are paying to solve.
+              <div style={{ ...serif, fontSize: 14, color: ASH }}>
+                The internal developer platform IS the village square. The service catalog IS the
+                shared language. The scorecards ARE the social contracts.
               </div>
             </div>
           </Reveal>
@@ -311,7 +474,6 @@ export default function MultiAgentCiv({ onBack }) {
         <section style={{ padding: "80px 0 120px", borderTop: `1px solid ${LINE}`, textAlign: "center" }}>
           <Reveal>
             <h2 style={{ ...sans, fontSize: "clamp(24px, 4.5vw, 38px)", fontWeight: 700, lineHeight: 1.15, maxWidth: 540, margin: "0 auto 20px" }}>
-              Civilization isn't a metaphor for multi-agent systems.<br />
               Multi-agent systems are a <span style={{ color: GREEN }}>proof</span> that civilization was inevitable.
             </h2>
           </Reveal>
