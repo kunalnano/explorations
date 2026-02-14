@@ -56,120 +56,321 @@ function Chapter({ label, title, children }) {
   );
 }
 
-// ── COMPARISON ROW ──
-function CompareRow({ dimension, tesla, waymo }) {
-  return (
-    <Reveal>
-      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 16, padding: "16px 0", borderBottom: `1px solid ${LINE}` }}>
-        <div style={{ ...sans, fontSize: 13, fontWeight: 600, color: BONE }}>{dimension}</div>
-        <div style={{ ...serif, fontSize: 13, color: TESLA_RED + "cc", lineHeight: 1.5 }}>{tesla}</div>
-        <div style={{ ...serif, fontSize: 13, color: WAYMO_BLUE + "cc", lineHeight: 1.5 }}>{waymo}</div>
-      </div>
-    </Reveal>
-  );
-}
-
-// ── PATH CARD ──
-function PathCard({ color, icon, company, canvas, constraint, assumption, evolution, concession }) {
-  const [expanded, setExpanded] = useState(false);
-  return (
-    <Reveal>
-      <div onClick={() => setExpanded(!expanded)} style={{
-        background: expanded ? "rgba(255,255,255,0.04)" : FAINT,
-        border: `1px solid ${expanded ? color + "44" : LINE}`,
-        borderRadius: 16, padding: "28px 24px", marginBottom: 16, cursor: "pointer",
-        transition: "all 0.4s ease",
-      }}>
-        <div style={{ display: "flex", alignItems: "center", gap: 16, marginBottom: expanded ? 20 : 0 }}>
-          <div style={{
-            width: 56, height: 56, borderRadius: 14, background: color + "12",
-            border: `1px solid ${color}33`, display: "flex", alignItems: "center",
-            justifyContent: "center", fontSize: 26, flexShrink: 0,
-          }}>{icon}</div>
-          <div style={{ flex: 1 }}>
-            <div style={{ ...sans, fontSize: 22, fontWeight: 700, lineHeight: 1.3 }}>{company}</div>
-            <div style={{ ...serif, fontSize: 13, color: ASH, fontStyle: "italic" }}>{canvas}</div>
-          </div>
-          <div style={{ ...mono, fontSize: 18, color: ASH, transition: "transform 0.3s", transform: expanded ? "rotate(45deg)" : "rotate(0)" }}>+</div>
-        </div>
-        {expanded && (
-          <div style={{ paddingLeft: 72 }}>
-            {[
-              { label: "ECOSYSTEM CONSTRAINT", text: constraint, c: color },
-              { label: "CORE ASSUMPTION", text: assumption, c: GOLD },
-              { label: "EVOLUTIONARY PATH", text: evolution, c: GREEN },
-              { label: "THE CONCESSION", text: concession, c: EMBER },
-            ].map((row, i) => (
-              <div key={i} style={{ marginBottom: 16 }}>
-                <div style={{ ...mono, fontSize: 9, letterSpacing: 2, color: row.c, marginBottom: 4 }}>{row.label}</div>
-                <div style={{ ...serif, fontSize: 14, color: BONE, lineHeight: 1.6 }}>{row.text}</div>
-              </div>
-            ))}
-          </div>
-        )}
-      </div>
-    </Reveal>
-  );
-}
-
-// ── BRANCHING TREE SVG ──
+// ── ANIMATED BRANCHING TREE — grows on scroll ──
 function BranchingTree() {
+  const ref = useRef(null);
+  const [progress, setProgress] = useState(0);
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const obs = new IntersectionObserver(([e]) => {
+      if (e.isIntersecting) setProgress(1);
+    }, { threshold: 0.15 });
+    obs.observe(el);
+    return () => obs.disconnect();
+  }, []);
+
+  const draw = (pct) => pct > 0 ? 1 : 0;
+  const p = progress;
+
   return (
     <Reveal>
-      <svg viewBox="0 0 600 320" style={{ width: "100%", maxWidth: 600, display: "block", margin: "24px auto" }}>
-        {/* Root */}
-        <rect x={220} y={10} width={160} height={44} rx={10} fill={GHOST + "18"} stroke={GHOST + "44"} />
-        <text x={300} y={37} textAnchor="middle" fill={GHOST} fontSize={12} fontFamily="'Segoe UI', sans-serif" fontWeight={600}>
-          Self-Driving Problem
-        </text>
+      <div ref={ref}>
+        <svg viewBox="0 0 620 400" style={{ width: "100%", maxWidth: 620, display: "block", margin: "24px auto" }}>
+          <defs>
+            <filter id="glow-t"><feGaussianBlur stdDeviation="3" result="blur" /><feMerge><feMergeNode in="blur" /><feMergeNode in="SourceGraphic" /></feMerge></filter>
+          </defs>
 
-        {/* Branch lines */}
-        <path d="M 260 54 L 160 100" stroke={TESLA_RED + "44"} strokeWidth={1.5} fill="none" />
-        <path d="M 340 54 L 440 100" stroke={WAYMO_BLUE + "44"} strokeWidth={1.5} fill="none" />
+          {/* Root */}
+          <rect x={220} y={10} width={180} height={50} rx={12}
+            fill={GHOST + "18"} stroke={GHOST + "55"} strokeWidth={1.5}
+            style={{ opacity: p, transition: "opacity 0.6s ease 0s" }} />
+          <text x={310} y={32} textAnchor="middle" fill={GHOST} fontSize={13} fontWeight={700}
+            fontFamily="'Segoe UI', sans-serif" style={{ opacity: p, transition: "opacity 0.6s ease 0.1s" }}>Self-Driving Problem</text>
+          <text x={310} y={48} textAnchor="middle" fill={ASH} fontSize={9} fontFamily="Georgia, serif"
+            style={{ opacity: p, transition: "opacity 0.6s ease 0.2s" }}>Same goal, different ecosystems</text>
 
-        {/* Tesla branch */}
-        <rect x={60} y={100} width={200} height={40} rx={10} fill={TESLA_RED + "12"} stroke={TESLA_RED + "33"} />
-        <text x={160} y={124} textAnchor="middle" fill={TESLA_RED} fontSize={11} fontFamily="'Segoe UI', sans-serif" fontWeight={600}>
-          Tesla: Vision-first, fleet data
-        </text>
+          {/* Branch lines — animate with dashoffset */}
+          <path d="M 260 60 Q 200 85 150 110" fill="none" stroke={TESLA_RED + "66"} strokeWidth={2}
+            strokeDasharray="200" strokeDashoffset={p ? 0 : 200}
+            style={{ transition: "stroke-dashoffset 1s ease 0.4s" }} />
+          <path d="M 360 60 Q 420 85 470 110" fill="none" stroke={WAYMO_BLUE + "66"} strokeWidth={2}
+            strokeDasharray="200" strokeDashoffset={p ? 0 : 200}
+            style={{ transition: "stroke-dashoffset 1s ease 0.4s" }} />
 
-        {/* Waymo branch */}
-        <rect x={340} y={100} width={200} height={40} rx={10} fill={WAYMO_BLUE + "12"} stroke={WAYMO_BLUE + "33"} />
-        <text x={440} y={124} textAnchor="middle" fill={WAYMO_BLUE} fontSize={11} fontFamily="'Segoe UI', sans-serif" fontWeight={600}>
-          Waymo: LiDAR-first, HD maps
-        </text>
+          {/* Tesla branch */}
+          <g style={{ opacity: p, transition: "opacity 0.6s ease 0.6s" }}>
+            <rect x={40} y={110} width={220} height={50} rx={12}
+              fill={TESLA_RED + "12"} stroke={TESLA_RED + "44"} strokeWidth={1.5} />
+            <text x={150} y={132} textAnchor="middle" fill={TESLA_RED} fontSize={12} fontWeight={700}
+              fontFamily="'Segoe UI', sans-serif">Tesla: Vision-First</text>
+            <text x={150} y={148} textAnchor="middle" fill={ASH} fontSize={9}
+              fontFamily="Georgia, serif">Camera-only · Fleet data · Consumer cost</text>
+          </g>
 
-        {/* Tesla sub-branches */}
-        <path d="M 120 140 L 100 180" stroke={TESLA_RED + "33"} strokeWidth={1} fill="none" />
-        <path d="M 200 140 L 220 180" stroke={TESLA_RED + "33"} strokeWidth={1} fill="none" />
-        <text x={100} y={198} textAnchor="middle" fill={ASH} fontSize={9} fontFamily="monospace">Camera-only</text>
-        <text x={100} y={212} textAnchor="middle" fill={EMBER} fontSize={9} fontFamily="monospace">→ HW4: LiDAR added</text>
-        <text x={220} y={198} textAnchor="middle" fill={ASH} fontSize={9} fontFamily="monospace">Fleet moat</text>
-        <text x={220} y={212} textAnchor="middle" fill={EMBER} fontSize={9} fontFamily="monospace">→ Less edge than expected</text>
+          {/* Waymo branch */}
+          <g style={{ opacity: p, transition: "opacity 0.6s ease 0.6s" }}>
+            <rect x={360} y={110} width={220} height={50} rx={12}
+              fill={WAYMO_BLUE + "12"} stroke={WAYMO_BLUE + "44"} strokeWidth={1.5} />
+            <text x={470} y={132} textAnchor="middle" fill={WAYMO_BLUE} fontSize={12} fontWeight={700}
+              fontFamily="'Segoe UI', sans-serif">Waymo: LiDAR-First</text>
+            <text x={470} y={148} textAnchor="middle" fill={ASH} fontSize={9}
+              fontFamily="Georgia, serif">HD maps · Robustness · Cost be damned</text>
+          </g>
 
-        {/* Waymo sub-branches */}
-        <path d="M 400 140 L 380 180" stroke={WAYMO_BLUE + "33"} strokeWidth={1} fill="none" />
-        <path d="M 480 140 L 500 180" stroke={WAYMO_BLUE + "33"} strokeWidth={1} fill="none" />
-        <text x={380} y={198} textAnchor="middle" fill={ASH} fontSize={9} fontFamily="monospace">Robustness first</text>
-        <text x={380} y={212} textAnchor="middle" fill={GREEN} fontSize={9} fontFamily="monospace">→ Operational in SF, PHX</text>
-        <text x={500} y={198} textAnchor="middle" fill={ASH} fontSize={9} fontFamily="monospace">Cost be damned</text>
-        <text x={500} y={212} textAnchor="middle" fill={GOLD} fontSize={9} fontFamily="monospace">→ $100K+ per vehicle</text>
+          {/* Sub-branches Tesla */}
+          <g style={{ opacity: p, transition: "opacity 0.6s ease 1s" }}>
+            <line x1={100} y1={160} x2={80} y2={200} stroke={TESLA_RED + "33"} strokeWidth={1} />
+            <line x1={200} y1={160} x2={220} y2={200} stroke={TESLA_RED + "33"} strokeWidth={1} />
+            <rect x={30} y={200} width={100} height={36} rx={8} fill={FAINT} stroke={EMBER + "33"} />
+            <text x={80} y={218} textAnchor="middle" fill={EMBER} fontSize={8} fontFamily="monospace">HW4: Adding LiDAR</text>
+            <text x={80} y={230} textAnchor="middle" fill={ASH} fontSize={7} fontFamily="monospace">concession</text>
+            <rect x={170} y={200} width={100} height={36} rx={8} fill={FAINT} stroke={ASH + "33"} />
+            <text x={220} y={218} textAnchor="middle" fill={ASH} fontSize={8} fontFamily="monospace">Fleet data moat</text>
+            <text x={220} y={230} textAnchor="middle" fill={EMBER} fontSize={7} fontFamily="monospace">less edge than expected</text>
+          </g>
 
-        {/* Convergence */}
-        <path d="M 160 230 L 300 280" stroke={LINE} strokeWidth={1} strokeDasharray="4 4" fill="none" />
-        <path d="M 440 230 L 300 280" stroke={LINE} strokeWidth={1} strokeDasharray="4 4" fill="none" />
-        <rect x={210} y={270} width={180} height={40} rx={10} fill={FAINT} stroke={LINE} />
-        <text x={300} y={290} textAnchor="middle" fill={BONE} fontSize={10} fontFamily="'Segoe UI', sans-serif" fontWeight={600}>
-          Next frontier: Generalization
-        </text>
-        <text x={300} y={303} textAnchor="middle" fill={ASH} fontSize={9} fontFamily="Georgia, serif" fontStyle="italic">
-          Working outside training arena
-        </text>
-      </svg>
+          {/* Sub-branches Waymo */}
+          <g style={{ opacity: p, transition: "opacity 0.6s ease 1s" }}>
+            <line x1={420} y1={160} x2={400} y2={200} stroke={WAYMO_BLUE + "33"} strokeWidth={1} />
+            <line x1={520} y1={160} x2={540} y2={200} stroke={WAYMO_BLUE + "33"} strokeWidth={1} />
+            <rect x={350} y={200} width={100} height={36} rx={8} fill={FAINT} stroke={GREEN + "33"} />
+            <text x={400} y={218} textAnchor="middle" fill={GREEN} fontSize={8} fontFamily="monospace">Operational in SF, PHX</text>
+            <text x={400} y={230} textAnchor="middle" fill={ASH} fontSize={7} fontFamily="monospace">geofenced</text>
+            <rect x={490} y={200} width={100} height={36} rx={8} fill={FAINT} stroke={GOLD + "33"} />
+            <text x={540} y={218} textAnchor="middle" fill={GOLD} fontSize={8} fontFamily="monospace">$100K+ per vehicle</text>
+            <text x={540} y={230} textAnchor="middle" fill={ASH} fontSize={7} fontFamily="monospace">cost problem</text>
+          </g>
+
+          {/* Convergence */}
+          <g style={{ opacity: p, transition: "opacity 0.6s ease 1.4s" }}>
+            <path d="M 150 250 Q 220 300 310 320" fill="none" stroke={LINE} strokeWidth={1} strokeDasharray="4 4" />
+            <path d="M 470 250 Q 400 300 310 320" fill="none" stroke={LINE} strokeWidth={1} strokeDasharray="4 4" />
+            <rect x={220} y={310} width={180} height={44} rx={12}
+              fill={GOLD + "0c"} stroke={GOLD + "33"} strokeWidth={1.5} />
+            <text x={310} y={332} textAnchor="middle" fill={GOLD} fontSize={11} fontWeight={600}
+              fontFamily="'Segoe UI', sans-serif">Convergence: Generalization</text>
+            <text x={310} y={347} textAnchor="middle" fill={ASH} fontSize={9}
+              fontFamily="Georgia, serif" fontStyle="italic">Both unsolved. Both approaching from different angles.</text>
+          </g>
+        </svg>
+      </div>
     </Reveal>
   );
 }
 
+// ── SENSOR VISUALIZATION — camera vs LiDAR side by side ──
+function SensorComparison() {
+  const ref = useRef(null);
+  const [vis, setVis] = useState(false);
+  const [frame, setFrame] = useState(0);
+  const frameRef = useRef(null);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const obs = new IntersectionObserver(([e]) => { if (e.isIntersecting) { setVis(true); obs.unobserve(el); } }, { threshold: 0.15 });
+    obs.observe(el);
+    return () => obs.disconnect();
+  }, []);
+
+  useEffect(() => {
+    if (!vis) return;
+    let running = true;
+    function tick() {
+      if (!running) return;
+      setFrame(f => f + 1);
+      frameRef.current = requestAnimationFrame(tick);
+    }
+    frameRef.current = requestAnimationFrame(tick);
+    return () => { running = false; cancelAnimationFrame(frameRef.current); };
+  }, [vis]);
+
+  // Generate pseudo-random point cloud for LiDAR
+  const lidarPoints = [];
+  const seed = 42;
+  for (let i = 0; i < 120; i++) {
+    const angle = (i * 137.508 + frame * 0.3) * Math.PI / 180;
+    const r = 20 + (i % 7) * 12 + Math.sin(i * 0.5 + frame * 0.02) * 8;
+    lidarPoints.push({
+      x: 150 + Math.cos(angle) * r,
+      y: 120 + Math.sin(angle) * r * 0.6,
+      d: r,
+    });
+  }
+
+  return (
+    <Reveal>
+      <div ref={ref} style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16, margin: "32px 0" }}>
+        {/* Camera view */}
+        <div style={{ background: FAINT, border: `1px solid ${TESLA_RED}22`, borderRadius: 16, overflow: "hidden" }}>
+          <div style={{ ...mono, fontSize: 9, letterSpacing: 2, color: TESLA_RED, padding: "12px 16px", borderBottom: `1px solid ${LINE}` }}>
+            CAMERA VIEW · RGB PIXELS
+          </div>
+          <svg viewBox="0 0 300 200" style={{ width: "100%", display: "block" }}>
+            {/* Simulated camera grid */}
+            {Array.from({ length: 12 }).map((_, row) =>
+              Array.from({ length: 15 }).map((_, col) => {
+                const brightness = Math.sin((row + col + frame * 0.05) * 0.5) * 30 + 40;
+                return (
+                  <rect key={`${row}-${col}`} x={col * 20} y={row * 16.7} width={20} height={16.7}
+                    fill={`hsl(${200 + row * 5}, 30%, ${brightness}%)`} opacity={0.6} />
+                );
+              })
+            )}
+            {/* "Car" shape */}
+            <rect x={100} y={70} width={100} height={60} rx={6} fill="none" stroke={TESLA_RED + "66"} strokeWidth={2} />
+            <text x={150} y={105} textAnchor="middle" fill={TESLA_RED} fontSize={9} fontFamily="monospace">OBJECT DETECTED</text>
+            <text x={150} y={185} textAnchor="middle" fill={ASH} fontSize={8} fontFamily="Georgia, serif">
+              Dense color data · No depth · Cheap sensors
+            </text>
+          </svg>
+        </div>
+
+        {/* LiDAR view */}
+        <div style={{ background: FAINT, border: `1px solid ${WAYMO_BLUE}22`, borderRadius: 16, overflow: "hidden" }}>
+          <div style={{ ...mono, fontSize: 9, letterSpacing: 2, color: WAYMO_BLUE, padding: "12px 16px", borderBottom: `1px solid ${LINE}` }}>
+            LiDAR VIEW · 3D POINT CLOUD
+          </div>
+          <svg viewBox="0 0 300 200" style={{ width: "100%", display: "block", background: "rgba(0,0,0,0.3)" }}>
+            {/* Point cloud */}
+            {lidarPoints.map((p, i) => (
+              <circle key={i} cx={p.x} cy={p.y} r={1.2}
+                fill={p.d < 60 ? GREEN : p.d < 100 ? WAYMO_BLUE : ICE}
+                opacity={0.7} />
+            ))}
+            {/* Distance rings */}
+            {[40, 80, 120].map((r, i) => (
+              <circle key={i} cx={150} cy={120} r={r} fill="none"
+                stroke={WAYMO_BLUE + "11"} strokeWidth={0.5} />
+            ))}
+            <text x={150} y={185} textAnchor="middle" fill={ASH} fontSize={8} fontFamily="Georgia, serif">
+              Precise depth · Sparse color · $10K+ sensor
+            </text>
+          </svg>
+        </div>
+      </div>
+    </Reveal>
+  );
+}
+
+// ── RADAR CHART — interactive comparison ──
+const DIMENSIONS = [
+  { label: "Scale", tesla: 0.9, waymo: 0.3 },
+  { label: "Precision", tesla: 0.5, waymo: 0.95 },
+  { label: "Cost/Unit", tesla: 0.85, waymo: 0.2 },
+  { label: "Coverage", tesla: 0.7, waymo: 0.35 },
+  { label: "Safety Record", tesla: 0.4, waymo: 0.85 },
+  { label: "Generalization", tesla: 0.3, waymo: 0.3 },
+];
+
+function RadarChart() {
+  const [hoveredSide, setHoveredSide] = useState(null);
+  const cx = 200, cy = 180, maxR = 130;
+  const n = DIMENSIONS.length;
+
+  function polarToXY(angle, radius) {
+    const a = (angle - 90) * Math.PI / 180;
+    return { x: cx + Math.cos(a) * radius, y: cy + Math.sin(a) * radius };
+  }
+
+  function buildPath(key) {
+    return DIMENSIONS.map((d, i) => {
+      const angle = (360 / n) * i;
+      const p = polarToXY(angle, d[key] * maxR);
+      return `${i === 0 ? "M" : "L"} ${p.x} ${p.y}`;
+    }).join(" ") + " Z";
+  }
+
+  return (
+    <Reveal>
+      <div style={{ margin: "32px 0", textAlign: "center" }}>
+        <svg viewBox="0 0 400 380" style={{ width: "100%", maxWidth: 440, display: "block", margin: "0 auto" }}>
+          {/* Grid rings */}
+          {[0.25, 0.5, 0.75, 1].map((s, i) => (
+            <polygon key={i} points={DIMENSIONS.map((_, j) => {
+              const p = polarToXY((360 / n) * j, s * maxR);
+              return `${p.x},${p.y}`;
+            }).join(" ")} fill="none" stroke={LINE} strokeWidth={0.5} />
+          ))}
+          {/* Axis lines */}
+          {DIMENSIONS.map((d, i) => {
+            const p = polarToXY((360 / n) * i, maxR + 8);
+            const pe = polarToXY((360 / n) * i, maxR);
+            return (
+              <g key={i}>
+                <line x1={cx} y1={cy} x2={pe.x} y2={pe.y} stroke={LINE} strokeWidth={0.5} />
+                <text x={p.x + (p.x > cx ? 4 : p.x < cx ? -4 : 0)} y={p.y + (p.y > cy ? 12 : -4)}
+                  textAnchor={p.x > cx + 5 ? "start" : p.x < cx - 5 ? "end" : "middle"}
+                  fill={ASH} fontSize={9} fontFamily="'Segoe UI', sans-serif">{d.label}</text>
+              </g>
+            );
+          })}
+
+          {/* Waymo shape */}
+          <path d={buildPath("waymo")} fill={WAYMO_BLUE + "18"} stroke={WAYMO_BLUE}
+            strokeWidth={hoveredSide === "waymo" ? 2.5 : 1.5} opacity={hoveredSide === "tesla" ? 0.3 : 1}
+            style={{ transition: "all 0.3s" }}
+            onMouseEnter={() => setHoveredSide("waymo")} onMouseLeave={() => setHoveredSide(null)} />
+
+          {/* Tesla shape */}
+          <path d={buildPath("tesla")} fill={TESLA_RED + "18"} stroke={TESLA_RED}
+            strokeWidth={hoveredSide === "tesla" ? 2.5 : 1.5} opacity={hoveredSide === "waymo" ? 0.3 : 1}
+            style={{ transition: "all 0.3s" }}
+            onMouseEnter={() => setHoveredSide("tesla")} onMouseLeave={() => setHoveredSide(null)} />
+
+          {/* Data points */}
+          {DIMENSIONS.map((d, i) => {
+            const angle = (360 / n) * i;
+            const pt = polarToXY(angle, d.tesla * maxR);
+            const pw = polarToXY(angle, d.waymo * maxR);
+            return (
+              <g key={`pts-${i}`}>
+                <circle cx={pt.x} cy={pt.y} r={3} fill={TESLA_RED} opacity={hoveredSide === "waymo" ? 0.3 : 1} style={{ transition: "opacity 0.3s" }} />
+                <circle cx={pw.x} cy={pw.y} r={3} fill={WAYMO_BLUE} opacity={hoveredSide === "tesla" ? 0.3 : 1} style={{ transition: "opacity 0.3s" }} />
+              </g>
+            );
+          })}
+
+          {/* Legend */}
+          <circle cx={100} cy={365} r={5} fill={TESLA_RED} />
+          <text x={112} y={369} fill={TESLA_RED} fontSize={10} fontFamily="'Segoe UI', sans-serif" fontWeight={600}>Tesla</text>
+          <circle cx={260} cy={365} r={5} fill={WAYMO_BLUE} />
+          <text x={272} y={369} fill={WAYMO_BLUE} fontSize={10} fontFamily="'Segoe UI', sans-serif" fontWeight={600}>Waymo</text>
+        </svg>
+      </div>
+    </Reveal>
+  );
+}
+
+// ── CONVERGENCE FUNNEL ──
+function ConvergenceFunnel() {
+  const steps = [
+    { label: "Constraint", desc: "Existing business defines option set", color: GOLD, w: 100 },
+    { label: "Assumption", desc: "Bet based on ecosystem", color: ICE, w: 80 },
+    { label: "Evolution", desc: "Iterate within constraints", color: GREEN, w: 60 },
+    { label: "Concession", desc: "Reality forces adaptation", color: EMBER, w: 40 },
+    { label: "Convergence", desc: "Same frontier, different angles", color: GHOST, w: 30 },
+  ];
+
+  return (
+    <Reveal>
+      <div style={{ margin: "32px auto", textAlign: "center" }}>
+        {steps.map((s, i) => (
+          <div key={i} style={{
+            width: `${s.w}%`, margin: "0 auto", padding: "12px 16px",
+            background: s.color + "0c", border: `1px solid ${s.color}33`,
+            borderRadius: i === 0 ? "14px 14px 4px 4px" : i === 4 ? "4px 4px 14px 14px" : 4,
+            marginBottom: 2, transition: "all 0.3s",
+          }}>
+            <div style={{ ...mono, fontSize: 10, color: s.color, letterSpacing: 1 }}>{s.label}</div>
+            <div style={{ ...serif, fontSize: 12, color: ASH }}>{s.desc}</div>
+          </div>
+        ))}
+      </div>
+    </Reveal>
+  );
+}
 
 // ═══════════════ MAIN ═══════════════
 export default function PathDependency({ onBack }) {
@@ -180,7 +381,6 @@ export default function PathDependency({ onBack }) {
         backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")`,
       }} />
       <div style={{ position: "relative", zIndex: 1, maxWidth: 720, margin: "0 auto", padding: "0 24px" }}>
-
         <div style={{ paddingTop: 32 }}>
           <button onClick={onBack} style={{ background: "none", border: "none", color: ASH, cursor: "pointer", ...mono, fontSize: 11, letterSpacing: 2, padding: "8px 0" }}>← EXPLORATIONS</button>
         </div>
@@ -200,7 +400,6 @@ export default function PathDependency({ onBack }) {
           <Reveal delay={0.3}>
             <div style={{ ...serif, fontSize: 20, lineHeight: 1.7, color: ASH, maxWidth: 540, fontStyle: "italic" }}>
               Tesla and Waymo didn't choose different strategies. Their ecosystems chose for them.
-              Both were "correct" — constrained by the canvas they started on.
             </div>
           </Reveal>
         </div>
@@ -209,13 +408,9 @@ export default function PathDependency({ onBack }) {
         <Chapter label="Chapter I — The Thesis" title="Innovation is path-dependent, not rational">
           <Reveal>
             <div style={{ ...serif, fontSize: 17, lineHeight: 1.85, color: BONE, maxWidth: 560 }}>
-              When seemingly rational actors arrive at completely different solutions to the same
-              problem, the explanation isn't that one is smarter. It's that{" "}
-              <span style={{ color: ICE }}>their evolutionary paths reduced them to different option sets</span>.
-              <br /><br />
-              The canvas you start on constrains the art you can make. Tesla started on the canvas
-              of car manufacturing. Waymo started on the canvas of pure research. Each approach
-              is a unique outcome of its evolutionary path, not a free choice from infinite options.
+              When rational actors arrive at opposite solutions, the explanation isn't that one is
+              smarter. It's that <span style={{ color: ICE }}>their evolutionary paths reduced them to
+              different option sets</span>. The canvas you start on constrains the art you can make.
             </div>
           </Reveal>
         </Chapter>
@@ -223,76 +418,33 @@ export default function PathDependency({ onBack }) {
         {/* CH II: THE TWO PATHS */}
         <Chapter label="Chapter II — The Two Paths" title="Same problem, different ecosystems, opposite architectures">
           <BranchingTree />
-
-          <PathCard
-            color={TESLA_RED} icon="⚡" company="Tesla" canvas="The car company that had to evolve"
-            constraint="Tesla is a car manufacturing business with an overarching goal of transitioning transport from fossil fuels to electric. Self-driving had to be bolted onto existing vehicles sold to consumers."
-            assumption="'Our fleet of millions of cars is a data moat. Camera-only vision at consumer-grade cost will outscale LiDAR.' First-principles thinking applied to sensor economics."
-            evolution="Camera-only → Neural nets on fleet data → Realized the data moat was less decisive than expected → HW4 generation quietly incorporating LiDAR-like capabilities → Still hasn't publicly conceded the assumption."
-            concession="The fleet data advantage didn't materialize as expected. The generalization problem (working outside training data) remains unsolved. Musk hasn't conceded, but HW4 tells the story."
-          />
-
-          <PathCard
-            color={WAYMO_BLUE} icon="🔍" company="Waymo (Google)" canvas="The research lab with unlimited patience"
-            constraint="Google had no car business to protect. No consumer hardware to amortize. Pure research freedom with deep pockets. The luxury of making an agnostic, universal product."
-            assumption="'Solve for robustness first. Cost be damned — if it works, economies of scale will handle cost.' The purist approach: get the physics right, then optimize."
-            evolution="LiDAR + HD maps → Geofenced operations in SF, Phoenix → Operational robotaxi service → Still $100K+ per vehicle → Slowly expanding coverage area."
-            concession="The cost problem is real and persistent. Geofencing means they haven't solved generalization either. Coverage expansion is slow. The 'economies of scale' assumption hasn't fully materialized."
-          />
         </Chapter>
 
-        {/* CH III: COMPARISON */}
-        <Chapter label="Chapter III — The Comparison" title="Neither was wrong. Both were constrained.">
+        {/* CH III: SENSOR COMPARISON */}
+        <Chapter label="Chapter III — The Sensors" title="Two fundamentally different ways to see the road">
+          <SensorComparison />
+        </Chapter>
+
+        {/* CH IV: RADAR COMPARISON */}
+        <Chapter label="Chapter IV — The Comparison" title="Neither was wrong. Both were constrained.">
+          <RadarChart />
           <Reveal>
-            <div style={{ background: FAINT, border: `1px solid ${LINE}`, borderRadius: 16, padding: "24px 20px" }}>
-              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 16, paddingBottom: 12, marginBottom: 4, borderBottom: `1px solid ${LINE}` }}>
-                <div style={{ ...mono, fontSize: 9, letterSpacing: 2, color: ASH }}>DIMENSION</div>
-                <div style={{ ...mono, fontSize: 9, letterSpacing: 2, color: TESLA_RED }}>TESLA</div>
-                <div style={{ ...mono, fontSize: 9, letterSpacing: 2, color: WAYMO_BLUE }}>WAYMO</div>
-              </div>
-              <CompareRow dimension="Starting canvas" tesla="Car manufacturer" waymo="Research lab" />
-              <CompareRow dimension="Sensor philosophy" tesla="Camera-only (→ hybrid)" waymo="LiDAR + cameras + radar" />
-              <CompareRow dimension="Data strategy" tesla="Fleet of millions" waymo="Focused fleet, HD maps" />
-              <CompareRow dimension="Cost per unit" tesla="Consumer-grade" waymo="$100K+ per vehicle" />
-              <CompareRow dimension="Coverage" tesla="Everywhere (with caveats)" waymo="Geofenced cities" />
-              <CompareRow dimension="Generalization" tesla="Unsolved" waymo="Unsolved" />
-              <CompareRow dimension="Business model" tesla="Consumer ownership" waymo="Robotaxi service" />
-              <CompareRow dimension="Biggest bet" tesla="Scale > precision" waymo="Precision > scale" />
+            <div style={{
+              textAlign: "center", ...serif, fontSize: 14, color: ASH, fontStyle: "italic", marginTop: 8,
+            }}>
+              Hover each shape to isolate. Note generalization — unsolved by both.
             </div>
           </Reveal>
         </Chapter>
 
-        {/* CH IV: THE PRINCIPLE */}
-        <Chapter label="Chapter IV — The Principle" title="The general framework">
+        {/* CH V: THE PRINCIPLE */}
+        <Chapter label="Chapter V — The Principle" title="The general framework">
+          <ConvergenceFunnel />
           <Reveal>
-            <div style={{ ...serif, fontSize: 17, lineHeight: 1.85, color: BONE, maxWidth: 560, marginBottom: 32 }}>
-              This isn't just about self-driving cars. It's a general principle:{" "}
-              <span style={{ color: GOLD }}>
-                the ecosystem an innovator starts in constrains the solution space they can explore.
-              </span>
-              <br /><br />
-              You see this everywhere. AWS built cloud infrastructure because they had excess
-              server capacity from e-commerce. Slack became a messaging platform because their
-              game studio needed internal tools. The origin story isn't just history — it's architecture.
-            </div>
-          </Reveal>
-
-          <Reveal>
-            <div style={{ padding: "24px 0" }}>
-              {[
-                { label: "Constraint", insight: "Your existing business, infrastructure, and customers define your option set" },
-                { label: "Assumption", insight: "You make a bet based on what your ecosystem makes possible" },
-                { label: "Evolution", insight: "You iterate within those constraints, often unable to see the paths you didn't take" },
-                { label: "Concession", insight: "Reality forces adaptation, but the original path still shapes the architecture" },
-                { label: "Convergence", insight: "Different paths eventually face the same frontier problems — just from different angles" },
-              ].map((row, i) => (
-                <Reveal key={i}>
-                  <div style={{ display: "flex", gap: 16, padding: "14px 0", borderBottom: `1px solid ${LINE}`, alignItems: "baseline" }}>
-                    <div style={{ ...mono, fontSize: 11, color: GOLD, width: 100, flexShrink: 0 }}>{row.label}</div>
-                    <div style={{ ...serif, fontSize: 15, color: BONE, lineHeight: 1.5 }}>{row.insight}</div>
-                  </div>
-                </Reveal>
-              ))}
+            <div style={{ ...serif, fontSize: 15, lineHeight: 1.7, color: BONE, maxWidth: 540, margin: "24px auto", textAlign: "center" }}>
+              AWS built cloud because they had excess servers. Slack became messaging because their
+              game studio needed internal tools. <span style={{ color: GOLD }}>The origin story isn't
+              just history — it's architecture.</span>
             </div>
           </Reveal>
         </Chapter>
@@ -301,7 +453,7 @@ export default function PathDependency({ onBack }) {
         <section style={{ padding: "80px 0 120px", borderTop: `1px solid ${LINE}`, textAlign: "center" }}>
           <Reveal>
             <h2 style={{ ...sans, fontSize: "clamp(24px, 4.5vw, 38px)", fontWeight: 700, lineHeight: 1.15, maxWidth: 540, margin: "0 auto 20px" }}>
-              The path you started on<br />isn't just your history.<br />
+              The path you started on isn't just your history.<br />
               It's your <span style={{ color: GOLD }}>architecture</span>.
             </h2>
           </Reveal>
@@ -311,7 +463,6 @@ export default function PathDependency({ onBack }) {
             </div>
           </Reveal>
         </section>
-
       </div>
     </div>
   );
