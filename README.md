@@ -8,19 +8,21 @@ An interactive concept map connecting six major philosophical traditions through
 
 **Traditions covered:** Stoicism, Strategic Realism (Sun Tzu), Taoism, Buddhism, Classical Greek, Confucianism
 
-**Features:**
-- Click any tradition node to explore its core principles, key thinkers, texts, and practices
-- Hover connecting lines to reveal bridging concepts between traditions
-- Click connections for detailed explanations of cross-tradition ideas
-- 13 cross-tradition bridges mapping shared philosophical DNA
+## 🧠 The Boltzmann Brain Problem
+
+A visual essay on the 130-year-old unsolved problem in physics: thermodynamics + infinite time implies your memories, identity, and experience of reading this sentence are probably a temporary accident in an infinite void.
+
+Explores the parallel between cosmological fluctuations producing disembodied brains with false memories, and language models producing coherent meaning through next-token prediction — neither requires the thing it simulates.
+
+*From a conversation between a human and a language model · Valentine's Day, 2026*
 
 ### Live Demo
 
-🌐 [https://kunalnano.github.io/explorations/](https://kunalnano.github.io/explorations/)
+🌐 https://kunalnano.github.io/explorations/
 
 ## Development
 
-```bash
+```
 npm install
 npm run dev
 ```
