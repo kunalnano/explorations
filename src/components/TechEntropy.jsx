@@ -1,9 +1,9 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 
 /* ═══════════════════════════════════════════════════════════════
    TECHNOLOGY AS ENTROPY
-   Technology is a fundamental force of the universe — once complex
-   enough, its march toward ASI becomes thermodynamically inevitable.
+   Technology is a dissipative structure — once complex enough,
+   its march toward ASI becomes thermodynamically inevitable.
    ═══════════════════════════════════════════════════════════════ */
 
 const BG = "#050508";
@@ -54,88 +54,590 @@ function Chapter({ label, title, children }) {
   );
 }
 
-// ── THEORY CARD ──
-function TheoryCard({ name, thinker, color, core, connection, limitation }) {
-  const [expanded, setExpanded] = useState(false);
+// ── ENTROPY CURVE — animated S-curve with phase transition markers ──
+const PHASES = [
+  { x: 0.05, label: "Fire", year: "~1M yrs ago", color: EMBER, icon: "🔥" },
+  { x: 0.18, label: "Agriculture", year: "~10,000 BCE", color: GOLD, icon: "🌾" },
+  { x: 0.35, label: "Writing", year: "~3,200 BCE", color: ICE, icon: "📜" },
+  { x: 0.52, label: "Printing", year: "1440 CE", color: GREEN, icon: "📖" },
+  { x: 0.68, label: "Electricity", year: "1879 CE", color: GOLD, icon: "⚡" },
+  { x: 0.8, label: "Computing", year: "1945 CE", color: ICE, icon: "💻" },
+  { x: 0.88, label: "Internet", year: "1991 CE", color: GREEN, icon: "🌐" },
+  { x: 0.94, label: "AI", year: "2023 CE", color: GHOST, icon: "🧠" },
+  { x: 0.99, label: "ASI?", year: "????", color: EMBER, icon: "∞" },
+];
+
+function EntropyCurve() {
+  const ref = useRef(null);
+  const [vis, setVis] = useState(false);
+  const [hovered, setHovered] = useState(null);
+  const [progress, setProgress] = useState(0);
+  const frameRef = useRef(null);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const obs = new IntersectionObserver(([e]) => {
+      if (e.isIntersecting) { setVis(true); obs.unobserve(el); }
+    }, { threshold: 0.15 });
+    obs.observe(el);
+    return () => obs.disconnect();
+  }, []);
+
+  useEffect(() => {
+    if (!vis) return;
+    let start = null;
+    function tick(ts) {
+      if (!start) start = ts;
+      const elapsed = (ts - start) / 2500;
+      setProgress(Math.min(elapsed, 1));
+      if (elapsed < 1) frameRef.current = requestAnimationFrame(tick);
+    }
+    frameRef.current = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(frameRef.current);
+  }, [vis]);
+
+  const W = 660, H = 380, padL = 50, padR = 30, padT = 30, padB = 80;
+  const gW = W - padL - padR, gH = H - padT - padB;
+
+  // exponential curve: y = e^(kx) scaled
+  function curveY(t) {
+    const k = 6;
+    return 1 - (Math.exp(k * t) - 1) / (Math.exp(k) - 1);
+  }
+
+  // Build path
+  const pts = [];
+  const steps = 120;
+  for (let i = 0; i <= steps; i++) {
+    const t = i / steps;
+    if (t > progress) break;
+    const px = padL + t * gW;
+    const py = padT + curveY(t) * gH;
+    pts.push(`${i === 0 ? "M" : "L"} ${px.toFixed(1)} ${py.toFixed(1)}`);
+  }
+
   return (
     <Reveal>
-      <div onClick={() => setExpanded(!expanded)} style={{
-        background: expanded ? "rgba(255,255,255,0.04)" : FAINT,
-        border: `1px solid ${expanded ? color + "44" : LINE}`,
-        borderRadius: 16, padding: "24px 20px", marginBottom: 14, cursor: "pointer",
-        transition: "all 0.4s ease",
-      }}>
-        <div style={{ display: "flex", alignItems: "center", gap: 14, marginBottom: expanded ? 16 : 0 }}>
-          <div style={{ width: 8, height: 8, borderRadius: 4, background: color, flexShrink: 0 }} />
-          <div style={{ flex: 1 }}>
-            <div style={{ ...sans, fontSize: 17, fontWeight: 600 }}>{name}</div>
-            <div style={{ ...serif, fontSize: 13, color: ASH, fontStyle: "italic" }}>{thinker}</div>
-          </div>
-          <div style={{ ...mono, fontSize: 16, color: ASH, transition: "transform 0.3s", transform: expanded ? "rotate(45deg)" : "rotate(0)" }}>+</div>
+      <div ref={ref} style={{ margin: "24px 0" }}>
+        <svg viewBox={`0 0 ${W} ${H}`} style={{ width: "100%", maxWidth: W, display: "block", margin: "0 auto" }}>
+          {/* Grid lines */}
+          {[0.25, 0.5, 0.75].map((t, i) => (
+            <line key={i} x1={padL} y1={padT + t * gH} x2={padL + gW} y2={padT + t * gH}
+              stroke={LINE} strokeWidth={0.5} />
+          ))}
+
+          {/* Y-axis label */}
+          <text x={14} y={padT + gH / 2} fill={ASH} fontSize={9} fontFamily="monospace"
+            transform={`rotate(-90, 14, ${padT + gH / 2})`} textAnchor="middle">
+            COMPLEXITY / ENERGY THROUGHPUT
+          </text>
+
+          {/* X-axis label */}
+          <text x={padL + gW / 2} y={H - 8} fill={ASH} fontSize={9} fontFamily="monospace" textAnchor="middle">
+            TIME →
+          </text>
+
+          {/* Curve */}
+          <path d={pts.join(" ")} fill="none" stroke={EMBER} strokeWidth={2.5}
+            style={{ filter: `drop-shadow(0 0 6px ${EMBER}44)` }} />
+
+          {/* Fill under curve */}
+          {pts.length > 1 && (
+            <path d={`${pts.join(" ")} L ${(padL + progress * gW).toFixed(1)} ${padT + gH} L ${padL} ${padT + gH} Z`}
+              fill={`url(#entGrad)`} />
+          )}
+          <defs>
+            <linearGradient id="entGrad" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stopColor={EMBER} stopOpacity={0.12} />
+              <stop offset="100%" stopColor={EMBER} stopOpacity={0} />
+            </linearGradient>
+          </defs>
+
+          {/* Phase markers */}
+          {PHASES.map((p, i) => {
+            if (p.x > progress) return null;
+            const px = padL + p.x * gW;
+            const py = padT + curveY(p.x) * gH;
+            const isH = hovered === i;
+            return (
+              <g key={i} onMouseEnter={() => setHovered(i)} onMouseLeave={() => setHovered(null)}
+                style={{ cursor: "pointer" }}>
+                {/* Vertical marker line */}
+                <line x1={px} y1={py} x2={px} y2={padT + gH}
+                  stroke={p.color + "33"} strokeWidth={1} strokeDasharray="3 3" />
+                {/* Dot */}
+                <circle cx={px} cy={py} r={isH ? 6 : 4}
+                  fill={p.color} style={{ transition: "r 0.2s", filter: isH ? `drop-shadow(0 0 8px ${p.color}88)` : "none" }} />
+                {/* Label */}
+                <text x={px} y={padT + gH + 16} textAnchor="middle" fill={p.color}
+                  fontSize={isH ? 10 : 8} fontWeight={isH ? 700 : 400} fontFamily="'Segoe UI', sans-serif"
+                  style={{ transition: "all 0.2s" }}>
+                  {p.label}
+                </text>
+                <text x={px} y={padT + gH + 28} textAnchor="middle" fill={ASH} fontSize={7}
+                  fontFamily="monospace">{p.year}</text>
+                {/* Hover tooltip */}
+                {isH && (
+                  <g>
+                    <rect x={px - 50} y={py - 32} width={100} height={22} rx={6}
+                      fill={BG} stroke={p.color + "44"} />
+                    <text x={px} y={py - 17} textAnchor="middle" fill={p.color}
+                      fontSize={9} fontWeight={600} fontFamily="monospace">
+                      Phase transition
+                    </text>
+                  </g>
+                )}
+              </g>
+            );
+          })}
+
+          {/* Axis lines */}
+          <line x1={padL} y1={padT} x2={padL} y2={padT + gH} stroke={ASH + "44"} strokeWidth={1} />
+          <line x1={padL} y1={padT + gH} x2={padL + gW} y2={padT + gH} stroke={ASH + "44"} strokeWidth={1} />
+        </svg>
+        <div style={{ ...mono, fontSize: 9, color: ASH, textAlign: "center", marginTop: 8 }}>
+          Each transition compresses time exponentially · Hover to explore
         </div>
-        {expanded && (
-          <div style={{ paddingLeft: 22 }}>
-            {[
-              { label: "CORE IDEA", text: core, c: color },
-              { label: "CONNECTION TO ENTROPY THESIS", text: connection, c: GREEN },
-              { label: "WHERE IT FALLS SHORT", text: limitation, c: EMBER },
-            ].map((r, i) => (
-              <div key={i} style={{ marginBottom: 14 }}>
-                <div style={{ ...mono, fontSize: 9, letterSpacing: 2, color: r.c, marginBottom: 4 }}>{r.label}</div>
-                <div style={{ ...serif, fontSize: 14, color: BONE, lineHeight: 1.6 }}>{r.text}</div>
-              </div>
-            ))}
-          </div>
-        )}
       </div>
     </Reveal>
   );
 }
 
-// ── PHASE TRANSITION TIMELINE ──
-function PhaseTimeline() {
-  const phases = [
-    { era: "~3.8B years ago", event: "Self-replicating molecules", label: "Chemistry → Biology", color: GOLD },
-    { era: "~600M years ago", event: "Multicellular organisms", label: "Cells → Organisms", color: GOLD },
-    { era: "~300K years ago", event: "Homo sapiens + language", label: "Biology → Culture", color: GREEN },
-    { era: "~5K years ago", event: "Writing, mathematics", label: "Oral → Persistent", color: ICE },
-    { era: "~500 years ago", event: "Printing press, science", label: "Manuscript → Mass media", color: ICE },
-    { era: "~75 years ago", event: "Digital computers", label: "Analog → Digital", color: GHOST },
-    { era: "~10 years ago", event: "Deep learning at scale", label: "Deterministic → Probabilistic", color: GHOST },
-    { era: "Next?", event: "ASI", label: "Narrow → General → Super", color: EMBER },
+// ── PHASE TRANSITION — particles reorganizing through states ──
+function PhaseTransitionVis() {
+  const canvasRef = useRef(null);
+  const [phase, setPhase] = useState(0); // 0=chaos, 1=ordering, 2=structure, 3=new chaos
+  const particles = useRef([]);
+  const frameRef = useRef(null);
+
+  const PHASE_NAMES = [
+    { name: "Chaos", sub: "Maximum entropy · No structure", color: EMBER },
+    { name: "Ordering", sub: "Energy gradient drives self-organization", color: GOLD },
+    { name: "Dissipative Structure", sub: "Order maintained far from equilibrium", color: ICE },
+    { name: "Phase Transition", sub: "Structure collapses → higher-order emerges", color: GHOST },
   ];
 
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext("2d");
+    const W = 600, H = 300;
+    canvas.width = W; canvas.height = H;
+
+    // Initialize particles
+    particles.current = Array.from({ length: 80 }, () => ({
+      x: Math.random() * W, y: Math.random() * H,
+      vx: (Math.random() - 0.5) * 3, vy: (Math.random() - 0.5) * 3,
+      targetX: 0, targetY: 0, color: [EMBER, GOLD, ICE, GREEN, GHOST][Math.floor(Math.random() * 5)],
+    }));
+
+    let running = true;
+    function tick() {
+      if (!running) return;
+      ctx.fillStyle = "rgba(5,5,8,0.15)";
+      ctx.fillRect(0, 0, W, H);
+
+      const pts = particles.current;
+      const cx = W / 2, cy = H / 2;
+
+      for (const p of pts) {
+        if (phase === 0) {
+          // Chaos — random brownian
+          p.vx += (Math.random() - 0.5) * 0.8;
+          p.vy += (Math.random() - 0.5) * 0.8;
+        } else if (phase === 1) {
+          // Ordering — attract to cluster centers
+          const angle = Math.atan2(p.y - cy, p.x - cx);
+          const clustR = 80;
+          p.targetX = cx + Math.cos(angle) * clustR;
+          p.targetY = cy + Math.sin(angle) * clustR;
+          p.vx += (p.targetX - p.x) * 0.008;
+          p.vy += (p.targetY - p.y) * 0.008;
+        } else if (phase === 2) {
+          // Structure — orbit in formation
+          const idx = pts.indexOf(p);
+          const ring = Math.floor(idx / 20);
+          const angleOffset = (idx % 20) / 20 * Math.PI * 2 + performance.now() * 0.0005 * (ring % 2 === 0 ? 1 : -1);
+          const r = 40 + ring * 35;
+          p.targetX = cx + Math.cos(angleOffset) * r;
+          p.targetY = cy + Math.sin(angleOffset) * r;
+          p.vx += (p.targetX - p.x) * 0.03;
+          p.vy += (p.targetY - p.y) * 0.03;
+        } else {
+          // Phase transition — expand then re-coalesce into two structures
+          const idx = pts.indexOf(p);
+          const side = idx < 40 ? -1 : 1;
+          const localCx = cx + side * 140;
+          const ring = Math.floor((idx % 40) / 10);
+          const ao = ((idx % 10) / 10) * Math.PI * 2 + performance.now() * 0.001 * (ring % 2 === 0 ? 1 : -1);
+          const r = 25 + ring * 22;
+          p.targetX = localCx + Math.cos(ao) * r;
+          p.targetY = cy + Math.sin(ao) * r;
+          p.vx += (p.targetX - p.x) * 0.02;
+          p.vy += (p.targetY - p.y) * 0.02;
+        }
+
+        p.vx *= 0.94; p.vy *= 0.94;
+        p.x += p.vx; p.y += p.vy;
+        p.x = Math.max(5, Math.min(W - 5, p.x));
+        p.y = Math.max(5, Math.min(H - 5, p.y));
+
+        // Draw connections in structured phases
+        if (phase >= 1) {
+          for (const q of pts) {
+            if (q === p) continue;
+            const dx = p.x - q.x, dy = p.y - q.y;
+            const d = Math.sqrt(dx * dx + dy * dy);
+            if (d < (phase === 2 ? 50 : 35)) {
+              ctx.beginPath();
+              ctx.moveTo(p.x, p.y);
+              ctx.lineTo(q.x, q.y);
+              ctx.strokeStyle = `rgba(110,231,240,${0.08 * (1 - d / 50)})`;
+              ctx.lineWidth = 0.5;
+              ctx.stroke();
+            }
+          }
+        }
+
+        // Draw particle
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, 2.5, 0, Math.PI * 2);
+        ctx.fillStyle = p.color;
+        ctx.fill();
+      }
+
+      frameRef.current = requestAnimationFrame(tick);
+    }
+    frameRef.current = requestAnimationFrame(tick);
+    return () => { running = false; cancelAnimationFrame(frameRef.current); };
+  }, [phase]);
+
   return (
-    <div style={{ position: "relative", paddingLeft: 24 }}>
-      <div style={{ position: "absolute", left: 6, top: 0, bottom: 0, width: 1, background: LINE }} />
-      {phases.map((p, i) => (
-        <Reveal key={i}>
-          <div style={{ position: "relative", paddingLeft: 24, paddingBottom: 28 }}>
-            <div style={{
-              position: "absolute", left: -2, top: 4, width: 12, height: 12, borderRadius: 6,
-              background: p.color + "33", border: `2px solid ${p.color}`,
-            }} />
-            <div style={{ ...mono, fontSize: 10, letterSpacing: 1, color: p.color, marginBottom: 4 }}>{p.era}</div>
-            <div style={{ ...sans, fontSize: 15, fontWeight: 600, color: BONE, marginBottom: 2 }}>{p.event}</div>
-            <div style={{ ...serif, fontSize: 13, color: ASH, fontStyle: "italic" }}>{p.label}</div>
-          </div>
-        </Reveal>
-      ))}
-    </div>
+    <Reveal>
+      <div style={{ margin: "32px 0" }}>
+        <canvas ref={canvasRef} style={{
+          width: "100%", maxWidth: 600, display: "block", margin: "0 auto",
+          borderRadius: 16, border: `1px solid ${LINE}`, background: BG,
+        }} />
+        {/* Phase controls */}
+        <div style={{ display: "flex", gap: 6, justifyContent: "center", margin: "16px 0" }}>
+          {PHASE_NAMES.map((p, i) => (
+            <button key={i} onClick={() => setPhase(i)} style={{
+              ...mono, fontSize: 9, letterSpacing: 1, padding: "6px 14px", borderRadius: 20,
+              background: phase === i ? p.color + "18" : "transparent",
+              border: `1px solid ${phase === i ? p.color + "66" : LINE}`,
+              color: phase === i ? p.color : ASH, cursor: "pointer", transition: "all 0.3s",
+            }}>{p.name}</button>
+          ))}
+        </div>
+        <div style={{
+          textAlign: "center", padding: "10px 16px", borderRadius: 10,
+          background: PHASE_NAMES[phase].color + "08",
+          border: `1px solid ${PHASE_NAMES[phase].color}22`,
+          transition: "all 0.4s",
+        }}>
+          <span style={{ ...mono, fontSize: 10, color: PHASE_NAMES[phase].color }}>{PHASE_NAMES[phase].sub}</span>
+        </div>
+      </div>
+    </Reveal>
   );
 }
 
+// ── DISSIPATIVE STRUCTURE — interactive energy flow diagram ──
+function DissipativeStructure() {
+  const ref = useRef(null);
+  const [vis, setVis] = useState(false);
+  const [hoveredPart, setHoveredPart] = useState(null);
 
-// ═══════════════ MAIN ═══════════════
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const obs = new IntersectionObserver(([e]) => {
+      if (e.isIntersecting) { setVis(true); obs.unobserve(el); }
+    }, { threshold: 0.15 });
+    obs.observe(el);
+    return () => obs.disconnect();
+  }, []);
+
+  const parts = [
+    { id: "input", label: "Energy Input", sub: "Resources, capital, data", x: 60, y: 180, color: GOLD, w: 130 },
+    { id: "structure", label: "Dissipative Structure", sub: "Technology / civilization", x: 250, y: 100, color: ICE, w: 180 },
+    { id: "output", label: "Entropy Output", sub: "Waste heat, pollution, complexity debt", x: 490, y: 180, color: EMBER, w: 140 },
+    { id: "feedback", label: "Feedback Loop", sub: "Growth demands more input", x: 250, y: 280, color: GHOST, w: 160 },
+  ];
+
+  return (
+    <Reveal>
+      <div ref={ref} style={{ margin: "32px 0" }}>
+        <svg viewBox="0 0 660 360" style={{ width: "100%", maxWidth: 660, display: "block", margin: "0 auto" }}>
+          <defs>
+            <marker id="arrE" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+              <polygon points="0 0, 8 3, 0 6" fill={GOLD + "88"} />
+            </marker>
+            <marker id="arrO" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+              <polygon points="0 0, 8 3, 0 6" fill={EMBER + "88"} />
+            </marker>
+            <marker id="arrF" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+              <polygon points="0 0, 8 3, 0 6" fill={GHOST + "88"} />
+            </marker>
+          </defs>
+
+          {/* Flow arrows */}
+          <path d="M 190 180 Q 220 140 250 130" fill="none" stroke={GOLD + "66"} strokeWidth={2} markerEnd="url(#arrE)"
+            strokeDasharray={vis ? "none" : "200"} strokeDashoffset={vis ? 0 : 200}
+            style={{ transition: "stroke-dashoffset 1s ease 0.3s" }}>
+            {vis && <animate attributeName="strokeDashoffset" values="0;-16" dur="1.5s" repeatCount="indefinite" />}
+          </path>
+          <path d="M 430 130 Q 460 140 490 170" fill="none" stroke={EMBER + "66"} strokeWidth={2} markerEnd="url(#arrO)"
+            strokeDasharray={vis ? "none" : "200"} strokeDashoffset={vis ? 0 : 200}
+            style={{ transition: "stroke-dashoffset 1s ease 0.5s" }}>
+            {vis && <animate attributeName="strokeDashoffset" values="0;-16" dur="1.5s" repeatCount="indefinite" />}
+          </path>
+          {/* Feedback loop */}
+          <path d="M 490 230 Q 490 300 410 300" fill="none" stroke={GHOST + "44"} strokeWidth={1.5} strokeDasharray="6 4" />
+          <path d="M 250 300 Q 140 300 120 230" fill="none" stroke={GHOST + "44"} strokeWidth={1.5} strokeDasharray="6 4" markerEnd="url(#arrF)">
+            {vis && <animate attributeName="strokeDashoffset" values="0;-20" dur="2s" repeatCount="indefinite" />}
+          </path>
+
+          {/* Nodes */}
+          {parts.map((p) => {
+            const isH = hoveredPart === p.id;
+            return (
+              <g key={p.id}
+                onMouseEnter={() => setHoveredPart(p.id)}
+                onMouseLeave={() => setHoveredPart(null)}
+                style={{
+                  cursor: "pointer",
+                  opacity: vis ? 1 : 0,
+                  transition: `opacity 0.6s ease 0.4s`,
+                }}>
+                <rect x={p.x} y={p.y} width={p.w} height={60} rx={14}
+                  fill={isH ? p.color + "18" : p.color + "0a"}
+                  stroke={p.color + (isH ? "88" : "33")} strokeWidth={isH ? 2 : 1}
+                  style={{ transition: "all 0.3s" }} />
+                {isH && <rect x={p.x} y={p.y} width={p.w} height={60} rx={14}
+                  fill="none" stroke={p.color} strokeWidth={1} opacity={0.3}
+                  style={{ filter: `drop-shadow(0 0 12px ${p.color}44)` }} />}
+                <text x={p.x + p.w / 2} y={p.y + 24} textAnchor="middle" fill={p.color}
+                  fontSize={11} fontWeight={700} fontFamily="'Segoe UI', sans-serif">{p.label}</text>
+                <text x={p.x + p.w / 2} y={p.y + 42} textAnchor="middle" fill={ASH}
+                  fontSize={8} fontFamily="Georgia, serif" fontStyle="italic">{p.sub}</text>
+              </g>
+            );
+          })}
+
+          {/* Center label */}
+          <text x={330} y={34} textAnchor="middle" fill={ASH} fontSize={9} fontFamily="monospace">
+            PRIGOGINE'S INSIGHT: Order emerges from energy flow, not despite entropy — because of it
+          </text>
+        </svg>
+      </div>
+    </Reveal>
+  );
+}
+
+// ── TECH CASCADE — animated flow from monolith→microservices→AI ──
+const CASCADE_STAGES = [
+  { id: "mono", label: "Monolith", desc: "Single codebase, single deploy", color: GOLD, y: 20 },
+  { id: "soa", label: "SOA", desc: "Service boundaries, shared buses", color: GREEN, y: 80 },
+  { id: "micro", label: "Microservices", desc: "Independent, distributed, complex", color: ICE, y: 140 },
+  { id: "mesh", label: "Service Mesh", desc: "Sidecar proxies manage connections", color: GHOST, y: 200 },
+  { id: "platform", label: "Platform Eng", desc: "Internal developer platforms abstract it all", color: GOLD, y: 260 },
+  { id: "ai", label: "AI Agents", desc: "The system manages itself", color: EMBER, y: 320 },
+];
+
+function TechCascadeFlow() {
+  const ref = useRef(null);
+  const [vis, setVis] = useState(false);
+  const [activeStage, setActiveStage] = useState(null);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const obs = new IntersectionObserver(([e]) => {
+      if (e.isIntersecting) { setVis(true); obs.unobserve(el); }
+    }, { threshold: 0.12 });
+    obs.observe(el);
+    return () => obs.disconnect();
+  }, []);
+
+  return (
+    <Reveal>
+      <div ref={ref} style={{ margin: "32px 0" }}>
+        <svg viewBox="0 0 640 400" style={{ width: "100%", maxWidth: 640, display: "block", margin: "0 auto" }}>
+          {/* Complexity gradient bar on right */}
+          <defs>
+            <linearGradient id="compGrad" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stopColor={GOLD} stopOpacity={0.3} />
+              <stop offset="50%" stopColor={ICE} stopOpacity={0.3} />
+              <stop offset="100%" stopColor={EMBER} stopOpacity={0.5} />
+            </linearGradient>
+          </defs>
+
+          {/* Complexity meter */}
+          <rect x={590} y={20} width={16} height={340} rx={8} fill={LINE} />
+          <rect x={590} y={20} width={16} height={vis ? 340 : 0} rx={8} fill="url(#compGrad)"
+            style={{ transition: "height 2s cubic-bezier(0.16,1,0.3,1) 0.5s" }} />
+          <text x={598} y={12} textAnchor="middle" fill={ASH} fontSize={7} fontFamily="monospace">COMPLEXITY</text>
+
+          {/* Entropy arrow */}
+          <text x={20} y={200} fill={ASH} fontSize={8} fontFamily="monospace"
+            transform="rotate(-90, 20, 200)" textAnchor="middle">ENTROPY MANAGEMENT ▼</text>
+
+          {/* Stages */}
+          {CASCADE_STAGES.map((s, i) => {
+            const isA = activeStage === i;
+            const barW = 120 + i * 50; // each stage wider = more complexity
+            const x = 50;
+            const d = vis ? i * 0.12 : 0;
+            return (
+              <g key={s.id}
+                onMouseEnter={() => setActiveStage(i)}
+                onMouseLeave={() => setActiveStage(null)}
+                style={{
+                  cursor: "pointer",
+                  opacity: vis ? 1 : 0,
+                  transition: `opacity 0.6s ease ${d}s`,
+                }}>
+                {/* Stage bar */}
+                <rect x={x} y={s.y} width={vis ? barW : 0} height={44} rx={10}
+                  fill={isA ? s.color + "18" : s.color + "08"}
+                  stroke={s.color + (isA ? "88" : "33")} strokeWidth={isA ? 2 : 1}
+                  style={{ transition: `width 1s cubic-bezier(0.16,1,0.3,1) ${d}s, fill 0.3s, stroke 0.3s` }} />
+                {isA && <rect x={x} y={s.y} width={barW} height={44} rx={10}
+                  fill="none" stroke={s.color} opacity={0.3}
+                  style={{ filter: `drop-shadow(0 0 8px ${s.color}44)` }} />}
+                {/* Labels */}
+                <text x={x + 16} y={s.y + 18} fill={s.color} fontSize={12} fontWeight={700}
+                  fontFamily="'Segoe UI', sans-serif"
+                  style={{ opacity: vis ? 1 : 0, transition: `opacity 0.6s ease ${d + 0.2}s` }}>
+                  {s.label}
+                </text>
+                <text x={x + 16} y={s.y + 34} fill={ASH} fontSize={9} fontFamily="Georgia, serif"
+                  style={{ opacity: vis ? 1 : 0, transition: `opacity 0.6s ease ${d + 0.3}s` }}>
+                  {s.desc}
+                </text>
+                {/* Connection line to next */}
+                {i < CASCADE_STAGES.length - 1 && (
+                  <line x1={x + barW / 2} y1={s.y + 44} x2={x + (barW + 50) / 2} y2={s.y + 60}
+                    stroke={LINE} strokeWidth={1} strokeDasharray="3 3"
+                    style={{ opacity: vis ? 1 : 0, transition: `opacity 0.6s ease ${d + 0.4}s` }} />
+                )}
+                {/* Complexity dots */}
+                {Array.from({ length: i + 1 }).map((_, j) => (
+                  <circle key={j} cx={x + barW - 14 - j * 10} cy={s.y + 22} r={3}
+                    fill={s.color + "55"}
+                    style={{ opacity: vis ? 1 : 0, transition: `opacity 0.6s ease ${d + 0.3}s` }} />
+                ))}
+              </g>
+            );
+          })}
+
+          {/* Callout for active stage */}
+          {activeStage !== null && (
+            <g>
+              <rect x={390} y={CASCADE_STAGES[activeStage].y - 5} width={180} height={54} rx={10}
+                fill={BG} stroke={CASCADE_STAGES[activeStage].color + "44"} strokeWidth={1} />
+              <text x={400} y={CASCADE_STAGES[activeStage].y + 15} fill={CASCADE_STAGES[activeStage].color}
+                fontSize={10} fontWeight={600} fontFamily="monospace">
+                {["1 app, 1 team", "~10 services", "~100+ services", "~1000+ connections", "Abstraction layer", "Self-managing"][activeStage]}
+              </text>
+              <text x={400} y={CASCADE_STAGES[activeStage].y + 32} fill={ASH}
+                fontSize={9} fontFamily="Georgia, serif">
+                {["Simple · Human-scale", "Manageable · API contracts", "Complex · Human limit", "Overwhelming · Tooling required", "IDP manages complexity", "AI manages the platform"][activeStage]}
+              </text>
+            </g>
+          )}
+        </svg>
+      </div>
+    </Reveal>
+  );
+}
+
+// ── INEVITABILITY THERMOMETER — are we past the point of no return? ──
+function InevitabilityGauge() {
+  const ref = useRef(null);
+  const [vis, setVis] = useState(false);
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const obs = new IntersectionObserver(([e]) => {
+      if (e.isIntersecting) { setVis(true); obs.unobserve(el); }
+    }, { threshold: 0.2 });
+    obs.observe(el);
+    return () => obs.disconnect();
+  }, []);
+
+  const markers = [
+    { pct: 15, label: "Fire", color: EMBER },
+    { pct: 30, label: "Agriculture", color: GOLD },
+    { pct: 45, label: "Writing", color: ICE },
+    { pct: 60, label: "Electricity", color: GREEN },
+    { pct: 75, label: "Computing", color: GHOST },
+    { pct: 88, label: "AI", color: EMBER },
+    { pct: 98, label: "ASI?", color: GHOST },
+  ];
+
+  return (
+    <Reveal>
+      <div ref={ref} style={{
+        display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16, margin: "32px 0",
+        borderRadius: 16, overflow: "hidden",
+      }}>
+        {/* For */}
+        <div style={{ background: EMBER + "08", border: `1px solid ${EMBER}22`, borderRadius: 16, padding: "24px 20px" }}>
+          <div style={{ ...mono, fontSize: 9, letterSpacing: 2, color: EMBER, marginBottom: 14 }}>THERMODYNAMIC CASE</div>
+          {[
+            "Energy throughput always increases",
+            "Each phase creates the conditions for the next",
+            "No civilization has voluntarily reduced complexity",
+            "The pattern predates human intention",
+          ].map((t, i) => (
+            <div key={i} style={{
+              display: "flex", gap: 8, alignItems: "flex-start", padding: "6px 0",
+              borderBottom: i < 3 ? `1px solid ${LINE}` : "none",
+            }}>
+              <span style={{ color: EMBER, fontSize: 12 }}>→</span>
+              <span style={{ ...serif, fontSize: 13, color: BONE, lineHeight: 1.5 }}>{t}</span>
+            </div>
+          ))}
+        </div>
+        {/* Against */}
+        <div style={{ background: GREEN + "08", border: `1px solid ${GREEN}22`, borderRadius: 16, padding: "24px 20px" }}>
+          <div style={{ ...mono, fontSize: 9, letterSpacing: 2, color: GREEN, marginBottom: 14 }}>COUNTERPOINT</div>
+          {[
+            "Thermodynamic analogy ≠ thermodynamic law",
+            "Civilizations have collapsed (Bronze Age, Rome)",
+            "Selection bias — we only see surviving systems",
+            "Intentionality changes the equation",
+          ].map((t, i) => (
+            <div key={i} style={{
+              display: "flex", gap: 8, alignItems: "flex-start", padding: "6px 0",
+              borderBottom: i < 3 ? `1px solid ${LINE}` : "none",
+            }}>
+              <span style={{ color: GREEN, fontSize: 12 }}>→</span>
+              <span style={{ ...serif, fontSize: 13, color: BONE, lineHeight: 1.5 }}>{t}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+    </Reveal>
+  );
+}
+
+// ═══════════════ MAIN COMPONENT ═══════════════
 export default function TechEntropy({ onBack }) {
   return (
     <div style={{ background: BG, minHeight: "100vh", color: BONE }}>
+      <style>{`
+        @keyframes pulseGlow { 0%, 100% { opacity: 0.3; } 50% { opacity: 0.8; } }
+      `}</style>
       <div style={{
         position: "fixed", inset: 0, zIndex: 999, pointerEvents: "none", opacity: 0.03,
         backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")`,
       }} />
       <div style={{ position: "relative", zIndex: 1, maxWidth: 720, margin: "0 auto", padding: "0 24px" }}>
-
         <div style={{ paddingTop: 32 }}>
           <button onClick={onBack} style={{ background: "none", border: "none", color: ASH, cursor: "pointer", ...mono, fontSize: 11, letterSpacing: 2, padding: "8px 0" }}>← EXPLORATIONS</button>
         </div>
@@ -144,200 +646,85 @@ export default function TechEntropy({ onBack }) {
         <div style={{ padding: "80px 0 60px" }}>
           <Reveal>
             <div style={{ ...mono, fontSize: 10, letterSpacing: 4, color: EMBER, textTransform: "uppercase", marginBottom: 20 }}>
-              A thermodynamic theory of technological progress
+              A thermodynamic theory of progress
             </div>
           </Reveal>
           <Reveal delay={0.15}>
-            <h1 style={{ ...sans, fontSize: "clamp(36px, 7vw, 56px)", fontWeight: 800, lineHeight: 1.05, letterSpacing: -2, marginBottom: 24 }}>
-              Technology<br /><span style={{ color: EMBER }}>as Entropy</span>
+            <h1 style={{ ...sans, fontSize: "clamp(36px, 7vw, 60px)", fontWeight: 800, lineHeight: 1.05, letterSpacing: -2, marginBottom: 24 }}>
+              Technology as<br /><span style={{
+                background: `linear-gradient(135deg, ${EMBER}, ${GHOST})`,
+                WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text",
+              }}>Entropy</span>
             </h1>
           </Reveal>
           <Reveal delay={0.3}>
             <div style={{ ...serif, fontSize: 20, lineHeight: 1.7, color: ASH, maxWidth: 540, fontStyle: "italic" }}>
-              Technology, like entropy, is the fundamental nature of our universe.
-              Once complex enough, its march toward artificial superintelligence
-              becomes thermodynamically inevitable.
+              Technology isn't a human invention. It's a thermodynamic inevitability —
+              a dissipative structure that{" "}
+              <span style={{ color: BONE, fontWeight: 600 }}>must exist</span>{" "}
+              once energy gradients exceed a threshold.
             </div>
           </Reveal>
         </div>
 
-        {/* CH I: THE HYPOTHESIS */}
-        <Chapter label="Chapter I — The Hypothesis" title="Technology follows the same laws as heat">
-          <Reveal>
-            <div style={{ ...serif, fontSize: 17, lineHeight: 1.85, color: BONE, maxWidth: 560 }}>
-              The Second Law of Thermodynamics says entropy in a closed system tends to increase.
-              Systems move from ordered states to disordered states. Heat flows from hot to cold.
-              Structure dissolves into chaos. This is the arrow of time.
-              <br /><br />
-              But here's the thing:{" "}
-              <span style={{ color: ICE }}>
-                life and technology are both entropy-accelerating machines
-              </span>.
-              A tree dissipates solar energy more efficiently than bare rock. A city dissipates
-              energy more efficiently than a forest. A data center dissipates energy more
-              efficiently than a city.
-              <br /><br />
-              Each layer of complexity doesn't fight entropy —{" "}
-              <span style={{ color: EMBER }}>it serves entropy by accelerating the rate at which
-              energy is dissipated and information is processed</span>.
-              <br /><br />
-              Technology isn't an anomaly in a universe trending toward disorder.
-              It's the universe's most efficient tool for getting there.
-            </div>
-          </Reveal>
-
+        {/* CH I: THE CURVE */}
+        <Chapter label="Chapter I — The Curve" title="Every phase transition compresses the interval before the next">
+          <EntropyCurve />
           <Reveal>
             <div style={{
-              padding: "28px 24px", background: EMBER + "08", border: `1px solid ${EMBER}22`,
-              borderRadius: 16, marginTop: 32,
+              padding: "20px 24px", background: FAINT, border: `1px solid ${LINE}`,
+              borderRadius: 12, marginTop: 8,
             }}>
-              <div style={{ ...sans, fontSize: 16, fontWeight: 600, color: EMBER, marginBottom: 10 }}>
-                The punchline
-              </div>
-              <div style={{ ...serif, fontSize: 15, lineHeight: 1.7, color: ASH }}>
-                If technology is the universe's entropy accelerator, then once it reaches
-                sufficient complexity to become self-improving (AI), stopping it would be
-                like stopping heat from flowing downhill. The future converges to ASI.
-                It's just a matter of when.
-              </div>
+              <span style={{ ...serif, fontSize: 14, color: BONE }}>
+                Each transition didn't just add capability — it{" "}
+                <span style={{ color: ICE }}>accelerated the rate at which the next transition arrived</span>.
+                This is the signature of a thermodynamic system approaching criticality.
+              </span>
             </div>
           </Reveal>
         </Chapter>
 
         {/* CH II: PHASE TRANSITIONS */}
-        <Chapter label="Chapter II — The Evidence" title="Complexity undergoes phase transitions">
-          <Reveal>
-            <div style={{ ...serif, fontSize: 16, lineHeight: 1.7, color: ASH, maxWidth: 540, marginBottom: 32 }}>
-              Each transition created a new substrate for information processing that
-              was orders of magnitude more efficient than the last. And the intervals
-              between transitions are <span style={{ color: EMBER }}>accelerating</span>.
-            </div>
-          </Reveal>
-          <PhaseTimeline />
+        <Chapter label="Chapter II — Phase Transitions" title="Order doesn't resist entropy. It rides it.">
+          <PhaseTransitionVis />
+        </Chapter>
+
+        {/* CH III: DISSIPATIVE STRUCTURES */}
+        <Chapter label="Chapter III — The Engine" title="Prigogine's insight: structure requires energy flow">
+          <DissipativeStructure />
           <Reveal>
             <div style={{
-              padding: "24px 20px", background: FAINT, border: `1px solid ${LINE}`,
-              borderRadius: 16, marginTop: 24,
+              padding: "20px 24px", background: ICE + "08", border: `1px solid ${ICE}22`, borderRadius: 12,
             }}>
-              <div style={{ ...serif, fontSize: 15, lineHeight: 1.7, color: BONE }}>
-                Notice the compression: billions of years for chemistry → biology.
-                Hundreds of millions for single → multicellular.
-                Thousands for writing. Hundreds for printing.
-                Decades for computers. Years for deep learning.
-                <br /><br />
-                <span style={{ color: ICE }}>The pattern isn't linear. It's not even exponential. It's phase transitions
-                in a complex system approaching criticality.</span>
-              </div>
-            </div>
-          </Reveal>
-        </Chapter>
-
-        {/* CH III: ACADEMIC FRAMEWORKS */}
-        <Chapter label="Chapter III — The Frameworks" title="What academia says (and where it falls short)">
-          <TheoryCard
-            name="Technological Determinism" thinker="Jacques Ellul, Neil Postman" color={GHOST}
-            core="Technology has its own autonomous logic that drives society forward regardless of human intentions. Once a technology exists, its internal logic compels adoption and further development."
-            connection="Directly supports the entropy thesis: technology as a fundamental force that, once unleashed, follows its own thermodynamic-like laws toward increasing complexity."
-            limitation="Doesn't explain mechanism. Says 'technology drives itself' without explaining why. The entropy framing provides the missing physics."
-          />
-          <TheoryCard
-            name="Evolutionary Epistemology" thinker="Donald Campbell, Karl Popper" color={GREEN}
-            core="Knowledge and technology evolve through variation and selection, just like biological organisms. Each generation creates selection pressure for the next."
-            connection="AI development as an accelerating evolutionary process — each model generation creates the conditions for the next, with selection pressure tightening as capability increases."
-            limitation="Better at explaining the pattern after the fact than predicting when transitions happen. Selection pressures are easier to identify in retrospect."
-          />
-          <TheoryCard
-            name="Edge of Chaos" thinker="Stuart Kauffman, Santa Fe Institute" color={ICE}
-            core="Complex systems naturally evolve toward critical transition points — the 'edge of chaos' — where they're neither too ordered (frozen) nor too disordered (random). Maximum adaptability lives here."
-            connection="We may be approaching a complexity phase transition where ASI emergence becomes structurally inevitable. The accelerating interval between phase transitions supports this."
-            limitation="Kauffman's work is elegant but mostly descriptive. It tells you the system is approaching criticality, not what happens after the transition."
-          />
-          <TheoryCard
-            name="Dissipative Structures" thinker="Ilya Prigogine, Nobel 1977" color={EMBER}
-            core="Far-from-equilibrium systems spontaneously create ordered structures that accelerate entropy production. Life, cities, economies are all dissipative structures."
-            connection="The strongest physics-based support for the thesis. Technology as a dissipative structure: ordered complexity that exists because it accelerates the universe's march toward equilibrium."
-            limitation="Prigogine's framework explains why complexity emerges but doesn't specifically predict technological trajectories. The gap between 'structure will emerge' and 'AGI will emerge' is still a leap."
-          />
-        </Chapter>
-
-        {/* CH IV: THE GAP */}
-        <Chapter label="Chapter IV — The Honest Assessment" title="What we can and can't claim">
-          <Reveal>
-            <div style={{ ...serif, fontSize: 17, lineHeight: 1.85, color: BONE, maxWidth: 560, marginBottom: 32 }}>
-              The entropy-technology thesis is compelling but must be held with epistemic humility.
-            </div>
-          </Reveal>
-
-          <Reveal>
-            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16 }}>
-              <div style={{ background: GREEN + "08", border: `1px solid ${GREEN}22`, borderRadius: 16, padding: "24px 20px" }}>
-                <div style={{ ...mono, fontSize: 9, letterSpacing: 2, color: GREEN, marginBottom: 12 }}>WHAT WE CAN CLAIM</div>
-                {[
-                  "Complexity in the universe tends to increase through phase transitions",
-                  "The intervals between transitions are compressing",
-                  "Technology functions as an entropy accelerator",
-                  "AI represents a qualitatively new phase of complexity",
-                  "Structural pressure toward greater capability is real and observable",
-                ].map((t, i) => (
-                  <div key={i} style={{ ...serif, fontSize: 13, color: BONE, lineHeight: 1.5, marginBottom: 10, paddingLeft: 16, borderLeft: `2px solid ${GREEN}33` }}>{t}</div>
-                ))}
-              </div>
-              <div style={{ background: EMBER + "08", border: `1px solid ${EMBER}22`, borderRadius: 16, padding: "24px 20px" }}>
-                <div style={{ ...mono, fontSize: 9, letterSpacing: 2, color: EMBER, marginBottom: 12 }}>WHAT WE CAN'T CLAIM</div>
-                {[
-                  "That ASI is guaranteed (contingency still applies)",
-                  "When it arrives (all frameworks fail at timing)",
-                  "What form it takes (the printing press wasn't predetermined)",
-                  "That it will be beneficial (entropy doesn't have preferences)",
-                  "That we'll retain control (the universe rewards dissipation, not intent)",
-                ].map((t, i) => (
-                  <div key={i} style={{ ...serif, fontSize: 13, color: BONE, lineHeight: 1.5, marginBottom: 10, paddingLeft: 16, borderLeft: `2px solid ${EMBER}33` }}>{t}</div>
-                ))}
-              </div>
-            </div>
-          </Reveal>
-        </Chapter>
-
-        {/* CH V: MICROSERVICES */}
-        <Chapter label="Chapter V — The Origin Story" title="Microservices created the chaos that midwifed AI">
-          <Reveal>
-            <div style={{ ...serif, fontSize: 17, lineHeight: 1.85, color: BONE, maxWidth: 560 }}>
-              Here's an insight that connects this cosmic framing to the actual engineering history:{" "}
-              <span style={{ color: ICE }}>
-                the architectural decision to decompose monoliths into microservices created
-                both the data atomization and the operational complexity that necessitated AI solutions.
+              <span style={{ ...serif, fontSize: 14, color: BONE }}>
+                A hurricane, a cell, a city, the internet — all are{" "}
+                <span style={{ color: ICE }}>dissipative structures</span>.
+                They maintain order by channeling energy through themselves. Remove the energy gradient, and they die.
               </span>
-              <br /><br />
-              Microservices generated the chaos. ML/AI emerged to manage it. Distributed systems
-              created the "core chaos" that midwifed the next phase of complexity.
-              <br /><br />
-              This is entropy working at the architectural level:{" "}
-              <span style={{ color: GHOST }}>
-                each layer of solution generates the conditions that demand the next layer.
-              </span>{" "}
-              Not because anyone planned it, but because complexity compounds and the system
-              needs increasingly sophisticated tools to remain coherent.
             </div>
           </Reveal>
+        </Chapter>
 
+        {/* CH IV: THE CASCADE */}
+        <Chapter label="Chapter IV — The Cascade" title="Each architecture stage widens the entropy it must manage">
+          <TechCascadeFlow />
+        </Chapter>
+
+        {/* CH V: THE ARGUMENT */}
+        <Chapter label="Chapter V — The Question" title="Is ASI thermodynamically inevitable?">
+          <InevitabilityGauge />
           <Reveal>
-            <div style={{ padding: "24px 0" }}>
-              {[
-                { from: "Monoliths", to: "Microservices", generated: "Data atomization, operational explosion", color: ICE },
-                { from: "Microservices", to: "DevOps tooling", generated: "Tool sprawl, cognitive overload", color: GREEN },
-                { from: "Tool sprawl", to: "Platform engineering", generated: "Abstraction layers, new governance needs", color: GOLD },
-                { from: "Platform + data", to: "AI/ML systems", generated: "The complexity manager that complexity demanded", color: GHOST },
-                { from: "AI at scale", to: "AGI pressure", generated: "Self-improving systems, capability acceleration", color: EMBER },
-              ].map((r, i) => (
-                <Reveal key={i}>
-                  <div style={{ display: "flex", alignItems: "center", gap: 12, padding: "14px 0", borderBottom: `1px solid ${LINE}` }}>
-                    <div style={{ ...mono, fontSize: 11, color: r.color, width: 120, flexShrink: 0 }}>{r.from}</div>
-                    <div style={{ color: ASH }}>→</div>
-                    <div style={{ ...sans, fontSize: 13, fontWeight: 600, color: BONE, width: 140, flexShrink: 0 }}>{r.to}</div>
-                    <div style={{ ...serif, fontSize: 12, color: ASH, fontStyle: "italic" }}>{r.generated}</div>
-                  </div>
-                </Reveal>
-              ))}
+            <div style={{
+              padding: "24px 20px", background: GHOST + "08", border: `1px solid ${GHOST}22`,
+              borderRadius: 16, marginTop: 16, textAlign: "center",
+            }}>
+              <div style={{ ...sans, fontSize: 16, fontWeight: 600, color: GHOST, marginBottom: 6 }}>
+                The strongest claim isn't that ASI is inevitable.
+              </div>
+              <div style={{ ...serif, fontSize: 14, color: ASH }}>
+                It's that the pattern of increasing complexity managed by increasingly abstract systems
+                has never reversed in 3.8 billion years of life on Earth.
+              </div>
             </div>
           </Reveal>
         </Chapter>
@@ -345,22 +732,15 @@ export default function TechEntropy({ onBack }) {
         {/* CLOSER */}
         <section style={{ padding: "80px 0 120px", borderTop: `1px solid ${LINE}`, textAlign: "center" }}>
           <Reveal>
-            <h2 style={{ ...sans, fontSize: "clamp(24px, 4.5vw, 38px)", fontWeight: 700, lineHeight: 1.15, maxWidth: 560, margin: "0 auto 20px" }}>
-              The universe rewards entropy.<br />
-              Technology is how it <span style={{ color: EMBER }}>collects</span>.
+            <h2 style={{ ...sans, fontSize: "clamp(24px, 4.5vw, 38px)", fontWeight: 700, lineHeight: 1.15, maxWidth: 540, margin: "0 auto 20px" }}>
+              The universe doesn't care about your roadmap.<br />
+              It just keeps <span style={{ color: EMBER }}>dissipating</span>.
             </h2>
           </Reveal>
           <Reveal delay={0.2}>
-            <p style={{ ...serif, fontSize: 16, fontStyle: "italic", color: ASH, maxWidth: 460, margin: "0 auto", lineHeight: 1.7 }}>
-              Unless there's a galactic superpower civilization out there
-              that intervenes and ends our march to ASI...
-              <br /><br />
-              the future converges.
-            </p>
-          </Reveal>
-          <Reveal delay={0.4}>
             <div style={{ ...mono, fontSize: 10, color: "rgba(255,255,255,0.12)", letterSpacing: 0.5, lineHeight: 2, marginTop: 56 }}>
-              From a conversation between a human and a language model · 2025
+              Prigogine · Kauffman · England · Chaisson · Schneider & Kay<br />
+              From a conversation between a human and a language model · February 2026
             </div>
           </Reveal>
         </section>
