@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 
 /* ═══════════════════════════════════════════════════════════════
    JWST: THE COSMIC DOMINO COLLAPSE
@@ -54,82 +54,194 @@ function Chapter({ label, title, children }) {
   );
 }
 
-// ── DOMINO CATEGORIES ──
-const DOMINOES = {
-  foundational: {
-    label: "Foundational Models",
-    color: EMBER,
-    items: [
-      { name: "Big Bang theory", desc: "The foundational cosmological model is undermined if the CMB isn't a primordial snapshot" },
-      { name: "Cosmic inflation", desc: "Loses its primary observational justification — the CMB was its strongest evidence" },
-      { name: "ΛCDM model", desc: "The standard model of cosmology — key parameters become unreliable without CMB constraints" },
-      { name: "Age of the universe", desc: "Must be recalculated if the CMB-based calibration is wrong" },
-    ],
-  },
-  cmb: {
-    label: "CMB-Dependent Findings",
-    color: GHOST,
-    items: [
-      { name: "CMB power spectrum", desc: "Loses predictive relevance if the signal isn't primordial" },
-      { name: "Acoustic peaks in CMB", desc: "No longer evidence of primordial sound waves — the cornerstone of baryon physics" },
-      { name: "Polarization of CMB", desc: "Origin needs complete reassessment" },
-      { name: "Gravitational lensing of CMB", desc: "Loses its standard interpretation framework" },
-      { name: "ISW (Integrated Sachs–Wolfe) effect", desc: "Interpretation invalidated" },
-      { name: "Planck and WMAP findings", desc: "Two decades of flagship space telescope data — foundational assumptions invalidated" },
-    ],
-  },
-  darkSector: {
-    label: "Dark Sector",
-    color: ICE,
-    items: [
-      { name: "Dark energy", desc: "Inferred partly from CMB data — may be entirely mischaracterized" },
-      { name: "Dark matter density", desc: "Current estimates derived from CMB constraints may be invalid" },
-      { name: "Cosmic curvature", desc: "The inference that the universe is flat — challenged" },
-    ],
-  },
-  structure: {
-    label: "Structure & Distance",
-    color: GREEN,
-    items: [
-      { name: "Large-scale structure formation", desc: "Initial conditions become unclear without CMB seeds" },
-      { name: "Baryon acoustic oscillations", desc: "Decoupled from CMB if the signal source changes" },
-      { name: "Hubble constant (H₀)", desc: "No longer reliably constrained by CMB — the tension gets worse" },
-      { name: "Cosmic distance ladder", desc: "Calibration may be fundamentally flawed" },
-      { name: "Reionization epoch", desc: "Timing and cause questioned" },
-      { name: "Primordial nucleosynthesis", desc: "Needs an alternative explanation for light element abundances" },
-      { name: "Matter–radiation equality timing", desc: "Must be re-evaluated from scratch" },
-    ],
-  },
-};
+// ── DOMINO DATA ──
+const ALL_DOMINOES = [
+  { name: "Big Bang theory", cat: "foundation", color: EMBER },
+  { name: "Cosmic inflation", cat: "foundation", color: EMBER },
+  { name: "ΛCDM model", cat: "foundation", color: EMBER },
+  { name: "Age of the universe", cat: "foundation", color: EMBER },
+  { name: "CMB power spectrum", cat: "cmb", color: GHOST },
+  { name: "Acoustic peaks", cat: "cmb", color: GHOST },
+  { name: "CMB polarization", cat: "cmb", color: GHOST },
+  { name: "Gravitational lensing of CMB", cat: "cmb", color: GHOST },
+  { name: "ISW effect", cat: "cmb", color: GHOST },
+  { name: "Planck & WMAP data", cat: "cmb", color: GHOST },
+  { name: "Dark energy", cat: "dark", color: ICE },
+  { name: "Dark matter density", cat: "dark", color: ICE },
+  { name: "Cosmic curvature", cat: "dark", color: ICE },
+  { name: "Large-scale structure", cat: "structure", color: GREEN },
+  { name: "Baryon oscillations", cat: "structure", color: GREEN },
+  { name: "Hubble constant H₀", cat: "structure", color: GREEN },
+  { name: "Distance ladder", cat: "structure", color: GREEN },
+  { name: "Reionization epoch", cat: "structure", color: GREEN },
+  { name: "Primordial nucleosynthesis", cat: "structure", color: GREEN },
+  { name: "Matter–radiation equality", cat: "structure", color: GREEN },
+];
 
-function DominoCategory({ cat }) {
-  const [expanded, setExpanded] = useState(false);
+const CATEGORIES = [
+  { id: "foundation", label: "Foundational Models", color: EMBER },
+  { id: "cmb", label: "CMB-Dependent", color: GHOST },
+  { id: "dark", label: "Dark Sector", color: ICE },
+  { id: "structure", label: "Structure & Distance", color: GREEN },
+];
+
+// ── DRAMATIC COUNTER — big reveal with particle burst ──
+function DramaticCounter() {
+  const ref = useRef(null);
+  const [count, setCount] = useState(0);
+  const [burst, setBurst] = useState(false);
+  const target = ALL_DOMINOES.length;
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const obs = new IntersectionObserver(([e]) => {
+      if (e.isIntersecting) {
+        obs.unobserve(el);
+        let c = 0;
+        const interval = setInterval(() => {
+          c++;
+          setCount(c);
+          if (c >= target) {
+            clearInterval(interval);
+            setBurst(true);
+          }
+        }, 60);
+      }
+    }, { threshold: 0.5 });
+    obs.observe(el);
+    return () => obs.disconnect();
+  }, [target]);
+
+  return (
+    <div ref={ref} style={{ textAlign: "center", margin: "48px 0", position: "relative" }}>
+      <div style={{
+        ...sans, fontSize: "clamp(80px, 15vw, 140px)", fontWeight: 900, lineHeight: 1,
+        color: EMBER, position: "relative", display: "inline-block",
+        textShadow: burst ? `0 0 40px ${EMBER}66, 0 0 80px ${EMBER}33` : "none",
+        transition: "text-shadow 0.5s",
+      }}>
+        {count}
+      </div>
+      <div style={{
+        ...mono, fontSize: 12, letterSpacing: 3, textTransform: "uppercase",
+        color: burst ? EMBER : ASH, marginTop: 8, transition: "color 0.5s",
+      }}>
+        flagship findings thrown into question
+      </div>
+      {/* Category breakdown */}
+      <div style={{ display: "flex", justifyContent: "center", gap: 16, marginTop: 20, flexWrap: "wrap" }}>
+        {CATEGORIES.map((c) => {
+          const n = ALL_DOMINOES.filter(d => d.cat === c.id).length;
+          return (
+            <div key={c.id} style={{
+              ...mono, fontSize: 9, letterSpacing: 1,
+              padding: "4px 12px", borderRadius: 20,
+              color: c.color, border: `1px solid ${c.color}33`,
+              background: c.color + "0c",
+            }}>
+              {c.label} · {n}
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
+// ── DOMINO CASCADE — click to topple ──
+function DominoCascade() {
+  const [toppled, setToppled] = useState(-1);
+  const [autoRunning, setAutoRunning] = useState(false);
+  const timerRef = useRef(null);
+
+  const startCascade = useCallback(() => {
+    setToppled(0);
+    setAutoRunning(true);
+  }, []);
+
+  useEffect(() => {
+    if (!autoRunning || toppled < 0) return;
+    if (toppled >= ALL_DOMINOES.length - 1) { setAutoRunning(false); return; }
+    timerRef.current = setTimeout(() => setToppled(t => t + 1), 120);
+    return () => clearTimeout(timerRef.current);
+  }, [toppled, autoRunning]);
+
+  const reset = () => { setToppled(-1); setAutoRunning(false); };
+
+  const cols = 5;
+  const rows = Math.ceil(ALL_DOMINOES.length / cols);
+  const cellW = 120, cellH = 56;
+
   return (
     <Reveal>
-      <div style={{
-        background: expanded ? "rgba(255,255,255,0.04)" : FAINT,
-        border: `1px solid ${expanded ? cat.color + "44" : LINE}`,
-        borderRadius: 16, padding: "24px 20px", marginBottom: 14, cursor: "pointer",
-        transition: "all 0.4s ease",
-      }} onClick={() => setExpanded(!expanded)}>
-        <div style={{ display: "flex", alignItems: "center", gap: 14, marginBottom: expanded ? 16 : 0 }}>
-          <div style={{
-            width: 36, height: 36, borderRadius: 10,
-            background: cat.color + "18", border: `1px solid ${cat.color}33`,
-            display: "flex", alignItems: "center", justifyContent: "center",
-            ...mono, fontSize: 14, fontWeight: 700, color: cat.color,
-          }}>{cat.items.length}</div>
-          <div style={{ flex: 1, ...sans, fontSize: 17, fontWeight: 600 }}>{cat.label}</div>
-          <div style={{ ...mono, fontSize: 16, color: ASH, transition: "transform 0.3s", transform: expanded ? "rotate(45deg)" : "rotate(0)" }}>+</div>
+      <div style={{ margin: "32px 0" }}>
+        <svg viewBox={`0 0 ${cols * cellW + 20} ${rows * cellH + 60}`}
+          style={{ width: "100%", maxWidth: cols * cellW + 20, display: "block", margin: "0 auto" }}>
+          {ALL_DOMINOES.map((d, i) => {
+            const col = i % cols;
+            const row = Math.floor(i / cols);
+            const x = 10 + col * cellW;
+            const y = 10 + row * cellH;
+            const isFallen = i <= toppled;
+            const isFalling = i === toppled;
+
+            return (
+              <g key={i} style={{ cursor: toppled === -1 && i === 0 ? "pointer" : "default" }}
+                onClick={() => toppled === -1 && i === 0 && startCascade()}>
+                {/* Domino piece */}
+                <rect x={x} y={y} width={cellW - 8} height={cellH - 8} rx={8}
+                  fill={isFallen ? d.color + "22" : FAINT}
+                  stroke={isFallen ? d.color + "88" : LINE}
+                  strokeWidth={isFalling ? 2.5 : isFallen ? 1.5 : 0.8}
+                  style={{
+                    transition: "all 0.3s ease",
+                    transform: isFallen ? `rotate(${2 + Math.random() * 3}deg)` : "none",
+                    transformOrigin: `${x + cellW / 2}px ${y + cellH}px`,
+                    filter: isFalling ? `drop-shadow(0 0 12px ${d.color}66)` : "none",
+                  }} />
+                {/* Label */}
+                <text x={x + (cellW - 8) / 2} y={y + (cellH - 8) / 2 + 1}
+                  textAnchor="middle" dominantBaseline="middle"
+                  fill={isFallen ? d.color : ASH}
+                  fontSize={8} fontWeight={isFallen ? 700 : 400}
+                  fontFamily="'Segoe UI', sans-serif"
+                  style={{ transition: "fill 0.3s" }}>
+                  {d.name}
+                </text>
+                {/* Impact flash */}
+                {isFalling && (
+                  <circle cx={x + (cellW - 8) / 2} cy={y + (cellH - 8) / 2}
+                    r={20} fill={d.color} opacity={0.15}>
+                    <animate attributeName="r" from="5" to="30" dur="0.4s" fill="freeze" />
+                    <animate attributeName="opacity" from="0.3" to="0" dur="0.4s" fill="freeze" />
+                  </circle>
+                )}
+              </g>
+            );
+          })}
+        </svg>
+
+        {/* Controls */}
+        <div style={{ display: "flex", justifyContent: "center", gap: 12, marginTop: 16 }}>
+          {toppled === -1 ? (
+            <button onClick={startCascade} style={{
+              ...mono, fontSize: 11, letterSpacing: 2, padding: "10px 28px", borderRadius: 24,
+              background: EMBER + "18", border: `1px solid ${EMBER}44`, color: EMBER, cursor: "pointer",
+            }}>▶ TOPPLE THE FIRST DOMINO</button>
+          ) : (
+            <button onClick={reset} style={{
+              ...mono, fontSize: 10, letterSpacing: 1, padding: "8px 20px", borderRadius: 20,
+              background: "transparent", border: `1px solid ${LINE}`, color: ASH, cursor: "pointer",
+            }}>↻ RESET</button>
+          )}
         </div>
-        {expanded && (
-          <div style={{ paddingLeft: 50 }}>
-            {cat.items.map((item, i) => (
-              <div key={i} style={{ padding: "10px 0", borderBottom: i < cat.items.length - 1 ? `1px solid ${LINE}` : "none" }}>
-                <div style={{ ...sans, fontSize: 14, fontWeight: 600, color: cat.color, marginBottom: 3 }}>{item.name}</div>
-                <div style={{ ...serif, fontSize: 13, color: ASH, lineHeight: 1.5 }}>{item.desc}</div>
-              </div>
-            ))}
+        {toppled >= 0 && (
+          <div style={{
+            textAlign: "center", marginTop: 12,
+            ...mono, fontSize: 10, color: toppled >= ALL_DOMINOES.length - 1 ? EMBER : ASH,
+          }}>
+            {toppled + 1} / {ALL_DOMINOES.length} fallen
           </div>
         )}
       </div>
@@ -137,44 +249,227 @@ function DominoCategory({ cat }) {
   );
 }
 
-// ── COUNTER ANIMATION ──
-function AnimatedCount({ target }) {
-  const [count, setCount] = useState(0);
+// ── CMB DEPENDENCY GRAPH — radial layout showing what depends on CMB ──
+function DependencyGraph() {
+  const [hovered, setHovered] = useState(null);
+  const cx = 320, cy = 260, innerR = 50;
+
+  // Layout categories in rings
+  const rings = CATEGORIES.map((cat, ci) => {
+    const items = ALL_DOMINOES.filter(d => d.cat === cat.id);
+    const r = 120 + ci * 55;
+    return items.map((item, ii) => {
+      const startAngle = (ci * 90) - 45;
+      const spread = 80;
+      const angle = (startAngle + (ii / Math.max(items.length - 1, 1)) * spread) * Math.PI / 180;
+      return { ...item, x: cx + Math.cos(angle) * r, y: cy + Math.sin(angle) * r, catIdx: ci, angle };
+    });
+  }).flat();
+
+  const hoveredCat = hovered !== null ? rings[hovered]?.cat : null;
+
+  return (
+    <Reveal>
+      <div style={{ margin: "32px 0" }}>
+        <svg viewBox="0 0 640 520" style={{ width: "100%", maxWidth: 640, display: "block", margin: "0 auto" }}>
+          {/* Distance rings */}
+          {[120, 175, 230, 285].map((r, i) => (
+            <circle key={i} cx={cx} cy={cy} r={r} fill="none" stroke={LINE} strokeWidth={0.5} strokeDasharray="4 4" />
+          ))}
+
+          {/* Connection lines from CMB to each domino */}
+          {rings.map((d, i) => {
+            const isHL = hovered === i || hoveredCat === d.cat;
+            return (
+              <line key={`line-${i}`} x1={cx} y1={cy} x2={d.x} y2={d.y}
+                stroke={isHL ? d.color + "66" : d.color + "12"} strokeWidth={isHL ? 1.5 : 0.5}
+                style={{ transition: "all 0.3s" }} />
+            );
+          })}
+
+          {/* CMB central node */}
+          <circle cx={cx} cy={cy} r={innerR} fill={EMBER + "12"} stroke={EMBER + "66"} strokeWidth={2} />
+          <circle cx={cx} cy={cy} r={innerR - 6} fill="none" stroke={EMBER + "22"} strokeWidth={1} strokeDasharray="4 3">
+            <animateTransform attributeName="transform" type="rotate" from={`0 ${cx} ${cy}`} to={`360 ${cx} ${cy}`} dur="30s" repeatCount="indefinite" />
+          </circle>
+          <text x={cx} y={cy - 6} textAnchor="middle" fill={EMBER} fontSize={11} fontWeight={700}
+            fontFamily="'Segoe UI', sans-serif">CMB</text>
+          <text x={cx} y={cy + 8} textAnchor="middle" fill={ASH} fontSize={8}
+            fontFamily="monospace">Foundation</text>
+
+          {/* Domino nodes */}
+          {rings.map((d, i) => {
+            const isHL = hovered === i;
+            const isCatHL = hoveredCat === d.cat;
+            return (
+              <g key={`node-${i}`}
+                onMouseEnter={() => setHovered(i)}
+                onMouseLeave={() => setHovered(null)}
+                style={{ cursor: "pointer" }}>
+                <circle cx={d.x} cy={d.y} r={isHL ? 24 : 18}
+                  fill={isHL || isCatHL ? d.color + "18" : d.color + "08"}
+                  stroke={d.color + (isHL ? "88" : isCatHL ? "44" : "22")}
+                  strokeWidth={isHL ? 2 : 1}
+                  style={{ transition: "all 0.3s", filter: isHL ? `drop-shadow(0 0 8px ${d.color}44)` : "none" }} />
+                <text x={d.x} y={d.y + 1} textAnchor="middle" dominantBaseline="middle"
+                  fill={isHL || isCatHL ? d.color : ASH}
+                  fontSize={isHL ? 7 : 6} fontWeight={isHL ? 700 : 400}
+                  fontFamily="'Segoe UI', sans-serif" style={{ transition: "all 0.3s" }}>
+                  {d.name.length > 14 ? d.name.slice(0, 12) + "…" : d.name}
+                </text>
+              </g>
+            );
+          })}
+
+          {/* Category legend */}
+          {CATEGORIES.map((c, i) => (
+            <g key={`leg-${i}`}>
+              <circle cx={30 + i * 160} cy={510} r={5} fill={c.color} />
+              <text x={40 + i * 160} y={514} fill={c.color} fontSize={9}
+                fontFamily="'Segoe UI', sans-serif" fontWeight={600}>{c.label}</text>
+            </g>
+          ))}
+
+          {/* Hover detail */}
+          {hovered !== null && (
+            <g>
+              <rect x={cx - 100} y={16} width={200} height={28} rx={8} fill={BG} stroke={rings[hovered].color + "44"} />
+              <text x={cx} y={34} textAnchor="middle" fill={rings[hovered].color}
+                fontSize={10} fontWeight={600} fontFamily="monospace">
+                {rings[hovered].name}
+              </text>
+            </g>
+          )}
+        </svg>
+        <div style={{ ...mono, fontSize: 9, color: ASH, textAlign: "center", marginTop: 4 }}>
+          Every node is calibrated against the CMB · Hover to trace dependencies
+        </div>
+      </div>
+    </Reveal>
+  );
+}
+
+// ── GALAXY TIMELINE — JWST discovery markers on cosmic timeline ──
+const DISCOVERIES = [
+  { year: 2022.5, label: "JWST launches", desc: "Christmas 2021, reaches L2 Jan 2022", color: GOLD, type: "event" },
+  { year: 2022.7, label: "First deep field", desc: "SMACS 0723 — earliest galaxies seen", color: ICE, type: "finding" },
+  { year: 2023.0, label: "CEERS galaxies", desc: "Mature galaxies at z>10, shouldn't exist", color: EMBER, type: "finding" },
+  { year: 2023.3, label: "JADES survey", desc: "Galaxy at z=14.3 — just 290M years post-BB", color: EMBER, type: "finding" },
+  { year: 2023.6, label: "Impossible masses", desc: "Galaxies 10-100x more massive than predicted", color: GHOST, type: "finding" },
+  { year: 2024.0, label: "H₀ tension deepens", desc: "Cepheid measurements confirm the discrepancy", color: ICE, type: "finding" },
+  { year: 2024.4, label: "EMG energy budget", desc: "Early galaxies could account for CMB energy", color: EMBER, type: "finding" },
+  { year: 2025.0, label: "CMB origin paper", desc: "EMGs fully explain CMB energy density", color: EMBER, type: "bombshell" },
+];
+
+function GalaxyTimeline() {
   const ref = useRef(null);
-  const started = useRef(false);
+  const [vis, setVis] = useState(false);
+  const [hovered, setHovered] = useState(null);
+
   useEffect(() => {
     const el = ref.current;
     if (!el) return;
     const obs = new IntersectionObserver(([e]) => {
-      if (e.isIntersecting && !started.current) {
-        started.current = true;
-        let c = 0;
-        const interval = setInterval(() => {
-          c++;
-          setCount(c);
-          if (c >= target) clearInterval(interval);
-        }, 80);
-      }
-    }, { threshold: 0.5 });
+      if (e.isIntersecting) { setVis(true); obs.unobserve(el); }
+    }, { threshold: 0.12 });
     obs.observe(el);
     return () => obs.disconnect();
-  }, [target]);
-  return <span ref={ref}>{count}</span>;
-}
+  }, []);
 
+  const W = 660, H = 320, padL = 50, padR = 50, padT = 40, padB = 80;
+  const gW = W - padL - padR;
+  const minY = 2022.0, maxY = 2025.5;
+
+  return (
+    <Reveal>
+      <div ref={ref} style={{ margin: "32px 0" }}>
+        <svg viewBox={`0 0 ${W} ${H}`} style={{ width: "100%", maxWidth: W, display: "block", margin: "0 auto" }}>
+          {/* Timeline axis */}
+          <line x1={padL} y1={padT + 20} x2={padL + gW} y2={padT + 20}
+            stroke={ASH + "44"} strokeWidth={2} />
+
+          {/* Year markers */}
+          {[2022, 2023, 2024, 2025].map(yr => {
+            const x = padL + ((yr - minY) / (maxY - minY)) * gW;
+            return (
+              <g key={yr}>
+                <line x1={x} y1={padT + 14} x2={x} y2={padT + 26} stroke={ASH + "44"} strokeWidth={1} />
+                <text x={x} y={padT + 8} textAnchor="middle" fill={ASH} fontSize={10}
+                  fontFamily="monospace">{yr}</text>
+              </g>
+            );
+          })}
+
+          {/* Discovery markers */}
+          {DISCOVERIES.map((d, i) => {
+            const x = padL + ((d.year - minY) / (maxY - minY)) * gW;
+            const side = i % 2 === 0 ? 1 : -1;
+            const stemH = 40 + (i % 3) * 16;
+            const labelY = padT + 20 + side * stemH;
+            const isH = hovered === i;
+            const isBomb = d.type === "bombshell";
+            const delay = vis ? i * 0.1 : 0;
+
+            return (
+              <g key={i}
+                onMouseEnter={() => setHovered(i)}
+                onMouseLeave={() => setHovered(null)}
+                style={{
+                  cursor: "pointer",
+                  opacity: vis ? 1 : 0,
+                  transition: `opacity 0.5s ease ${delay}s`,
+                }}>
+                {/* Stem */}
+                <line x1={x} y1={padT + 20} x2={x} y2={labelY}
+                  stroke={d.color + (isH ? "88" : "33")} strokeWidth={isH ? 1.5 : 1}
+                  style={{ transition: "all 0.3s" }} />
+                {/* Dot on axis */}
+                <circle cx={x} cy={padT + 20} r={isBomb ? 6 : isH ? 5 : 3.5}
+                  fill={d.color} style={{ transition: "r 0.2s", filter: isH || isBomb ? `drop-shadow(0 0 6px ${d.color}88)` : "none" }}>
+                  {isBomb && <animate attributeName="r" values="5;8;5" dur="2s" repeatCount="indefinite" />}
+                </circle>
+                {/* Label box */}
+                <rect x={x - 68} y={side > 0 ? labelY : labelY - 34}
+                  width={136} height={34} rx={8}
+                  fill={isH ? d.color + "14" : BG} stroke={d.color + (isH ? "66" : "22")}
+                  strokeWidth={isH ? 1.5 : 0.8}
+                  style={{ transition: "all 0.3s" }} />
+                <text x={x} y={(side > 0 ? labelY : labelY - 34) + 14}
+                  textAnchor="middle" fill={d.color} fontSize={8.5} fontWeight={700}
+                  fontFamily="'Segoe UI', sans-serif">{d.label}</text>
+                <text x={x} y={(side > 0 ? labelY : labelY - 34) + 26}
+                  textAnchor="middle" fill={ASH} fontSize={7}
+                  fontFamily="Georgia, serif">{d.desc}</text>
+              </g>
+            );
+          })}
+
+          {/* Escalation gradient */}
+          <defs>
+            <linearGradient id="escalate" x1="0" y1="0" x2="1" y2="0">
+              <stop offset="0%" stopColor={GOLD} stopOpacity={0.05} />
+              <stop offset="100%" stopColor={EMBER} stopOpacity={0.15} />
+            </linearGradient>
+          </defs>
+          <rect x={padL} y={padT + 22} width={gW} height={6} fill="url(#escalate)" />
+        </svg>
+      </div>
+    </Reveal>
+  );
+}
 
 // ═══════════════ MAIN ═══════════════
 export default function JWSTDominoes({ onBack }) {
-  const totalDominoes = Object.values(DOMINOES).reduce((a, c) => a + c.items.length, 0);
-
   return (
     <div style={{ background: BG, minHeight: "100vh", color: BONE }}>
+      <style>{`
+        @keyframes pulseEmber { 0%, 100% { opacity: 0.4; } 50% { opacity: 1; } }
+      `}</style>
       <div style={{
         position: "fixed", inset: 0, zIndex: 999, pointerEvents: "none", opacity: 0.03,
         backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")`,
       }} />
       <div style={{ position: "relative", zIndex: 1, maxWidth: 720, margin: "0 auto", padding: "0 24px" }}>
-
         <div style={{ paddingTop: 32 }}>
           <button onClick={onBack} style={{ background: "none", border: "none", color: ASH, cursor: "pointer", ...mono, fontSize: 11, letterSpacing: 2, padding: "8px 0" }}>← EXPLORATIONS</button>
         </div>
@@ -187,123 +482,66 @@ export default function JWSTDominoes({ onBack }) {
             </div>
           </Reveal>
           <Reveal delay={0.15}>
-            <h1 style={{ ...sans, fontSize: "clamp(36px, 7vw, 56px)", fontWeight: 800, lineHeight: 1.05, letterSpacing: -2, marginBottom: 24 }}>
-              The Cosmic<br /><span style={{ color: EMBER }}>Domino Collapse</span>
+            <h1 style={{ ...sans, fontSize: "clamp(36px, 7vw, 60px)", fontWeight: 800, lineHeight: 1.05, letterSpacing: -2, marginBottom: 24 }}>
+              The Cosmic<br />
+              <span style={{
+                background: `linear-gradient(135deg, ${EMBER}, ${GHOST})`,
+                WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text",
+              }}>Domino Collapse</span>
             </h1>
           </Reveal>
           <Reveal delay={0.3}>
             <div style={{ ...serif, fontSize: 20, lineHeight: 1.7, color: ASH, maxWidth: 540, fontStyle: "italic" }}>
-              The James Webb Space Telescope keeps delivering massive L's for astrophysics.
-              If these findings hold, <span style={{ color: BONE }}><AnimatedCount target={totalDominoes} /> flagship findings</span> of
-              modern cosmology are thrown into question.
+              JWST discovered galaxies that shouldn't exist. Now a paper argues their energy output
+              accounts for the <span style={{ color: BONE, fontWeight: 600 }}>entire CMB</span>.
+              If that holds, modern cosmology loses its calibration standard.
             </div>
           </Reveal>
         </div>
 
-        {/* CH I: THE DISCOVERY */}
-        <Chapter label="Chapter I — The Discovery" title="Early Mature Galaxies shouldn't exist">
-          <Reveal>
-            <div style={{ ...serif, fontSize: 17, lineHeight: 1.85, color: BONE, maxWidth: 560 }}>
-              JWST discovered <span style={{ color: ICE }}>Early Mature Galaxies (EMGs)</span> — massive,
-              fully-formed galaxies that existed far earlier than any model predicted. They crushed the
-              existing models of galaxy formation because they formed much earlier than astrophysicists
-              thought possible.
-              <br /><br />
-              But it got worse.
-              <br /><br />
-              A new paper shows that the energy output of these EMGs can account for the{" "}
-              <span style={{ color: EMBER }}>entire energy density</span> of the Cosmic Microwave Background
-              Radiation — the CMB.
-            </div>
-          </Reveal>
+        {/* CH I: THE COUNT */}
+        <Chapter label="Chapter I — The Scale" title="If the CMB isn't primordial, everything built on it is suspect">
+          <DramaticCounter />
         </Chapter>
 
-        {/* CH II: WHY THIS MATTERS */}
-        <Chapter label="Chapter II — Why This Matters" title="The CMB was the foundation of everything">
-          <Reveal>
-            <div style={{ ...serif, fontSize: 17, lineHeight: 1.85, color: BONE, maxWidth: 560, marginBottom: 32 }}>
-              The CMB was believed to be a <span style={{ color: GOLD }}>snapshot of the first light</span>{" "}
-              emitted after the Big Bang, when the universe was approximately 379,000 years old. The
-              tiny variations in its temperature were believed to be relics of quantum fluctuations in
-              the dense primordial plasma.
-              <br /><br />
-              Nearly every major result in modern cosmology — from dark matter estimates to the age
-              of the universe to the geometry of spacetime — was <span style={{ color: EMBER }}>calibrated
-              against this signal</span>.
-              <br /><br />
-              If the CMB isn't primordial — if it's just the aggregate glow of early galaxies —
-              then the calibration standard for modern cosmology was wrong from the start.
-            </div>
-          </Reveal>
+        {/* CH II: THE TIMELINE */}
+        <Chapter label="Chapter II — The Discovery Arc" title="Two years of escalating findings">
+          <GalaxyTimeline />
+        </Chapter>
 
+        {/* CH III: DEPENDENCY GRAPH */}
+        <Chapter label="Chapter III — The Web" title="Everything connects back to the CMB">
+          <DependencyGraph />
+        </Chapter>
+
+        {/* CH IV: THE CASCADE */}
+        <Chapter label="Chapter IV — The Dominoes" title="Click to topple the first one">
+          <DominoCascade />
+        </Chapter>
+
+        {/* CH V: THE CAVEAT */}
+        <Chapter label="Chapter V — The Caveat" title="Science doesn't collapse in a day">
           <Reveal>
             <div style={{
-              padding: "28px 24px", background: EMBER + "08", border: `1px solid ${EMBER}22`,
-              borderRadius: 16,
+              display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16,
             }}>
-              <div style={{ ...sans, fontSize: 16, fontWeight: 600, color: EMBER, marginBottom: 10 }}>
-                The analogy
+              <div style={{ background: GREEN + "08", border: `1px solid ${GREEN}22`, borderRadius: 16, padding: "24px 20px" }}>
+                <div style={{ ...mono, fontSize: 9, letterSpacing: 2, color: GREEN, marginBottom: 10 }}>WHY IT MIGHT BE OK</div>
+                {["One paper — needs replication", "ΛCDM is battle-tested for decades", "JWST was literally built to challenge models", "Science is designed for revision"].map((t, i) => (
+                  <div key={i} style={{ display: "flex", gap: 8, padding: "5px 0", borderBottom: i < 3 ? `1px solid ${LINE}` : "none" }}>
+                    <span style={{ color: GREEN, fontSize: 10 }}>✓</span>
+                    <span style={{ ...serif, fontSize: 12, color: BONE, lineHeight: 1.5 }}>{t}</span>
+                  </div>
+                ))}
               </div>
-              <div style={{ ...serif, fontSize: 15, lineHeight: 1.7, color: ASH }}>
-                Imagine you built an entire city's infrastructure — roads, bridges, power grid —
-                based on a survey map. Then someone proved the map was actually a photograph of a
-                different landscape that happened to look similar. Every measurement, every alignment,
-                every calculation derived from that map is now suspect.
-              </div>
-            </div>
-          </Reveal>
-        </Chapter>
-
-        {/* CH III: THE DOMINOES */}
-        <Chapter label="Chapter III — The Dominoes" title={`${totalDominoes} findings thrown into question`}>
-          <Reveal>
-            <div style={{ ...serif, fontSize: 16, lineHeight: 1.7, color: ASH, maxWidth: 540, marginBottom: 32 }}>
-              Click each category to see what falls. These aren't fringe predictions —
-              they're the flagship results of decades of precision cosmology.
-            </div>
-          </Reveal>
-
-          {Object.values(DOMINOES).map((cat, i) => <DominoCategory key={i} cat={cat} />)}
-        </Chapter>
-
-        {/* CH IV: THE CAVEAT */}
-        <Chapter label="Chapter IV — The Caveat" title="Science doesn't collapse in a day">
-          <Reveal>
-            <div style={{ ...serif, fontSize: 17, lineHeight: 1.85, color: BONE, maxWidth: 560 }}>
-              A few things to hold in mind before panic:
-              <br /><br />
-              <span style={{ color: GREEN }}>This is one paper.</span> Extraordinary claims require
-              extraordinary evidence. The claim that EMGs account for the entire CMB energy density
-              needs independent replication, cross-validation with other datasets, and peer scrutiny.
-              <br /><br />
-              <span style={{ color: GREEN }}>ΛCDM is battle-tested.</span> The standard model has
-              survived decades of challenges. Many "revolutionary" findings have been absorbed into
-              refined versions of the existing framework rather than replacing it entirely.
-              <br /><br />
-              <span style={{ color: GREEN }}>Science is designed for this.</span> The process of
-              observation → challenge → revision is working exactly as intended. JWST was literally
-              built to find things that challenge our models.
-              <br /><br />
-              <span style={{ color: EMBER }}>But</span> — if the findings are replicated, this isn't
-              a minor adjustment. It's a foundation-level crack that propagates through everything
-              built on top of it. The dominos above aren't hypothetical — they're the logical
-              consequences of losing the CMB as a primordial signal.
-            </div>
-          </Reveal>
-
-          <Reveal>
-            <div style={{
-              padding: "28px 24px", background: GHOST + "08", border: `1px solid ${GHOST}22`,
-              borderRadius: 16, marginTop: 32,
-            }}>
-              <div style={{ ...sans, fontSize: 16, fontWeight: 600, color: GHOST, marginBottom: 10 }}>
-                The meta-lesson
-              </div>
-              <div style={{ ...serif, fontSize: 15, lineHeight: 1.7, color: ASH }}>
-                The history of science is the history of wrong-but-useful models being replaced
-                by less-wrong-but-more-useful models. Newtonian gravity was "wrong" but it got us
-                to the moon. The CMB interpretation may have been "wrong" but it bootstrapped
-                precision cosmology. What matters is what comes next.
+              <div style={{ background: EMBER + "08", border: `1px solid ${EMBER}22`, borderRadius: 16, padding: "24px 20px" }}>
+                <div style={{ ...mono, fontSize: 9, letterSpacing: 2, color: EMBER, marginBottom: 10 }}>WHY IT MIGHT NOT BE</div>
+                {["This isn't a tweak — it's a foundation crack", "20 findings across 4 categories affected", "The Hubble tension was already a warning sign", "Wrong-but-useful → less-wrong-but-more-useful"].map((t, i) => (
+                  <div key={i} style={{ display: "flex", gap: 8, padding: "5px 0", borderBottom: i < 3 ? `1px solid ${LINE}` : "none" }}>
+                    <span style={{ color: EMBER, fontSize: 10 }}>⚠</span>
+                    <span style={{ ...serif, fontSize: 12, color: BONE, lineHeight: 1.5 }}>{t}</span>
+                  </div>
+                ))}
               </div>
             </div>
           </Reveal>
@@ -323,7 +561,6 @@ export default function JWSTDominoes({ onBack }) {
             </div>
           </Reveal>
         </section>
-
       </div>
     </div>
   );
