@@ -7,6 +7,11 @@ import MultiAgentCiv from "./components/MultiAgentCiv";
 import PathDependency from "./components/PathDependency";
 import TechEntropy from "./components/TechEntropy";
 import JWSTDominoes from "./components/JWSTDominoes";
+import SimulationEvolution from "./components/SimulationEvolution";
+import DerivativeUniverses from "./components/DerivativeUniverses";
+import FinalFiveYears from "./components/FinalFiveYears";
+import CognitiveSymbiosis from "./components/CognitiveSymbiosis";
+import DeclarativeAgents from "./components/DeclarativeAgents";
 
 function getRoute() {
   const hash = window.location.hash.replace("#", "");
@@ -48,6 +53,16 @@ export default function App() {
       return <TechEntropy onBack={goHome} />;
     case "jwst-dominoes":
       return <JWSTDominoes onBack={goHome} />;
+    case "simulation-evolution":
+      return <SimulationEvolution onBack={goHome} />;
+    case "derivative-universes":
+      return <DerivativeUniverses onBack={goHome} />;
+    case "final-five-years":
+      return <FinalFiveYears onBack={goHome} />;
+    case "cognitive-symbiosis":
+      return <CognitiveSymbiosis onBack={goHome} />;
+    case "declarative-agents":
+      return <DeclarativeAgents onBack={goHome} />;
     default:
       return <Home onNavigate={navigate} />;
   }
