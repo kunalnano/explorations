@@ -496,12 +496,22 @@ export default function SoftwareTheory({ onBack }) {
         {/* ═══ CH I: CORE THESIS ═══ */}
         <Chapter label="Chapter I — The Core Thesis" title="Every upgrade to how we transmit information rewrites civilization">
           <Reveal>
-            <div style={{ ...serif, fontSize: 17, lineHeight: 1.85, color: BONE, maxWidth: 600 }}>
-              Human progress is defined by upgrades to our collective operating system — the protocols
-              we use to <span style={{ color: ICE }}>transmit</span>, <span style={{ color: GREEN }}>store</span>,
-              and <span style={{ color: EMBER }}>execute</span> information.
-              <span style={{ color: GHOST }}> AI is the necessary architectural upgrade required
-              to manage the crushing complexity of the previous layers.</span>
+            <div style={{
+              display: "grid", gridTemplateColumns: "auto 1fr", gap: 16, padding: "20px 24px",
+              background: FAINT, border: `1px solid ${LINE}`, borderRadius: 16,
+            }}>
+              {[
+                { verb: "Transmit", color: ICE, ver: "v1.0 → v2.0" },
+                { verb: "Store", color: GREEN, ver: "v2.0 → v3.0" },
+                { verb: "Execute", color: EMBER, ver: "v3.0 → v4.0" },
+              ].map((v, i) => (
+                <div key={i} style={{ display: "contents" }}>
+                  <div style={{ ...mono, fontSize: 10, color: v.color, letterSpacing: 1, alignSelf: "center" }}>{v.ver}</div>
+                  <div style={{ ...serif, fontSize: 15, color: BONE, borderBottom: i < 2 ? `1px solid ${LINE}` : "none", paddingBottom: i < 2 ? 12 : 0, marginBottom: i < 2 ? 12 : 0 }}>
+                    Upgrade how we <span style={{ color: v.color, fontWeight: 600 }}>{v.verb.toLowerCase()}</span> information → rewrite civilization
+                  </div>
+                </div>
+              ))}
             </div>
           </Reveal>
         </Chapter>
@@ -514,12 +524,7 @@ export default function SoftwareTheory({ onBack }) {
 
         {/* ═══ CH III: THE BOTTLENECK ═══ */}
         <Chapter label="Chapter III — The Bottleneck" title="The system outgrew its operators">
-          <Reveal>
-            <div style={{ ...serif, fontSize: 17, lineHeight: 1.85, color: BONE, maxWidth: 560, marginBottom: 16 }}>
-              Each domain generated complexity that exceeds human cognitive bandwidth.
-              <span style={{ color: EMBER }}> The system outgrew its operators.</span>
-            </div>
-          </Reveal>
+          {/* Gauges speak for themselves */}
           <BottleneckGauges />
           <Reveal>
             <div style={{
@@ -554,12 +559,7 @@ export default function SoftwareTheory({ onBack }) {
 
         {/* ═══ CH V: GATEKEEPERS ═══ */}
         <Chapter label="Chapter V — The Implication" title="If civilization is software, who controls the compiler?">
-          <Reveal>
-            <div style={{ ...serif, fontSize: 17, lineHeight: 1.85, color: BONE, maxWidth: 560, marginBottom: 8 }}>
-              Every layer had gatekeepers. Control of the abstraction layer is{" "}
-              <span style={{ color: EMBER }}>control of civilization itself</span>.
-            </div>
-          </Reveal>
+          {/* Power flow visualization says it all */}
           <GatekeeperFlow />
         </Chapter>
 
