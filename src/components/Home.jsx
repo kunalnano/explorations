@@ -2,6 +2,13 @@ import { useCallback } from "react";
 
 const EXPLORATIONS = [
   {
+    id: "tapestry-lattice",
+    title: "The Tapestry of the Lattice",
+    description: "A syncretic mythology weaving crystal mysticism, sacred geometry, semiconductor physics, and Genesis into a unified creation narrative. From sand to silicon — from dust, the Word.",
+    color: "#c9a84c",
+    date: "Feb 2026",
+  },
+  {
     id: "software-theory",
     title: "The Software Theory of Civilization",
     description: "Civilization doesn't just use software — civilization IS software. A framework tracing humanity's operating system from oral tradition to probabilistic intelligence.",
