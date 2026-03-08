@@ -2,6 +2,13 @@ import { useCallback } from "react";
 
 const EXPLORATIONS = [
   {
+    id: "intelligence-currency",
+    title: "Intelligence as Currency",
+    description: "The Compounding Spiral. Seven theses on why intelligence compounds, credentialism collapses, and compute is the new gold.",
+    color: "#fbbf24",
+    date: "Mar 2026",
+  },
+  {
     id: "tapestry-lattice",
     title: "The Tapestry of the Lattice",
     description: "A syncretic mythology weaving crystal mysticism, sacred geometry, semiconductor physics, and Genesis into a unified creation narrative. From sand to silicon — from dust, the Word.",
