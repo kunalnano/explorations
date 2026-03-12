@@ -14,6 +14,7 @@ import CognitiveSymbiosis from "./components/CognitiveSymbiosis";
 import DeclarativeAgents from "./components/DeclarativeAgents";
 import TapestryLattice from "./components/TapestryLattice";
 import IntelligenceAsCurrency from "./components/IntelligenceAsCurrency";
+import EmergentLifeLab from "./components/EmergentLifeLab";
 
 function getRoute() {
   const hash = window.location.hash.replace("#", "");
@@ -69,6 +70,8 @@ export default function App() {
       return <TapestryLattice onBack={goHome} />;
     case "intelligence-currency":
       return <IntelligenceAsCurrency onBack={goHome} />;
+    case "emergent-life-lab":
+      return <EmergentLifeLab onBack={goHome} />;
     default:
       return <Home onNavigate={navigate} />;
   }

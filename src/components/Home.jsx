@@ -2,6 +2,13 @@ import { useCallback } from "react";
 
 const EXPLORATIONS = [
   {
+    id: "emergent-life-lab",
+    title: "Emergent Life Lab",
+    description: "Conway's Game of Life on acid. Eight cellular automata rulesets, six visual modes, real-time sonification, and a mutation engine. Seed a universe and watch complexity emerge from nothing.",
+    color: "#00ffd5",
+    date: "Mar 2026",
+  },
+  {
     id: "intelligence-currency",
     title: "Intelligence as Currency",
     description: "The Compounding Spiral. Seven theses on why intelligence compounds, credentialism collapses, and compute is the new gold.",
