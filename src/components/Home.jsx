@@ -2,6 +2,13 @@ import { useCallback } from "react";
 
 const EXPLORATIONS = [
   {
+    id: "entropy-filter",
+    title: "The Entropy Filter",
+    description: "A thermodynamic answer to Fermi. The corridor between 'smart enough to try' and 'coordinated enough to succeed' narrows as complexity increases. Monkeys are in charge. Entropy always wins.",
+    color: "#ff4d2e",
+    date: "Mar 2026",
+  },
+  {
     id: "emergent-life-lab",
     title: "Emergent Life Lab",
     description: "Conway's Game of Life on acid. Eight cellular automata rulesets, six visual modes, real-time sonification, and a mutation engine. Seed a universe and watch complexity emerge from nothing.",

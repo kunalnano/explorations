@@ -15,6 +15,7 @@ import DeclarativeAgents from "./components/DeclarativeAgents";
 import TapestryLattice from "./components/TapestryLattice";
 import IntelligenceAsCurrency from "./components/IntelligenceAsCurrency";
 import EmergentLifeLab from "./components/EmergentLifeLab";
+import EntropyFilter from "./components/EntropyFilter";
 
 function getRoute() {
   const hash = window.location.hash.replace("#", "");
@@ -72,6 +73,8 @@ export default function App() {
       return <IntelligenceAsCurrency onBack={goHome} />;
     case "emergent-life-lab":
       return <EmergentLifeLab onBack={goHome} />;
+    case "entropy-filter":
+      return <EntropyFilter onBack={goHome} />;
     default:
       return <Home onNavigate={navigate} />;
   }
