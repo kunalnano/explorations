@@ -1,6 +1,21 @@
 import { useCallback } from "react";
 
+const GOLD = "#c9a84c";
+const GOLD_LIGHT = "#e8d48b";
+const GOLD_DIM = "#8b7a3a";
+const BG = "#050508";
+const BONE = "#e8e4dc";
+const ASH = "#4a4860";
+const LINE_GOLD = "rgba(201,168,76,0.12)";
+
 const EXPLORATIONS = [
+  {
+    id: "als-limit",
+    title: "Al's Limit",
+    description: "A Kardashev Scale for Software Complexity. Software systems grow through discrete cognitive regimes. AI doesn't eliminate these transitions — it enables them, which exposes the next entropy wall.",
+    color: "#9b8fff",
+    date: "Mar 2026",
+  },
   {
     id: "entropy-filter",
     title: "The Entropy Filter",
@@ -83,7 +98,7 @@ const EXPLORATIONS = [
     title: "Derivative Universes & The Hive Mind",
     description: "Child universes gain power through mutation. Your brain is already a hive mind — Neuralink just scales it up. Copy with noise = evolution.",
     color: "#ff4d2e",
-    date: "2025–2026",
+    date: "2025-2026",
   },
   {
     id: "final-five-years",
@@ -102,7 +117,7 @@ const EXPLORATIONS = [
   {
     id: "declarative-agents",
     title: "Declarative Agents",
-    description: "You're not a developer anymore — you're a director casting AI actors. The imperative→declarative shift that turned coding into configuration.",
+    description: "You're not a developer anymore — you're a director casting AI actors. The imperative-to-declarative shift that turned coding into configuration.",
     color: "#6ee7f0",
     date: "Dec 2025",
   },
@@ -124,44 +139,91 @@ export default function Home({ onNavigate }) {
   return (
     <div style={{
       minHeight: "100vh",
-      background: "#050508",
-      color: "#e8e4dc",
+      background: BG,
+      color: BONE,
       fontFamily: "'Segoe UI', system-ui, -apple-system, sans-serif",
       display: "flex",
       flexDirection: "column",
       alignItems: "center",
       padding: "80px 24px 120px",
+      position: "relative",
     }}>
+      {/* Subtle gold radial glow behind header */}
       <div style={{
-        fontFamily: "monospace",
+        position: "absolute",
+        top: 0,
+        left: "50%",
+        transform: "translateX(-50%)",
+        width: "80%",
+        height: 400,
+        background: `radial-gradient(ellipse 50% 60% at 50% 0%, ${GOLD}08, transparent)`,
+        pointerEvents: "none",
+      }} />
+
+      {/* Top rule line */}
+      <div style={{
+        width: 48,
+        height: 1,
+        background: `linear-gradient(90deg, transparent, ${GOLD}, transparent)`,
+        marginBottom: 20,
+      }} />
+
+      <div style={{
+        fontFamily: "'SF Mono', 'Cascadia Code', 'Consolas', monospace",
         fontSize: 10,
-        letterSpacing: 4,
+        letterSpacing: 6,
         textTransform: "uppercase",
-        color: "#6ee7f0",
-        marginBottom: 24,
+        color: GOLD,
+        marginBottom: 28,
       }}>
         kunalnano
       </div>
+
       <h1 style={{
         fontSize: "clamp(36px, 6vw, 64px)",
         fontWeight: 700,
         letterSpacing: -2,
         marginBottom: 12,
         textAlign: "center",
+        background: `linear-gradient(135deg, ${GOLD_LIGHT}, ${GOLD}, ${GOLD_DIM})`,
+        WebkitBackgroundClip: "text",
+        WebkitTextFillColor: "transparent",
       }}>
         Explorations
       </h1>
+
       <p style={{
         fontSize: 16,
-        color: "#4a4860",
+        color: GOLD_DIM,
         maxWidth: 440,
         textAlign: "center",
         lineHeight: 1.6,
-        marginBottom: 64,
+        marginBottom: 20,
+        fontFamily: "Georgia, 'Times New Roman', serif",
       }}>
         Interactive visual explorations of ideas, philosophy, frameworks,
         and the conversations that sparked them.
       </p>
+
+      {/* Gold separator */}
+      <div style={{
+        width: 120,
+        height: 1,
+        background: `linear-gradient(90deg, transparent, ${GOLD}44, transparent)`,
+        marginBottom: 56,
+      }} />
+
+      {/* Essay count */}
+      <div style={{
+        fontFamily: "'SF Mono', 'Cascadia Code', 'Consolas', monospace",
+        fontSize: 9,
+        letterSpacing: 3,
+        textTransform: "uppercase",
+        color: GOLD_DIM,
+        marginBottom: 28,
+      }}>
+        {EXPLORATIONS.length} essays
+      </div>
 
       <div style={{
         display: "grid",
@@ -175,31 +237,31 @@ export default function Home({ onNavigate }) {
             key={exp.id}
             onClick={() => go(exp.id)}
             style={{
-              background: "rgba(255,255,255,0.02)",
-              border: `1px solid rgba(255,255,255,0.06)`,
+              background: "rgba(201,168,76,0.02)",
+              border: `1px solid ${LINE_GOLD}`,
               borderRadius: 16,
               padding: "28px 24px",
               textAlign: "left",
               cursor: "pointer",
               transition: "all 0.3s ease",
-              color: "#e8e4dc",
+              color: BONE,
             }}
             onMouseEnter={(e) => {
-              e.currentTarget.style.background = "rgba(255,255,255,0.05)";
-              e.currentTarget.style.borderColor = exp.color + "33";
+              e.currentTarget.style.background = "rgba(201,168,76,0.06)";
+              e.currentTarget.style.borderColor = exp.color + "44";
               e.currentTarget.style.transform = "translateY(-2px)";
             }}
             onMouseLeave={(e) => {
-              e.currentTarget.style.background = "rgba(255,255,255,0.02)";
-              e.currentTarget.style.borderColor = "rgba(255,255,255,0.06)";
+              e.currentTarget.style.background = "rgba(201,168,76,0.02)";
+              e.currentTarget.style.borderColor = LINE_GOLD;
               e.currentTarget.style.transform = "translateY(0)";
             }}
           >
             <div style={{
-              fontFamily: "monospace",
+              fontFamily: "'SF Mono', 'Cascadia Code', 'Consolas', monospace",
               fontSize: 10,
               letterSpacing: 2,
-              color: exp.color,
+              color: GOLD_DIM,
               marginBottom: 10,
               textTransform: "uppercase",
             }}>
@@ -215,7 +277,7 @@ export default function Home({ onNavigate }) {
             </div>
             <div style={{
               fontSize: 13,
-              color: "#4a4860",
+              color: "#6b6580",
               lineHeight: 1.6,
             }}>
               {exp.description}
@@ -223,14 +285,36 @@ export default function Home({ onNavigate }) {
             <div style={{
               marginTop: 16,
               fontSize: 11,
-              color: exp.color,
-              fontFamily: "monospace",
+              color: GOLD,
+              fontFamily: "'SF Mono', 'Cascadia Code', 'Consolas', monospace",
               letterSpacing: 1,
             }}>
               EXPLORE →
             </div>
           </button>
         ))}
+      </div>
+
+      {/* Footer */}
+      <div style={{
+        marginTop: 80,
+        textAlign: "center",
+      }}>
+        <div style={{
+          width: 48,
+          height: 1,
+          background: `linear-gradient(90deg, transparent, ${GOLD}33, transparent)`,
+          margin: "0 auto 16px",
+        }} />
+        <div style={{
+          fontFamily: "'SF Mono', 'Cascadia Code', 'Consolas', monospace",
+          fontSize: 9,
+          letterSpacing: 4,
+          color: GOLD_DIM,
+          textTransform: "uppercase",
+        }}>
+          2025 — 2026
+        </div>
       </div>
     </div>
   );
