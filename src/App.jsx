@@ -17,6 +17,7 @@ import IntelligenceAsCurrency from "./components/IntelligenceAsCurrency";
 import EmergentLifeLab from "./components/EmergentLifeLab";
 import EntropyFilter from "./components/EntropyFilter";
 import AlsLimit from "./components/AlsLimit";
+import SoftwareFactoryPlatformer from "./components/SoftwareFactoryPlatformer";
 
 function getRoute() {
   const hash = window.location.hash.replace("#", "");
@@ -78,6 +79,8 @@ export default function App() {
       return <AlsLimit onBack={goHome} />;
     case "entropy-filter":
       return <EntropyFilter onBack={goHome} />;
+    case "software-factory":
+      return <SoftwareFactoryPlatformer onBack={goHome} />;
     default:
       return <Home onNavigate={navigate} />;
   }

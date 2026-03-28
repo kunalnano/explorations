@@ -10,6 +10,13 @@ const LINE_GOLD = "rgba(201,168,76,0.12)";
 
 const EXPLORATIONS = [
   {
+    id: "software-factory",
+    title: "The Software Factory",
+    description: "Walk through a software delivery pipeline rendered as a physical factory. Inspect crates of compromised dependencies, toxic barrels of CI/CD vulnerabilities, and machines that assemble your code. A 2D platformer that makes supply chain security visceral.",
+    color: "#4aaa99",
+    date: "Mar 2026",
+  },
+  {
     id: "als-limit",
     title: "Al's Limit",
     description: "A Kardashev Scale for Software Complexity. Software systems grow through discrete cognitive regimes. AI doesn't eliminate these transitions — it enables them, which exposes the next entropy wall.",
