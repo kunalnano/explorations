@@ -266,13 +266,37 @@ export default function GitHubConstellation({ onBack }) {
 
   useEffect(() => {
     let cancelled = false;
+    const CACHE_KEY = "gh_constellation_repos";
+    const CACHE_TTL = 60 * 60 * 1000; // 1 hour
+
+    // Check cache first
+    try {
+      const cached = localStorage.getItem(CACHE_KEY);
+      if (cached) {
+        const { data, ts } = JSON.parse(cached);
+        if (Date.now() - ts < CACHE_TTL && Array.isArray(data)) {
+          setRepos(data);
+          return;
+        }
+      }
+    } catch (_) {
+      // Cache miss or corrupt, proceed to fetch
+    }
+
     fetch("https://api.github.com/users/kunalnano/repos?per_page=100&sort=updated")
       .then((r) => {
         if (!r.ok) throw new Error(`GitHub API returned ${r.status}`);
         return r.json();
       })
       .then((data) => {
-        if (!cancelled) setRepos(data);
+        if (!cancelled) {
+          setRepos(data);
+          try {
+            localStorage.setItem(CACHE_KEY, JSON.stringify({ data, ts: Date.now() }));
+          } catch (_) {
+            // Storage full, no-op
+          }
+        }
       })
       .catch((e) => {
         if (!cancelled) setError(e.message);
