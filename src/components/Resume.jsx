@@ -387,6 +387,26 @@ export default function Resume({ onBack }) {
           >
             Austin, TX
           </div>
+          <a
+            href="https://www.linkedin.com/in/alsharma"
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{
+              display: "inline-block",
+              fontFamily: MONO,
+              fontSize: 11,
+              letterSpacing: 2,
+              color: GOLD_DIM,
+              textDecoration: "none",
+              textTransform: "uppercase",
+              marginBottom: 20,
+              transition: "color 0.3s ease",
+            }}
+            onMouseEnter={(e) => (e.target.style.color = GOLD)}
+            onMouseLeave={(e) => (e.target.style.color = GOLD_DIM)}
+          >
+            linkedin.com/in/alsharma
+          </a>
           <div
             style={{
               fontFamily: MONO,

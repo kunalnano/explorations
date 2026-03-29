@@ -15,8 +15,15 @@ const NAV_ITEMS = [
     id: "explorations",
     label: "Explorations",
     desc: "Interactive visual essays",
-    count: "18 essays",
+    count: "19 essays",
     accent: "#9b8fff",
+  },
+  {
+    id: "github-constellation",
+    label: "GitHub Universe",
+    desc: "Live repository constellation",
+    count: "live data",
+    accent: "#3178c6",
   },
   {
     id: "resume",
@@ -24,6 +31,22 @@ const NAV_ITEMS = [
     desc: "Career & experience",
     count: "15+ years",
     accent: GOLD,
+  },
+  {
+    id: "dvc",
+    label: "Dark Vector Cognition",
+    desc: "AI systems & computation",
+    count: "darkvectorcognition.ai",
+    accent: "#ff4d2e",
+    external: "https://darkvectorcognition.ai",
+  },
+  {
+    id: "enablement",
+    label: "Enablement",
+    desc: "Workshops & materials",
+    count: "enablement.alsharma.com",
+    accent: "#34d399",
+    external: "https://enablement.alsharma.com",
   },
 ];
 
@@ -308,6 +331,23 @@ export default function Home({ onNavigate }) {
           I build things that think.
         </p>
 
+        {/* Founder line */}
+        <div
+          style={{
+            fontFamily: MONO,
+            fontSize: 11,
+            letterSpacing: 3,
+            textTransform: "uppercase",
+            color: GOLD,
+            marginBottom: 12,
+            opacity: entered ? 1 : 0,
+            transform: entered ? "translateY(0)" : "translateY(12px)",
+            transition: "all 1s cubic-bezier(0.16,1,0.3,1) 0.95s",
+          }}
+        >
+          Founder, Dark Vector Cognition
+        </div>
+
         {/* Location */}
         <div
           style={{
@@ -327,10 +367,11 @@ export default function Home({ onNavigate }) {
         {/* Navigation cards */}
         <div
           style={{
-            display: "flex",
-            gap: 24,
-            flexWrap: "wrap",
-            justifyContent: "center",
+            display: "grid",
+            gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))",
+            gap: 20,
+            maxWidth: 760,
+            width: "100%",
             marginBottom: 80,
             opacity: entered ? 1 : 0,
             transform: entered ? "translateY(0)" : "translateY(24px)",
@@ -342,7 +383,7 @@ export default function Home({ onNavigate }) {
             return (
               <button
                 key={item.id}
-                onClick={() => go(item.id)}
+                onClick={() => item.external ? window.open(item.external, '_blank', 'noopener,noreferrer') : go(item.id)}
                 onMouseEnter={() => setHovered(item.id)}
                 onMouseLeave={() => setHovered(null)}
                 style={{
@@ -431,6 +472,93 @@ export default function Home({ onNavigate }) {
               </button>
             );
           })}
+        </div>
+
+        {/* Links row */}
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            gap: 16,
+            marginBottom: 80,
+            opacity: entered ? 1 : 0,
+            transform: entered ? "translateY(0)" : "translateY(16px)",
+            transition: "all 1s cubic-bezier(0.16,1,0.3,1) 1.5s",
+          }}
+        >
+          <a
+            href="https://github.com/kunalnano"
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{
+              fontFamily: MONO,
+              fontSize: 11,
+              letterSpacing: 2,
+              textTransform: "uppercase",
+              color: GOLD_DIM,
+              textDecoration: "none",
+              transition: "color 0.3s ease",
+            }}
+            onMouseEnter={(e) => (e.target.style.color = GOLD)}
+            onMouseLeave={(e) => (e.target.style.color = GOLD_DIM)}
+          >
+            github
+          </a>
+          <span
+            style={{
+              color: GOLD_DIM,
+              fontSize: 6,
+              opacity: 0.5,
+            }}
+          >
+            {"●"}
+          </span>
+          <a
+            href="https://darkvectorcognition.ai"
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{
+              fontFamily: MONO,
+              fontSize: 11,
+              letterSpacing: 2,
+              textTransform: "uppercase",
+              color: GOLD_DIM,
+              textDecoration: "none",
+              transition: "color 0.3s ease",
+            }}
+            onMouseEnter={(e) => (e.target.style.color = GOLD)}
+            onMouseLeave={(e) => (e.target.style.color = GOLD_DIM)}
+          >
+            dvc
+          </a>
+          <span
+            style={{
+              color: GOLD_DIM,
+              fontSize: 6,
+              opacity: 0.5,
+            }}
+          >
+            {"●"}
+          </span>
+          <a
+            href="https://www.linkedin.com/in/alsharma"
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{
+              fontFamily: MONO,
+              fontSize: 11,
+              letterSpacing: 2,
+              textTransform: "uppercase",
+              color: GOLD_DIM,
+              textDecoration: "none",
+              transition: "color 0.3s ease",
+            }}
+            onMouseEnter={(e) => (e.target.style.color = GOLD)}
+            onMouseLeave={(e) => (e.target.style.color = GOLD_DIM)}
+          >
+            linkedin
+          </a>
         </div>
 
         {/* Footer */}

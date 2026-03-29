@@ -10,6 +10,13 @@ const LINE_GOLD = "rgba(201,168,76,0.12)";
 
 const EXPLORATIONS = [
   {
+    id: "github-constellation",
+    title: "GitHub Constellation",
+    description: "A living force-directed graph of public repositories, colored by language, connected by shared technologies. Fetched live from the GitHub API.",
+    color: "#3178c6",
+    date: "Mar 2026",
+  },
+  {
     id: "software-factory",
     title: "The Software Factory",
     description: "Walk through a software delivery pipeline rendered as a physical factory. Inspect crates of compromised dependencies, toxic barrels of CI/CD vulnerabilities, and machines that assemble your code. A 2D platformer that makes supply chain security visceral.",

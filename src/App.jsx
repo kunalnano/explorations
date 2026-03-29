@@ -20,6 +20,7 @@ import EmergentLifeLab from "./components/EmergentLifeLab";
 import EntropyFilter from "./components/EntropyFilter";
 import AlsLimit from "./components/AlsLimit";
 import SoftwareFactoryPlatformer from "./components/SoftwareFactoryPlatformer";
+import GitHubConstellation from "./components/GitHubConstellation";
 
 function getRoute() {
   const hash = window.location.hash.replace("#", "");
@@ -94,6 +95,8 @@ export default function App() {
       return <EntropyFilter onBack={goExplorations} />;
     case "software-factory":
       return <SoftwareFactoryPlatformer onBack={goExplorations} />;
+    case "github-constellation":
+      return <GitHubConstellation onBack={goExplorations} />;
     default:
       return <Home onNavigate={navigate} />;
   }
