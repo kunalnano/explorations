@@ -1,5 +1,7 @@
 import { useState, useEffect, useCallback } from "react";
 import Home from "./components/Home";
+import Explorations from "./components/Explorations";
+import Resume from "./components/Resume";
 import AncientWisdomMap from "./components/AncientWisdomMap";
 import BoltzmannBrain from "./components/BoltzmannBrain";
 import SoftwareTheory from "./components/SoftwareTheory";
@@ -39,48 +41,59 @@ export default function App() {
     window.scrollTo(0, 0);
   }, []);
 
+  const goExplorations = useCallback(() => {
+    window.location.hash = "explorations";
+    setRoute("explorations");
+    window.scrollTo(0, 0);
+  }, []);
+
   const navigate = useCallback((id) => {
+    window.location.hash = id;
     setRoute(id);
     window.scrollTo(0, 0);
   }, []);
 
   switch (route) {
+    case "explorations":
+      return <Explorations onNavigate={navigate} onBack={goHome} />;
+    case "resume":
+      return <Resume onBack={goHome} />;
     case "ancient-wisdom":
-      return <AncientWisdomMap onBack={goHome} />;
+      return <AncientWisdomMap onBack={goExplorations} />;
     case "boltzmann-brain":
-      return <BoltzmannBrain onBack={goHome} />;
+      return <BoltzmannBrain onBack={goExplorations} />;
     case "software-theory":
-      return <SoftwareTheory onBack={goHome} />;
+      return <SoftwareTheory onBack={goExplorations} />;
     case "multi-agent-civ":
-      return <MultiAgentCiv onBack={goHome} />;
+      return <MultiAgentCiv onBack={goExplorations} />;
     case "path-dependency":
-      return <PathDependency onBack={goHome} />;
+      return <PathDependency onBack={goExplorations} />;
     case "tech-entropy":
-      return <TechEntropy onBack={goHome} />;
+      return <TechEntropy onBack={goExplorations} />;
     case "jwst-dominoes":
-      return <JWSTDominoes onBack={goHome} />;
+      return <JWSTDominoes onBack={goExplorations} />;
     case "simulation-evolution":
-      return <SimulationEvolution onBack={goHome} />;
+      return <SimulationEvolution onBack={goExplorations} />;
     case "derivative-universes":
-      return <DerivativeUniverses onBack={goHome} />;
+      return <DerivativeUniverses onBack={goExplorations} />;
     case "final-five-years":
-      return <FinalFiveYears onBack={goHome} />;
+      return <FinalFiveYears onBack={goExplorations} />;
     case "cognitive-symbiosis":
-      return <CognitiveSymbiosis onBack={goHome} />;
+      return <CognitiveSymbiosis onBack={goExplorations} />;
     case "declarative-agents":
-      return <DeclarativeAgents onBack={goHome} />;
+      return <DeclarativeAgents onBack={goExplorations} />;
     case "tapestry-lattice":
-      return <TapestryLattice onBack={goHome} />;
+      return <TapestryLattice onBack={goExplorations} />;
     case "intelligence-currency":
-      return <IntelligenceAsCurrency onBack={goHome} />;
+      return <IntelligenceAsCurrency onBack={goExplorations} />;
     case "emergent-life-lab":
-      return <EmergentLifeLab onBack={goHome} />;
+      return <EmergentLifeLab onBack={goExplorations} />;
     case "als-limit":
-      return <AlsLimit onBack={goHome} />;
+      return <AlsLimit onBack={goExplorations} />;
     case "entropy-filter":
-      return <EntropyFilter onBack={goHome} />;
+      return <EntropyFilter onBack={goExplorations} />;
     case "software-factory":
-      return <SoftwareFactoryPlatformer onBack={goHome} />;
+      return <SoftwareFactoryPlatformer onBack={goExplorations} />;
     default:
       return <Home onNavigate={navigate} />;
   }
