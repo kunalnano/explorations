@@ -194,7 +194,7 @@ export default function Explorations({ onNavigate, onBack }) {
             boxShadow: backHover ? `0 0 16px ${GOLD}11` : "none",
           }}
         >
-          \u2190 HOME
+{"\u2190"} HOME
         </button>
       )}
 

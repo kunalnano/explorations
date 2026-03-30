@@ -1,202 +1,388 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 
-const GOLD = "#c9a84c";
-const GOLD_LIGHT = "#e8d48b";
-const GOLD_DIM = "#8b7a3a";
-const BG = "#050508";
-const BONE = "#e8e4dc";
-const LINE_GOLD = "rgba(201,168,76,0.12)";
-const MONO = "'SF Mono', 'Cascadia Code', 'Consolas', monospace";
-const SERIF = "Georgia, 'Times New Roman', serif";
-const SANS = "'Segoe UI', system-ui, -apple-system, sans-serif";
+// ── Design tokens ──────────────────────────────────────────
+const C = {
+  bg: "#08080f",
+  surface: "#0f0f1a",
+  surfaceHover: "#151525",
+  border: "#1a1a2e",
+  borderHover: "#2a2a50",
+  cyan: "#00d4ff",
+  purple: "#8b5cf6",
+  green: "#22c55e",
+  amber: "#fbbf24",
+  red: "#ef4444",
+  text: "#e4e4e7",
+  textDim: "#a1a1aa",
+  faint: "#52525b",
+  deep: "#27272a",
+};
+const MONO =
+  "'SF Mono', 'Cascadia Code', 'JetBrains Mono', 'Consolas', monospace";
+const SANS = "system-ui, -apple-system, 'Segoe UI', sans-serif";
 
-const NAV_ITEMS = [
+// ── Data ───────────────────────────────────────────────────
+const SYSTEMS = [
   {
-    id: "explorations",
-    label: "Explorations",
-    desc: "Interactive visual essays",
-    count: "19 essays",
-    accent: "#9b8fff",
+    name: "Dark Vector Cognition",
+    desc: "AI research & computation lab",
+    url: "https://darkvectorcognition.ai",
+    status: "live",
+    accent: C.cyan,
   },
   {
-    id: "github-constellation",
-    label: "GitHub Universe",
-    desc: "Live repository constellation",
-    count: "live data",
-    accent: "#3178c6",
+    name: "Enablement Hub",
+    desc: "Workshops & technical materials",
+    url: "https://enablement.alsharma.com",
+    status: "live",
+    accent: C.purple,
   },
   {
-    id: "resume",
-    label: "Resume",
-    desc: "Career & experience",
-    count: "15+ years",
-    accent: GOLD,
+    name: "Explorations",
+    desc: "19 interactive visual essays",
+    route: "explorations",
+    status: "active",
+    accent: C.amber,
   },
   {
-    id: "dvc",
-    label: "Dark Vector Cognition",
-    desc: "AI systems & computation",
-    count: "darkvectorcognition.ai",
-    accent: "#ff4d2e",
-    external: "https://darkvectorcognition.ai",
-  },
-  {
-    id: "enablement",
-    label: "Enablement",
-    desc: "Workshops & materials",
-    count: "enablement.alsharma.com",
-    accent: "#34d399",
-    external: "https://enablement.alsharma.com",
+    name: "MCP Knowledge Systems",
+    desc: "Agentic AI for enterprise workflows",
+    status: "deployed",
+    accent: C.green,
   },
 ];
 
-// Constellation background — slowly drifting nodes with gold connections
-function Constellation() {
-  const canvasRef = useRef(null);
-  const nodesRef = useRef([]);
-  const frameRef = useRef(null);
-  const mouseRef = useRef({ x: -1000, y: -1000 });
+const SELECTED_WORKS = [
+  {
+    id: "software-factory",
+    title: "The Software Factory",
+    desc: "Supply chain security as a 2D platformer",
+  },
+  {
+    id: "als-limit",
+    title: "Al\u2019s Limit",
+    desc: "A Kardashev Scale for software complexity",
+  },
+  {
+    id: "intelligence-currency",
+    title: "Intelligence as Currency",
+    desc: "Seven theses on compounding intelligence",
+  },
+  {
+    id: "emergent-life-lab",
+    title: "Emergent Life Lab",
+    desc: "Cellular automata, 8 rulesets, real-time sound",
+  },
+  {
+    id: "entropy-filter",
+    title: "The Entropy Filter",
+    desc: "A thermodynamic answer to Fermi",
+  },
+  {
+    id: "declarative-agents",
+    title: "Declarative Agents",
+    desc: "From imperative code to AI direction",
+  },
+];
 
-  useEffect(() => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-    const ctx = canvas.getContext("2d");
-    let W, H;
+const CAREER = [
+  {
+    co: "Port.io",
+    role: "VP Customer Success, Americas",
+    yr: "2025 \u2013 Present",
+    live: true,
+  },
+  {
+    co: "Snyk",
+    role: "Sr. Manager, Customer Solutions",
+    yr: "2022 \u2013 2024",
+  },
+  {
+    co: "Harness",
+    role: "Sr. TPM / Manager, CS",
+    yr: "2021 \u2013 2025",
+  },
+  { co: "HashiCorp", role: "User Success Manager", yr: "2021" },
+  {
+    co: "Western Digital",
+    role: "Staff Manager, Enterprise",
+    yr: "2013 \u2013 2021",
+    note: "2 patents",
+  },
+];
 
-    function resize() {
-      W = window.innerWidth;
-      H = window.innerHeight;
-      canvas.width = W;
-      canvas.height = H;
-    }
-    resize();
-    window.addEventListener("resize", resize);
-
-    // Seed nodes
-    const COUNT = Math.min(60, Math.floor((W * H) / 18000));
-    nodesRef.current = Array.from({ length: COUNT }, () => ({
-      x: Math.random() * W,
-      y: Math.random() * H,
-      vx: (Math.random() - 0.5) * 0.15,
-      vy: (Math.random() - 0.5) * 0.15,
-      r: Math.random() * 1.5 + 0.5,
-      brightness: Math.random(),
-      phase: Math.random() * Math.PI * 2,
-    }));
-
-    function onMove(e) {
-      mouseRef.current.x = e.clientX;
-      mouseRef.current.y = e.clientY;
-    }
-    window.addEventListener("mousemove", onMove);
-
-    let running = true;
-    let t = 0;
-
-    function tick() {
-      if (!running) return;
-      t += 0.003;
-      ctx.clearRect(0, 0, W, H);
-
-      const nodes = nodesRef.current;
-      const mx = mouseRef.current.x;
-      const my = mouseRef.current.y;
-
-      // Update positions
-      for (const n of nodes) {
-        n.x += n.vx;
-        n.y += n.vy;
-        if (n.x < 0) n.x = W;
-        if (n.x > W) n.x = 0;
-        if (n.y < 0) n.y = H;
-        if (n.y > H) n.y = 0;
-
-        // Mouse repulsion
-        const dx = n.x - mx;
-        const dy = n.y - my;
-        const dist = Math.sqrt(dx * dx + dy * dy);
-        if (dist < 120) {
-          const force = (120 - dist) / 120 * 0.3;
-          n.x += (dx / dist) * force;
-          n.y += (dy / dist) * force;
-        }
-      }
-
-      // Draw connections
-      const maxDist = 140;
-      for (let i = 0; i < nodes.length; i++) {
-        for (let j = i + 1; j < nodes.length; j++) {
-          const dx = nodes[i].x - nodes[j].x;
-          const dy = nodes[i].y - nodes[j].y;
-          const dist = Math.sqrt(dx * dx + dy * dy);
-          if (dist < maxDist) {
-            const alpha = (1 - dist / maxDist) * 0.08;
-            ctx.beginPath();
-            ctx.moveTo(nodes[i].x, nodes[i].y);
-            ctx.lineTo(nodes[j].x, nodes[j].y);
-            ctx.strokeStyle = `rgba(201,168,76,${alpha})`;
-            ctx.lineWidth = 0.5;
-            ctx.stroke();
-          }
-        }
-      }
-
-      // Draw nodes
-      for (const n of nodes) {
-        const pulse = Math.sin(t * 2 + n.phase) * 0.3 + 0.7;
-        const alpha = 0.15 + n.brightness * 0.25 * pulse;
-        ctx.beginPath();
-        ctx.arc(n.x, n.y, n.r, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(201,168,76,${alpha})`;
-        ctx.fill();
-
-        // Glow for larger nodes
-        if (n.r > 1.2) {
-          ctx.beginPath();
-          ctx.arc(n.x, n.y, n.r * 3, 0, Math.PI * 2);
-          const g = ctx.createRadialGradient(n.x, n.y, 0, n.x, n.y, n.r * 3);
-          g.addColorStop(0, `rgba(201,168,76,${alpha * 0.3})`);
-          g.addColorStop(1, "transparent");
-          ctx.fillStyle = g;
-          ctx.fill();
-        }
-      }
-
-      frameRef.current = requestAnimationFrame(tick);
-    }
-    frameRef.current = requestAnimationFrame(tick);
-
-    return () => {
-      running = false;
-      cancelAnimationFrame(frameRef.current);
-      window.removeEventListener("resize", resize);
-      window.removeEventListener("mousemove", onMove);
-    };
-  }, []);
-
+// ── Background ─────────────────────────────────────────────
+function Background() {
   return (
-    <canvas
-      ref={canvasRef}
-      style={{
-        position: "fixed",
-        top: 0,
-        left: 0,
-        width: "100%",
-        height: "100%",
-        pointerEvents: "none",
-        zIndex: 0,
-      }}
-    />
+    <>
+      <div
+        style={{
+          position: "fixed",
+          inset: 0,
+          backgroundImage: `
+            linear-gradient(rgba(0,212,255,0.025) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(0,212,255,0.025) 1px, transparent 1px)
+          `,
+          backgroundSize: "48px 48px",
+          pointerEvents: "none",
+          zIndex: 0,
+        }}
+      />
+      <div
+        style={{
+          position: "fixed",
+          top: "15%",
+          left: "50%",
+          transform: "translateX(-50%)",
+          width: "70%",
+          height: "45%",
+          background:
+            "radial-gradient(ellipse at center, rgba(139,92,246,0.05), rgba(0,212,255,0.02) 50%, transparent 70%)",
+          pointerEvents: "none",
+          zIndex: 0,
+        }}
+      />
+    </>
   );
 }
 
-export default function Home({ onNavigate }) {
-  const [entered, setEntered] = useState(false);
-  const [hovered, setHovered] = useState(null);
+// ── Section wrapper ────────────────────────────────────────
+function Section({ title, tag, tagColor, visible, delay = 0, children }) {
+  return (
+    <div
+      style={{
+        marginBottom: 40,
+        opacity: visible ? 1 : 0,
+        transform: visible ? "translateY(0)" : "translateY(16px)",
+        transition: `all 0.6s cubic-bezier(0.16,1,0.3,1) ${delay}s`,
+      }}
+    >
+      <div
+        style={{
+          display: "flex",
+          alignItems: "center",
+          gap: 10,
+          marginBottom: 16,
+        }}
+      >
+        <span
+          style={{
+            fontFamily: MONO,
+            fontSize: 10,
+            letterSpacing: 3,
+            color: C.textDim,
+          }}
+        >
+          {title}
+        </span>
+        <span
+          style={{
+            fontFamily: MONO,
+            fontSize: 9,
+            letterSpacing: 1,
+            color: tagColor,
+            border: `1px solid ${tagColor}33`,
+            borderRadius: 3,
+            padding: "2px 6px",
+          }}
+        >
+          {tag}
+        </span>
+        <div style={{ flex: 1, height: 1, background: C.border }} />
+      </div>
+      {children}
+    </div>
+  );
+}
 
+// ── System card ────────────────────────────────────────────
+function SystemCard({ system, hovered, onHover, onClick }) {
+  const clickable = !!(system.url || system.route);
+  const statusColor =
+    system.status === "live"
+      ? C.green
+      : system.status === "deployed"
+        ? C.cyan
+        : C.faint;
+
+  return (
+    <button
+      onClick={clickable ? onClick : undefined}
+      onMouseEnter={() => onHover(system.name)}
+      onMouseLeave={() => onHover(null)}
+      style={{
+        display: "flex",
+        alignItems: "center",
+        gap: 12,
+        width: "100%",
+        background: hovered ? C.surfaceHover : C.surface,
+        border: `1px solid ${hovered ? system.accent + "44" : C.border}`,
+        borderRadius: 8,
+        padding: "14px 16px",
+        cursor: clickable ? "pointer" : "default",
+        textAlign: "left",
+        transition: "all 0.25s ease",
+        transform: hovered && clickable ? "translateY(-1px)" : "none",
+      }}
+    >
+      <span
+        style={{
+          width: 7,
+          height: 7,
+          borderRadius: "50%",
+          background: statusColor,
+          boxShadow: `0 0 8px ${statusColor}66`,
+          flexShrink: 0,
+        }}
+      />
+      <div style={{ flex: 1, minWidth: 0 }}>
+        <div
+          style={{
+            fontFamily: MONO,
+            fontSize: 13,
+            fontWeight: 600,
+            color: hovered ? system.accent : C.text,
+            transition: "color 0.2s",
+            marginBottom: 2,
+          }}
+        >
+          {system.name}
+        </div>
+        <div style={{ fontSize: 12, color: C.faint }}>{system.desc}</div>
+      </div>
+      {clickable && (
+        <span
+          style={{
+            fontFamily: MONO,
+            fontSize: 10,
+            color: hovered ? system.accent : C.deep,
+            transition: "color 0.2s",
+            flexShrink: 0,
+          }}
+        >
+          {system.url ? "\u2197" : "\u2192"}
+        </span>
+      )}
+    </button>
+  );
+}
+
+// ── Work row ───────────────────────────────────────────────
+function WorkRow({ work, hovered, onHover, onClick }) {
+  return (
+    <button
+      onClick={onClick}
+      onMouseEnter={() => onHover(work.id)}
+      onMouseLeave={() => onHover(null)}
+      style={{
+        display: "block",
+        width: "100%",
+        background: hovered ? C.surface : "transparent",
+        border: "none",
+        borderLeft: `2px solid ${hovered ? C.cyan : "transparent"}`,
+        padding: "10px 12px",
+        cursor: "pointer",
+        transition: "all 0.2s ease",
+        textAlign: "left",
+      }}
+    >
+      <div
+        style={{
+          fontFamily: MONO,
+          fontSize: 13,
+          color: hovered ? C.cyan : C.text,
+          transition: "color 0.2s",
+          marginBottom: 3,
+        }}
+      >
+        {work.title}
+      </div>
+      <div style={{ fontSize: 12, color: C.faint, fontStyle: "italic" }}>
+        {work.desc}
+      </div>
+    </button>
+  );
+}
+
+// ── Career row ─────────────────────────────────────────────
+function CareerRow({ entry }) {
+  return (
+    <div
+      style={{
+        display: "flex",
+        alignItems: "baseline",
+        gap: 12,
+        padding: "9px 0",
+        borderBottom: `1px solid ${C.border}`,
+        flexWrap: "wrap",
+      }}
+    >
+      <span
+        style={{
+          fontFamily: MONO,
+          fontSize: 12,
+          color: entry.live ? C.green : C.textDim,
+          fontWeight: entry.live ? 600 : 400,
+          minWidth: 120,
+          flexShrink: 0,
+        }}
+      >
+        {entry.co}
+        {entry.live && (
+          <span
+            style={{
+              display: "inline-block",
+              width: 5,
+              height: 5,
+              borderRadius: "50%",
+              background: C.green,
+              marginLeft: 6,
+              verticalAlign: "middle",
+              boxShadow: `0 0 6px ${C.green}`,
+            }}
+          />
+        )}
+      </span>
+      <span style={{ fontSize: 12, color: C.faint, flex: 1, minWidth: 140 }}>
+        {entry.role}
+      </span>
+      <span
+        style={{
+          fontFamily: MONO,
+          fontSize: 10,
+          color: C.deep,
+          whiteSpace: "nowrap",
+        }}
+      >
+        {entry.yr}
+        {entry.note && (
+          <span style={{ color: C.amber, marginLeft: 8 }}>{entry.note}</span>
+        )}
+      </span>
+    </div>
+  );
+}
+
+// ── Main component ─────────────────────────────────────────
+export default function Home({ onNavigate }) {
+  const [phase, setPhase] = useState(0);
+  const [hovered, setHovered] = useState(null);
+  const [typedName, setTypedName] = useState("");
+
+  // Typewriter effect for name
   useEffect(() => {
-    const timer = setTimeout(() => setEntered(true), 100);
-    return () => clearTimeout(timer);
+    const name = "AI SHARMA";
+    let i = 0;
+    const interval = setInterval(() => {
+      i++;
+      setTypedName(name.slice(0, i));
+      if (i >= name.length) {
+        clearInterval(interval);
+        setTimeout(() => setPhase(1), 200);
+        setTimeout(() => setPhase(2), 700);
+      }
+    }, 55);
+    return () => clearInterval(interval);
   }, []);
 
   const go = useCallback(
@@ -204,391 +390,293 @@ export default function Home({ onNavigate }) {
       window.location.hash = id;
       onNavigate(id);
     },
-    [onNavigate]
+    [onNavigate],
   );
 
   return (
     <div
       style={{
         minHeight: "100vh",
-        background: BG,
-        color: BONE,
+        background: C.bg,
+        color: C.text,
         fontFamily: SANS,
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        justifyContent: "center",
-        padding: "60px 24px",
         position: "relative",
-        overflow: "hidden",
       }}
     >
-      <Constellation />
+      <Background />
 
-      {/* Injected keyframes */}
       <style>{`
-        @keyframes goldLinePulse {
-          0%, 100% { opacity: 0.4; transform: scaleX(0.6); }
-          50% { opacity: 1; transform: scaleX(1); }
-        }
-        @keyframes breatheGlow {
-          0%, 100% { opacity: 0.03; }
-          50% { opacity: 0.08; }
+        @keyframes blink {
+          0%, 100% { opacity: 1; }
+          50% { opacity: 0; }
         }
       `}</style>
 
-      {/* Central radial glow — breathing */}
-      <div
-        style={{
-          position: "absolute",
-          top: "50%",
-          left: "50%",
-          transform: "translate(-50%, -50%)",
-          width: "80%",
-          height: "80%",
-          background: `radial-gradient(ellipse 40% 40% at 50% 50%, ${GOLD}, transparent)`,
-          pointerEvents: "none",
-          animation: "breatheGlow 6s ease-in-out infinite",
-          zIndex: 1,
-        }}
-      />
-
-      {/* Content — above canvas */}
       <div
         style={{
           position: "relative",
-          zIndex: 2,
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
+          zIndex: 1,
+          maxWidth: 900,
+          margin: "0 auto",
+          padding: "72px 24px 60px",
         }}
       >
-        {/* Top rule — animated */}
-        <div
-          style={{
-            width: 64,
-            height: 1,
-            background: `linear-gradient(90deg, transparent, ${GOLD}, transparent)`,
-            marginBottom: 32,
-            animation: "goldLinePulse 4s ease-in-out infinite",
-            opacity: entered ? 1 : 0,
-            transition: "opacity 1s ease 0.2s",
-          }}
-        />
-
-        {/* Monospace label */}
+        {/* System identifier */}
         <div
           style={{
             fontFamily: MONO,
-            fontSize: 10,
-            letterSpacing: 6,
-            textTransform: "uppercase",
-            color: GOLD_DIM,
-            marginBottom: 24,
-            opacity: entered ? 1 : 0,
-            transform: entered ? "translateY(0)" : "translateY(12px)",
-            transition: "all 0.8s cubic-bezier(0.16,1,0.3,1) 0.3s",
+            fontSize: 11,
+            letterSpacing: 2,
+            color: C.faint,
+            marginBottom: 28,
+            opacity: phase >= 0 ? 1 : 0,
+            transition: "opacity 0.6s ease",
           }}
         >
-          alsharma.com
+          ai_sharma.sys{" "}
+          <span style={{ color: C.green }}>&#9679;</span>{" "}
+          <span style={{ color: C.deep }}>operational</span>
         </div>
 
         {/* Name */}
         <h1
           style={{
-            fontSize: "clamp(48px, 9vw, 88px)",
+            fontFamily: MONO,
+            fontSize: "clamp(44px, 10vw, 80px)",
             fontWeight: 700,
-            letterSpacing: -3,
-            marginBottom: 16,
-            textAlign: "center",
-            background: `linear-gradient(135deg, ${GOLD_LIGHT}, ${GOLD}, ${GOLD_DIM})`,
-            WebkitBackgroundClip: "text",
-            WebkitTextFillColor: "transparent",
-            opacity: entered ? 1 : 0,
-            transform: entered ? "translateY(0)" : "translateY(20px)",
-            transition: "all 1s cubic-bezier(0.16,1,0.3,1) 0.5s",
+            letterSpacing: -2,
             lineHeight: 1,
+            marginBottom: 20,
           }}
         >
-          Al Sharma
+          <span
+            style={{
+              background: `linear-gradient(135deg, ${C.cyan}, ${C.purple})`,
+              WebkitBackgroundClip: "text",
+              WebkitTextFillColor: "transparent",
+              backgroundClip: "text",
+            }}
+          >
+            {typedName}
+          </span>
+          <span
+            style={{
+              display: phase >= 2 ? "none" : "inline-block",
+              width: 3,
+              height: "0.75em",
+              background: C.cyan,
+              marginLeft: 4,
+              animation: "blink 0.8s step-end infinite",
+              verticalAlign: "baseline",
+            }}
+          />
         </h1>
 
-        {/* Identity line */}
+        {/* Tagline */}
         <p
           style={{
-            fontFamily: SERIF,
-            fontSize: "clamp(16px, 2.5vw, 20px)",
-            color: GOLD_DIM,
-            textAlign: "center",
-            lineHeight: 1.5,
-            marginBottom: 12,
-            fontStyle: "italic",
-            opacity: entered ? 1 : 0,
-            transform: entered ? "translateY(0)" : "translateY(16px)",
-            transition: "all 1s cubic-bezier(0.16,1,0.3,1) 0.8s",
+            fontSize: 20,
+            color: C.textDim,
+            marginBottom: 10,
+            opacity: phase >= 1 ? 1 : 0,
+            transform: phase >= 1 ? "translateY(0)" : "translateY(8px)",
+            transition: "all 0.6s cubic-bezier(0.16,1,0.3,1)",
           }}
         >
           I build things that think.
         </p>
 
-        {/* Founder line */}
+        {/* Identity */}
         <div
           style={{
             fontFamily: MONO,
-            fontSize: 11,
-            letterSpacing: 3,
-            textTransform: "uppercase",
-            color: GOLD,
-            marginBottom: 12,
-            opacity: entered ? 1 : 0,
-            transform: entered ? "translateY(0)" : "translateY(12px)",
-            transition: "all 1s cubic-bezier(0.16,1,0.3,1) 0.95s",
+            fontSize: 12,
+            letterSpacing: 1,
+            color: C.faint,
+            marginBottom: 56,
+            opacity: phase >= 1 ? 1 : 0,
+            transform: phase >= 1 ? "translateY(0)" : "translateY(8px)",
+            transition: "all 0.6s cubic-bezier(0.16,1,0.3,1) 0.1s",
           }}
         >
-          Founder, Dark Vector Cognition
+          Founder, Dark Vector Cognition &middot; Austin, TX
         </div>
 
-        {/* Location */}
-        <div
-          style={{
-            fontFamily: MONO,
-            fontSize: 10,
-            letterSpacing: 3,
-            color: GOLD_DIM,
-            textTransform: "uppercase",
-            marginBottom: 64,
-            opacity: entered ? 0.6 : 0,
-            transition: "opacity 1s ease 1.1s",
-          }}
-        >
-          Austin, TX
-        </div>
-
-        {/* Navigation cards */}
+        {/* ── Two-column grid: Systems + Signal ── */}
         <div
           style={{
             display: "grid",
-            gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))",
-            gap: 20,
-            maxWidth: 760,
-            width: "100%",
-            marginBottom: 80,
-            opacity: entered ? 1 : 0,
-            transform: entered ? "translateY(0)" : "translateY(24px)",
-            transition: "all 1s cubic-bezier(0.16,1,0.3,1) 1.2s",
+            gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))",
+            gap: 32,
+            marginBottom: 8,
           }}
         >
-          {NAV_ITEMS.map((item) => {
-            const isHov = hovered === item.id;
-            return (
-              <button
-                key={item.id}
-                onClick={() => item.external ? window.open(item.external, '_blank', 'noopener,noreferrer') : go(item.id)}
-                onMouseEnter={() => setHovered(item.id)}
-                onMouseLeave={() => setHovered(null)}
-                style={{
-                  background: isHov
-                    ? `rgba(201,168,76,0.06)`
-                    : "rgba(201,168,76,0.015)",
-                  border: `1px solid ${isHov ? item.accent + "55" : LINE_GOLD}`,
-                  borderRadius: 16,
-                  padding: "28px 36px",
-                  cursor: "pointer",
-                  transition: "all 0.4s cubic-bezier(0.16,1,0.3,1)",
-                  color: BONE,
-                  textAlign: "left",
-                  minWidth: 220,
-                  position: "relative",
-                  overflow: "hidden",
-                  transform: isHov ? "translateY(-4px)" : "translateY(0)",
-                  boxShadow: isHov
-                    ? `0 8px 32px rgba(201,168,76,0.08)`
-                    : "none",
-                }}
-              >
-                {/* Top accent line */}
-                <div
-                  style={{
-                    position: "absolute",
-                    top: 0,
-                    left: 0,
-                    right: 0,
-                    height: 2,
-                    background: `linear-gradient(90deg, transparent, ${item.accent}${isHov ? "88" : "22"}, transparent)`,
-                    transition: "all 0.4s ease",
+          {/* SYSTEMS */}
+          <Section
+            title="SYSTEMS"
+            tag="LIVE"
+            tagColor={C.green}
+            visible={phase >= 2}
+            delay={0}
+          >
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                gap: 8,
+              }}
+            >
+              {SYSTEMS.map((sys) => (
+                <SystemCard
+                  key={sys.name}
+                  system={sys}
+                  hovered={hovered === sys.name}
+                  onHover={setHovered}
+                  onClick={() => {
+                    if (sys.url)
+                      window.open(sys.url, "_blank", "noopener,noreferrer");
+                    else if (sys.route) go(sys.route);
                   }}
                 />
+              ))}
+            </div>
+          </Section>
 
-                <div
-                  style={{
-                    fontFamily: MONO,
-                    fontSize: 9,
-                    letterSpacing: 3,
-                    color: item.accent,
-                    textTransform: "uppercase",
-                    marginBottom: 10,
-                    opacity: isHov ? 1 : 0.6,
-                    transition: "opacity 0.3s",
-                  }}
-                >
-                  {item.count}
-                </div>
-                <div
-                  style={{
-                    fontSize: 20,
-                    fontWeight: 600,
-                    marginBottom: 6,
-                    letterSpacing: -0.5,
-                  }}
-                >
-                  {item.label}
-                </div>
-                <div
-                  style={{
-                    fontSize: 12,
-                    color: GOLD_DIM,
-                    fontFamily: SERIF,
-                    fontStyle: "italic",
-                  }}
-                >
-                  {item.desc}
-                </div>
-
-                {/* Arrow */}
-                <div
-                  style={{
-                    marginTop: 16,
-                    fontFamily: MONO,
-                    fontSize: 11,
-                    color: item.accent,
-                    letterSpacing: 1,
-                    opacity: isHov ? 1 : 0.4,
-                    transform: isHov ? "translateX(4px)" : "translateX(0)",
-                    transition: "all 0.3s ease",
-                  }}
-                >
-                  ENTER →
-                </div>
+          {/* SIGNAL */}
+          <Section
+            title="SIGNAL"
+            tag="SELECTED"
+            tagColor={C.amber}
+            visible={phase >= 2}
+            delay={0.08}
+          >
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                gap: 0,
+              }}
+            >
+              {SELECTED_WORKS.map((work) => (
+                <WorkRow
+                  key={work.id}
+                  work={work}
+                  hovered={hovered === work.id}
+                  onHover={setHovered}
+                  onClick={() => go(work.id)}
+                />
+              ))}
+              <button
+                onClick={() => go("explorations")}
+                onMouseEnter={(e) => (e.target.style.color = C.cyan)}
+                onMouseLeave={(e) => (e.target.style.color = C.faint)}
+                style={{
+                  background: "none",
+                  border: "none",
+                  color: C.faint,
+                  fontFamily: MONO,
+                  fontSize: 11,
+                  letterSpacing: 1,
+                  cursor: "pointer",
+                  textAlign: "left",
+                  padding: "10px 12px",
+                  transition: "color 0.2s",
+                }}
+              >
+                ALL 19 EXPLORATIONS {"\u2192"}
               </button>
-            );
-          })}
+            </div>
+          </Section>
         </div>
 
-        {/* Links row */}
-        <div
+        {/* ── PRODUCTION LOG ── */}
+        <Section
+          title="PRODUCTION LOG"
+          tag="CAREER"
+          tagColor={C.purple}
+          visible={phase >= 2}
+          delay={0.16}
+        >
+          {CAREER.map((c) => (
+            <CareerRow key={c.co} entry={c} />
+          ))}
+          <button
+            onClick={() => go("resume")}
+            onMouseEnter={(e) => (e.target.style.color = C.cyan)}
+            onMouseLeave={(e) => (e.target.style.color = C.faint)}
+            style={{
+              background: "none",
+              border: "none",
+              color: C.faint,
+              fontFamily: MONO,
+              fontSize: 11,
+              letterSpacing: 1,
+              cursor: "pointer",
+              textAlign: "left",
+              padding: "10px 0",
+              marginTop: 4,
+              transition: "color 0.2s",
+            }}
+          >
+            FULL RESUME {"\u2192"}
+          </button>
+        </Section>
+
+        {/* ── Footer ── */}
+        <footer
           style={{
+            marginTop: 48,
+            paddingTop: 24,
+            borderTop: `1px solid ${C.border}`,
             display: "flex",
+            justifyContent: "space-between",
             alignItems: "center",
-            justifyContent: "center",
+            flexWrap: "wrap",
             gap: 16,
-            marginBottom: 80,
-            opacity: entered ? 1 : 0,
-            transform: entered ? "translateY(0)" : "translateY(16px)",
-            transition: "all 1s cubic-bezier(0.16,1,0.3,1) 1.5s",
+            opacity: phase >= 2 ? 1 : 0,
+            transition: "opacity 0.8s ease 0.4s",
           }}
         >
-          <a
-            href="https://github.com/kunalnano"
-            target="_blank"
-            rel="noopener noreferrer"
-            style={{
-              fontFamily: MONO,
-              fontSize: 11,
-              letterSpacing: 2,
-              textTransform: "uppercase",
-              color: GOLD_DIM,
-              textDecoration: "none",
-              transition: "color 0.3s ease",
-            }}
-            onMouseEnter={(e) => (e.target.style.color = GOLD)}
-            onMouseLeave={(e) => (e.target.style.color = GOLD_DIM)}
-          >
-            github
-          </a>
-          <span
-            style={{
-              color: GOLD_DIM,
-              fontSize: 6,
-              opacity: 0.5,
-            }}
-          >
-            {"●"}
-          </span>
-          <a
-            href="https://darkvectorcognition.ai"
-            target="_blank"
-            rel="noopener noreferrer"
-            style={{
-              fontFamily: MONO,
-              fontSize: 11,
-              letterSpacing: 2,
-              textTransform: "uppercase",
-              color: GOLD_DIM,
-              textDecoration: "none",
-              transition: "color 0.3s ease",
-            }}
-            onMouseEnter={(e) => (e.target.style.color = GOLD)}
-            onMouseLeave={(e) => (e.target.style.color = GOLD_DIM)}
-          >
-            dvc
-          </a>
-          <span
-            style={{
-              color: GOLD_DIM,
-              fontSize: 6,
-              opacity: 0.5,
-            }}
-          >
-            {"●"}
-          </span>
-          <a
-            href="https://www.linkedin.com/in/alsharma"
-            target="_blank"
-            rel="noopener noreferrer"
-            style={{
-              fontFamily: MONO,
-              fontSize: 11,
-              letterSpacing: 2,
-              textTransform: "uppercase",
-              color: GOLD_DIM,
-              textDecoration: "none",
-              transition: "color 0.3s ease",
-            }}
-            onMouseEnter={(e) => (e.target.style.color = GOLD)}
-            onMouseLeave={(e) => (e.target.style.color = GOLD_DIM)}
-          >
-            linkedin
-          </a>
-        </div>
-
-        {/* Footer */}
-        <div
-          style={{
-            textAlign: "center",
-            opacity: entered ? 1 : 0,
-            transition: "opacity 1.5s ease 1.8s",
-          }}
-        >
-          <div
-            style={{
-              width: 48,
-              height: 1,
-              background: `linear-gradient(90deg, transparent, ${GOLD}33, transparent)`,
-              margin: "0 auto 16px",
-            }}
-          />
-          <div
-            style={{
-              fontFamily: MONO,
-              fontSize: 9,
-              letterSpacing: 4,
-              color: GOLD_DIM,
-              textTransform: "uppercase",
-            }}
-          >
-            alsharma.com
+          <div style={{ display: "flex", gap: 20 }}>
+            {[
+              { label: "GitHub", url: "https://github.com/kunalnano" },
+              { label: "DVC", url: "https://darkvectorcognition.ai" },
+              {
+                label: "LinkedIn",
+                url: "https://www.linkedin.com/in/alsharma",
+              },
+            ].map((link) => (
+              <a
+                key={link.label}
+                href={link.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{
+                  fontFamily: MONO,
+                  fontSize: 11,
+                  letterSpacing: 1,
+                  color: C.faint,
+                  textDecoration: "none",
+                  transition: "color 0.2s",
+                }}
+                onMouseEnter={(e) => (e.target.style.color = C.cyan)}
+                onMouseLeave={(e) => (e.target.style.color = C.faint)}
+              >
+                {link.label}
+              </a>
+            ))}
           </div>
-        </div>
+          <div
+            style={{
+              fontFamily: MONO,
+              fontSize: 10,
+              color: C.deep,
+              letterSpacing: 1,
+            }}
+          >
+            ai_sharma // 2026
+          </div>
+        </footer>
       </div>
     </div>
   );
