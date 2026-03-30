@@ -371,7 +371,7 @@ export default function Home({ onNavigate }) {
 
   // Typewriter effect for name
   useEffect(() => {
-    const name = "AI SHARMA";
+    const name = "AL SHARMA";
     let i = 0;
     const interval = setInterval(() => {
       i++;
