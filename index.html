@@ -67,15 +67,6 @@
         requestAnimationFrame(drawFavicon);
       })();
 
-      // Scrolling tab title
-      (function() {
-        const base = "Al Sharma — I build things that think ◆ Dark Vector Cognition ◆ ";
-        let offset = 0;
-        setInterval(function() {
-          document.title = base.slice(offset) + base.slice(0, offset);
-          offset = (offset + 1) % base.length;
-        }, 200);
-      })();
     </script>
   </body>
 </html>
