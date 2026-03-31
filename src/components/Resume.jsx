@@ -67,7 +67,7 @@ const CAPABILITIES = [
 
 const EXPERIENCE = [
   {
-    title: "Head of Customer Success, Americas",
+    title: "Head of Technical Success, AMER",
     company: "Port.io",
     period: "August 2025 \u2013 Present",
     context: "Series C Internal Developer Platform",
@@ -123,7 +123,7 @@ const EXPERIENCE = [
     accent: "#6ee7f0",
     bullets: [
       "Led cross-functional teams of engineers, researchers, and technicians. Built performance frameworks driving sustained productivity and high talent retention.",
-      "Contributed to two patented technologies. Led global quality audits achieving full compliance across departments and geographies.",
+      "Led global quality audits achieving full compliance across departments and geographies.",
     ],
   },
 ];

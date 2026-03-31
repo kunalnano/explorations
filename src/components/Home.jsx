@@ -11,6 +11,9 @@ const C = {
   purple: "#8b5cf6",
   green: "#22c55e",
   amber: "#fbbf24",
+  gold: "#c9a84c",
+  goldLight: "#e8d48b",
+  goldDark: "#8b7a3a",
   red: "#ef4444",
   text: "#e4e4e7",
   textDim: "#a1a1aa",
@@ -88,7 +91,7 @@ const SELECTED_WORKS = [
 const CAREER = [
   {
     co: "Port.io",
-    role: "VP Customer Success, Americas",
+    role: "Head of Technical Success, AMER",
     yr: "2025 \u2013 Present",
     live: true,
   },
@@ -107,7 +110,6 @@ const CAREER = [
     co: "Western Digital",
     role: "Staff Manager, Enterprise",
     yr: "2013 \u2013 2021",
-    note: "2 patents",
   },
 ];
 
@@ -438,6 +440,15 @@ export default function Home({ onNavigate }) {
           <span style={{ color: C.deep }}>operational</span>
         </div>
 
+        {/* Vector Mark */}
+        <svg viewBox="0 0 72 72" width="36" height="36" style={{ marginBottom: 16, opacity: phase >= 1 ? 1 : 0, transition: "opacity 0.6s ease", filter: "drop-shadow(0 0 10px rgba(201,168,76,0.3))" }}>
+          <path d="M36,8 L46,18 L36,28 L26,18 Z" fill="#8B6914" stroke="#C9A84C" strokeWidth="1"/>
+          <path d="M14,18 L24,18 L36,50 L36,62 Z" fill="#A6841E"/>
+          <path d="M58,18 L48,18 L36,50 L36,62 Z" fill="#C9A84C"/>
+          <path d="M24,18 L36,50 L30,34 Z" fill="#DFC060" opacity="0.6"/>
+          <path d="M48,18 L36,50 L42,34 Z" fill="#DFC060" opacity="0.4"/>
+        </svg>
+
         {/* Name */}
         <h1
           style={{
@@ -451,7 +462,7 @@ export default function Home({ onNavigate }) {
         >
           <span
             style={{
-              background: `linear-gradient(135deg, ${C.cyan}, ${C.purple})`,
+              background: `linear-gradient(135deg, ${C.goldLight}, ${C.gold}, ${C.goldDark})`,
               WebkitBackgroundClip: "text",
               WebkitTextFillColor: "transparent",
               backgroundClip: "text",
@@ -464,7 +475,7 @@ export default function Home({ onNavigate }) {
               display: phase >= 2 ? "none" : "inline-block",
               width: 3,
               height: "0.75em",
-              background: C.cyan,
+              background: C.gold,
               marginLeft: 4,
               animation: "blink 0.8s step-end infinite",
               verticalAlign: "baseline",
