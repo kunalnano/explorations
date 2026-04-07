@@ -63,5 +63,33 @@
         requestAnimationFrame(draw);
       })();
     </script>
+    <!-- ═══ CONTACT PANEL ═══ -->
+    <div id="contact-backdrop" onclick="toggleContact(false)" style="position:fixed;inset:0;z-index:9998;background:rgba(0,0,0,0.5);backdrop-filter:blur(2px);opacity:0;pointer-events:none;transition:opacity 0.3s;"></div>
+    <div id="contact-panel" style="position:fixed;top:0;right:0;bottom:0;width:min(400px,90vw);z-index:9999;background:#0a0a10;border-left:1px solid rgba(0,212,255,0.12);transform:translateX(100%);transition:transform 0.35s cubic-bezier(0.16,1,0.3,1);display:flex;flex-direction:column;overflow:hidden;">
+      <div style="padding:24px 28px 16px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid rgba(255,255,255,0.06);">
+        <div>
+          <p style="font-family:system-ui;font-size:11px;color:#00d4ff;letter-spacing:3px;text-transform:uppercase;margin:0;">GET IN TOUCH</p>
+          <p style="font-family:system-ui;font-size:13px;color:rgba(255,255,255,0.4);margin:4px 0 0;">I'll respond within 24 hours.</p>
+        </div>
+        <button onclick="toggleContact(false)" style="background:none;border:none;color:rgba(255,255,255,0.3);font-size:22px;cursor:pointer;padding:4px 8px;line-height:1;">&times;</button>
+      </div>
+      <div id="contact-body" style="flex:1;overflow-y:auto;padding:28px;">
+        <div style="display:flex;flex-direction:column;gap:20px;">
+          <div><label style="font-family:monospace;font-size:11px;color:rgba(255,255,255,0.35);letter-spacing:2px;display:block;margin-bottom:6px;">NAME</label><input id="cf-name" placeholder="Your name" style="width:100%;padding:12px 14px;font-size:14px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);border-radius:4px;color:#fff;outline:none;box-sizing:border-box;" /></div>
+          <div><label style="font-family:monospace;font-size:11px;color:rgba(255,255,255,0.35);letter-spacing:2px;display:block;margin-bottom:6px;">EMAIL</label><input id="cf-email" type="email" placeholder="you@company.com" style="width:100%;padding:12px 14px;font-size:14px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);border-radius:4px;color:#fff;outline:none;box-sizing:border-box;" /></div>
+          <div><label style="font-family:monospace;font-size:11px;color:rgba(255,255,255,0.35);letter-spacing:2px;display:block;margin-bottom:6px;">MESSAGE</label><textarea id="cf-msg" rows="5" placeholder="What's on your mind?" style="width:100%;padding:12px 14px;font-size:14px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);border-radius:4px;color:#fff;outline:none;resize:vertical;min-height:100px;box-sizing:border-box;"></textarea></div>
+          <p id="cf-error" style="font-size:13px;color:#e55;margin:0;display:none;">Something went wrong. Try <a href="mailto:hello@darkvectorcognition.ai" style="color:#00d4ff;text-decoration:none;">emailing directly</a>.</p>
+          <button id="cf-submit" onclick="submitContact()" style="padding:14px 28px;font-family:monospace;font-size:13px;letter-spacing:1.5px;text-transform:uppercase;background:linear-gradient(135deg,rgba(0,212,255,0.12),rgba(139,92,246,0.08));color:#00d4ff;border:1px solid rgba(0,212,255,0.25);border-radius:4px;cursor:pointer;">SEND MESSAGE</button>
+        </div>
+      </div>
+    </div>
+    <button id="contact-fab" onclick="toggleContact(true)" style="position:fixed;bottom:28px;right:28px;z-index:9997;width:56px;height:56px;border-radius:50%;background:linear-gradient(135deg,#00d4ff,#8b5cf6);border:none;cursor:pointer;box-shadow:0 4px 20px rgba(0,212,255,0.3);display:flex;align-items:center;justify-content:center;">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M20 2H4C2.9 2 2 2.9 2 4V22L6 18H20C21.1 18 22 17.1 22 16V4C22 2.9 21.1 2 20 2Z" fill="#08080f"/></svg>
+    </button>
+    <script>
+      function toggleContact(open){var p=document.getElementById('contact-panel'),b=document.getElementById('contact-backdrop'),f=document.getElementById('contact-fab');if(open){p.style.transform='translateX(0)';p.style.boxShadow='-20px 0 60px rgba(0,0,0,0.6)';b.style.opacity='1';b.style.pointerEvents='auto';f.style.display='none';}else{p.style.transform='translateX(100%)';p.style.boxShadow='none';b.style.opacity='0';b.style.pointerEvents='none';f.style.display='flex';}}
+      function submitContact(){var n=document.getElementById('cf-name').value,e=document.getElementById('cf-email').value,m=document.getElementById('cf-msg').value,btn=document.getElementById('cf-submit'),err=document.getElementById('cf-error');if(!n||!e||!m)return;btn.textContent='TRANSMITTING...';btn.style.opacity='0.4';err.style.display='none';fetch('https://formspree.io/f/mykboegz',{method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json'},body:JSON.stringify({name:n,email:e,message:m})}).then(function(r){if(r.ok){document.getElementById('contact-body').innerHTML='<div style="text-align:center;padding-top:60px;"><div style="font-size:40px;margin-bottom:16px;color:#00d4ff;">&#10003;</div><p style="font-size:16px;color:#00d4ff;">Message received.</p><p style="font-size:14px;color:rgba(255,255,255,0.4);margin-top:8px;">I\'ll be in touch shortly.</p><button onclick="toggleContact(false)" style="margin-top:24px;padding:10px 24px;font-family:monospace;font-size:12px;background:transparent;color:#8b5cf6;border:1px solid rgba(139,92,246,0.2);border-radius:4px;cursor:pointer;">CLOSE</button></div>';}else{throw new Error();}}).catch(function(){btn.textContent='SEND MESSAGE';btn.style.opacity='1';err.style.display='block';});}
+      document.addEventListener('keydown',function(e){if(e.key==='Escape')toggleContact(false);});
+    </script>
   </body>
 </html>
