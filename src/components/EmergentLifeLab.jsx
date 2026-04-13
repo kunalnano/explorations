@@ -47,7 +47,7 @@ export default function EmergentLifeLab({ onBack }) {
 
       <iframe
         ref={iframeRef}
-        src="/explorations/life-lab.html"
+        src="/life-lab.html"
         title="Emergent Life Lab"
         style={{
           width: "100%",

@@ -21,6 +21,7 @@ import EntropyFilter from "./components/EntropyFilter";
 import AlsLimit from "./components/AlsLimit";
 import SoftwareFactoryPlatformer from "./components/SoftwareFactoryPlatformer";
 import GitHubConstellation from "./components/GitHubConstellation";
+import TheTell from "./components/TheTell";
 
 function getRoute() {
   const hash = window.location.hash.replace("#", "");
@@ -97,6 +98,8 @@ export default function App() {
       return <SoftwareFactoryPlatformer onBack={goExplorations} />;
     case "github-constellation":
       return <GitHubConstellation onBack={goExplorations} />;
+    case "the-tell":
+      return <TheTell onBack={goExplorations} />;
     default:
       return <Home onNavigate={navigate} />;
   }

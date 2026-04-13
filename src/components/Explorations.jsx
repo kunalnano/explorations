@@ -10,6 +10,13 @@ const LINE_GOLD = "rgba(201,168,76,0.12)";
 
 const EXPLORATIONS = [
   {
+    id: "the-tell",
+    title: "The Tell",
+    description: "A Saturday morning on memory, cognition, and the archaeological mound. Each conversation builds on the flattened last one. The tell is taller.",
+    color: "#cd7f3a",
+    date: "Apr 2026",
+  },
+  {
     id: "github-constellation",
     title: "GitHub Constellation",
     description: "A living force-directed graph of public repositories, colored by language, connected by shared technologies. Fetched live from the GitHub API.",

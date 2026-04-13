@@ -42,7 +42,7 @@ const SYSTEMS = [
   },
   {
     name: "Explorations",
-    desc: "19 interactive visual essays",
+    desc: "20 interactive visual essays",
     route: "explorations",
     status: "active",
     accent: C.amber,
@@ -56,6 +56,11 @@ const SYSTEMS = [
 ];
 
 const SELECTED_WORKS = [
+  {
+    id: "the-tell",
+    title: "The Tell",
+    desc: "Memory, cognition, and the archaeological mound",
+  },
   {
     id: "software-factory",
     title: "The Software Factory",
@@ -80,11 +85,6 @@ const SELECTED_WORKS = [
     id: "entropy-filter",
     title: "The Entropy Filter",
     desc: "A thermodynamic answer to Fermi",
-  },
-  {
-    id: "declarative-agents",
-    title: "Declarative Agents",
-    desc: "From imperative code to AI direction",
   },
 ];
 
@@ -594,7 +594,7 @@ export default function Home({ onNavigate }) {
                   transition: "color 0.2s",
                 }}
               >
-                ALL 19 EXPLORATIONS {"\u2192"}
+                ALL 20 EXPLORATIONS {"\u2192"}
               </button>
             </div>
           </Section>
