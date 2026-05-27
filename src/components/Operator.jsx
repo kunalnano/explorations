@@ -269,7 +269,7 @@ export default function Operator({ onBegin }) {
             <p style={{ fontFamily: MONO, fontSize: 10, letterSpacing: "0.45em", color: "rgba(255,236,200,0.5)", marginBottom: 32 }}>
               ARCHIVE  /  VOLUME  I
             </p>
-            <h1 style={{
+            <h1 aria-label="The Operator" style={{
               fontFamily: SERIF,
               fontSize: "clamp(64px, 14vw, 168px)",
               fontWeight: 300,

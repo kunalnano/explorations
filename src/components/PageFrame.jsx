@@ -1,15 +1,18 @@
+import { useEffect } from "react";
 import { C, F } from "../design.js";
 
 // ── PageFrame ──────────────────────────────────────────────
 // Floats a consistent Apple-style nav over every page so the chrome is
-// identical site-wide. The page underneath paints its own background —
-// PageFrame stays transparent through the body, only the nav has a
-// blurred backdrop that adapts to the surface.
+// identical site-wide. PageFrame also owns the body background — that
+// prevents white-leak underneath short dark essays where the page
+// content doesn't fill the viewport.
 //
 // Usage:
 //   <PageFrame surface="dark" onBack={goExplorations}>
 //     <YourEssayContent />
 //   </PageFrame>
+
+const DARK_BODY_BG = "#0a0807"; // near-black; individual essays paint over it
 
 export default function PageFrame({
   children,
@@ -21,6 +24,18 @@ export default function PageFrame({
   const ink = isDark ? "#f5f5f7" : C.ink;
   const rule = isDark ? "rgba(255,255,255,0.10)" : "rgba(0,0,0,0.06)";
   const navBg = isDark ? "rgba(0,0,0,0.55)" : "rgba(255,255,255,0.72)";
+
+  useEffect(() => {
+    const prevBody = document.body.style.background;
+    const prevHtml = document.documentElement.style.background;
+    const target = isDark ? DARK_BODY_BG : C.bg;
+    document.body.style.background = target;
+    document.documentElement.style.background = target;
+    return () => {
+      document.body.style.background = prevBody;
+      document.documentElement.style.background = prevHtml;
+    };
+  }, [isDark]);
 
   const linkStyle = {
     color: ink, opacity: 0.85, fontSize: 14, fontWeight: 400,

@@ -510,6 +510,9 @@ export default function SoftwareFactoryPlatformer({ onBack }) {
 
   return (
     <div style={{ position: "fixed", inset: 0, top: 48, background: BG, zIndex: 10, display: "flex", flexDirection: "column", fontFamily: F.text }}>
+      <h1 style={{ position: "absolute", width: 1, height: 1, padding: 0, margin: -1, overflow: "hidden", clip: "rect(0,0,0,0)", whiteSpace: "nowrap", border: 0 }}>
+        The software factory.
+      </h1>
       {/* HUD — Apple-direction typography; canvas + game preserved */}
       <div style={{
         display: "flex", justifyContent: "space-between", alignItems: "center",

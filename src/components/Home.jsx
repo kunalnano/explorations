@@ -93,10 +93,11 @@ const pillGhost = {
 
 function Nav({ onNav }) {
   const linkStyle = {
-    color: C.ink, opacity: 0.85, fontSize: 14, fontWeight: 400,
+    color: C.ink, opacity: 0.85,
+    fontSize: "clamp(12px, 3.4vw, 14px)", fontWeight: 400,
     letterSpacing: "-0.01em", cursor: "pointer",
     background: "none", border: "none", fontFamily: F.text,
-    padding: 0, textDecoration: "none",
+    padding: 0, textDecoration: "none", whiteSpace: "nowrap",
   };
   return (
     <nav style={{
@@ -110,10 +111,13 @@ function Nav({ onNav }) {
       <div style={{
         maxWidth: 1024, margin: "0 auto", padding: "0 22px",
         height: "100%", display: "flex", alignItems: "center",
-        justifyContent: "space-between",
+        justifyContent: "space-between", gap: 12,
       }}>
-        <span style={{ fontWeight: 500, color: C.ink, fontFamily: F.text, fontSize: 14 }}>sharma</span>
-        <div style={{ display: "flex", gap: 28 }}>
+        <span style={{
+          fontWeight: 500, color: C.ink, fontFamily: F.text, fontSize: 14,
+          flexShrink: 0,
+        }}>sharma</span>
+        <div style={{ display: "flex", gap: "clamp(12px, 4vw, 28px)" }}>
           <button onClick={() => onNav("explorations")} style={linkStyle}>Explorations</button>
           <button onClick={() => onNav("operator")} style={linkStyle}>Operator</button>
           <a href="https://darkvectorcognition.ai" target="_blank" rel="noopener noreferrer" style={linkStyle}>DVC</a>
