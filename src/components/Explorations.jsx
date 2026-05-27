@@ -1,5 +1,16 @@
 import { useState, useEffect, useCallback } from "react";
 import { C, F, T } from "../design.js";
+import imgTheTell from "../assets/explorations/the-tell.jpg";
+import imgSoftwareFactory from "../assets/explorations/software-factory.jpg";
+import imgFinalFiveYears from "../assets/explorations/final-five-years.jpg";
+
+// Per-essay hero image. Cards fall back to the CSS gradient (exp.visual)
+// for any essay not yet in this map.
+const IMAGES = {
+  "the-tell": imgTheTell,
+  "software-factory": imgSoftwareFactory,
+  "final-five-years": imgFinalFiveYears,
+};
 
 const EXPLORATIONS = [
   {
@@ -226,6 +237,7 @@ const EXPLORATIONS = [
 
 function Card({ exp, onClick }) {
   const [hovered, setHovered] = useState(false);
+  const image = IMAGES[exp.id];
   return (
     <button
       onClick={onClick}
@@ -250,7 +262,25 @@ function Card({ exp, onClick }) {
         transition: "transform .35s cubic-bezier(0.16,1,0.3,1), box-shadow .35s ease",
       }}
     >
-      <div style={{ height: 180, background: exp.visual }} />
+      <div style={{ height: 180, overflow: "hidden", position: "relative" }}>
+        {image ? (
+          <img
+            src={image}
+            alt=""
+            loading="lazy"
+            style={{
+              width: "100%",
+              height: "100%",
+              objectFit: "cover",
+              display: "block",
+              transform: hovered ? "scale(1.04)" : "scale(1)",
+              transition: "transform .6s cubic-bezier(0.16,1,0.3,1)",
+            }}
+          />
+        ) : (
+          <div style={{ width: "100%", height: "100%", background: exp.visual }} />
+        )}
+      </div>
       <div style={{ padding: "26px 26px 28px", display: "flex", flexDirection: "column", flex: 1 }}>
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", marginBottom: 10 }}>
           <p style={{ ...T.eyebrow, margin: 0 }}>{exp.eyebrow}</p>

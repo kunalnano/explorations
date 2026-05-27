@@ -1,4 +1,13 @@
 import { useEffect, useCallback } from "react";
+import imgTheTell from "../assets/explorations/the-tell.jpg";
+import imgSoftwareFactory from "../assets/explorations/software-factory.jpg";
+
+// Per-essay hero image. Featured cards fall back to the CSS gradient
+// (work.visual) when no image is registered here.
+const IMAGES = {
+  "the-tell": imgTheTell,
+  "software-factory": imgSoftwareFactory,
+};
 
 // ── Tokens — Apple direction ───────────────────────────────
 const C = {
@@ -169,6 +178,7 @@ function Hero({ onNav }) {
 }
 
 function ExplorationCard({ work, onNav }) {
+  const image = IMAGES[work.id];
   return (
     <button onClick={() => onNav(work.id)}
       onMouseEnter={(e) => {
@@ -186,7 +196,20 @@ function ExplorationCard({ work, onNav }) {
         textAlign: "left", fontFamily: F.text,
         transition: "transform .3s ease, box-shadow .3s ease",
       }}>
-      <div style={{ height: 220, background: work.visual }} />
+      <div style={{ height: 220, overflow: "hidden", position: "relative" }}>
+        {image ? (
+          <img
+            src={image}
+            alt=""
+            loading="lazy"
+            style={{
+              width: "100%", height: "100%", objectFit: "cover", display: "block",
+            }}
+          />
+        ) : (
+          <div style={{ width: "100%", height: "100%", background: work.visual }} />
+        )}
+      </div>
       <div style={{ padding: "26px 28px 32px" }}>
         <p style={{
           fontFamily: F.text, fontSize: 13, letterSpacing: "0.04em",
