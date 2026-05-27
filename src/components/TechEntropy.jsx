@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef, useCallback } from "react";
+import { C, F } from "../design.js";
 
 /* ═══════════════════════════════════════════════════════════════
    TECHNOLOGY AS ENTROPY
@@ -17,11 +18,10 @@ const GREEN = "#34d399";
 const FAINT = "rgba(255,255,255,0.03)";
 const LINE = "rgba(255,255,255,0.06)";
 
-const sans = { fontFamily: "'Segoe UI', system-ui, -apple-system, sans-serif" };
-const serif = { fontFamily: "Georgia, 'Times New Roman', serif" };
-const mono = {
-  fontFamily: "'SF Mono', 'Cascadia Code', 'Consolas', monospace",
-};
+// Apple typographic stack — interior identity colors stay
+const sans = { fontFamily: F.display };
+const serif = { fontFamily: F.text };
+const mono = { fontFamily: F.mono };
 
 function Reveal({ children, delay = 0 }) {
   const ref = useRef(null);
@@ -1248,8 +1248,6 @@ function InevitabilityGauge() {
 
 // ═══════════════ MAIN COMPONENT ═══════════════
 export default function TechEntropy({ onBack }) {
-  const [backHover, setBackHover] = useState(false);
-
   return (
     <div style={{ background: BG, minHeight: "100vh", color: BONE }}>
       <style>{`
@@ -1268,7 +1266,6 @@ export default function TechEntropy({ onBack }) {
         }}
       />
 
-      {/* Fixed back button */}
       <div
         style={{
           position: "relative",
@@ -1278,61 +1275,70 @@ export default function TechEntropy({ onBack }) {
           padding: "0 24px",
         }}
       >
-        {/* HERO — full viewport */}
-        <div
+        {/* HERO — Apple typographic frame */}
+        <section
           style={{
-            minHeight: "100vh",
-            display: "flex",
-            flexDirection: "column",
-            justifyContent: "center",
-            paddingBottom: 80,
+            padding: "112px 0 80px",
+            textAlign: "center",
+            animation: "fadeIn 1s ease both",
           }}
         >
           <div
             style={{
-              ...mono,
-              fontSize: 10,
-              letterSpacing: 4,
-              color: EMBER,
+              fontFamily: F.text,
+              fontSize: 13,
+              fontWeight: 500,
+              letterSpacing: "0.18em",
               textTransform: "uppercase",
-              marginBottom: 20,
+              color: "rgba(245,245,247,0.55)",
+              marginBottom: 22,
               animation: "fadeIn 1s ease both",
+              display: "inline-flex",
+              alignItems: "center",
+              gap: 10,
             }}
           >
+            <span
+              style={{
+                display: "inline-block",
+                width: 5,
+                height: 5,
+                borderRadius: "50%",
+                background: C.accent,
+              }}
+            />
             A thermodynamic theory of progress
           </div>
           <h1
             style={{
-              ...sans,
-              fontSize: "clamp(36px, 7vw, 60px)",
-              fontWeight: 800,
+              fontFamily: F.display,
+              fontWeight: 600,
+              fontSize: "clamp(48px, 8vw, 96px)",
               lineHeight: 1.05,
-              letterSpacing: -2,
-              marginBottom: 24,
-              background: `linear-gradient(135deg, ${EMBER}, ${GHOST})`,
-              WebkitBackgroundClip: "text",
-              WebkitTextFillColor: "transparent",
+              letterSpacing: "-0.045em",
+              color: "#f5f5f7",
+              margin: "0 0 22px",
               animation: "fadeUp 1.2s ease 0.3s both",
             }}
           >
-            Technology as
-            <br />
-            Entropy
+            Technology as entropy<span style={{ color: C.accent }}>.</span>
           </h1>
-          <div
+          <p
             style={{
-              ...serif,
-              fontSize: 20,
-              lineHeight: 1.7,
-              color: ASH,
-              maxWidth: 540,
-              fontStyle: "italic",
+              fontFamily: F.display,
+              fontWeight: 400,
+              fontSize: "clamp(20px, 2.4vw, 28px)",
+              lineHeight: 1.3,
+              letterSpacing: "-0.022em",
+              color: "rgba(245,245,247,0.65)",
+              maxWidth: 640,
+              margin: "0 auto",
               animation: "fadeUp 1.2s ease 0.6s both",
             }}
           >
             Not a human invention. A thermodynamic inevitability.
-          </div>
-        </div>
+          </p>
+        </section>
 
         {/* CH I: THE CURVE */}
         <Chapter

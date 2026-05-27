@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef, useCallback } from "react";
+import { C, F } from "../design.js";
 
 /* ═══════════════════════════════════════════════════════════════
    JWST: THE COSMIC DOMINO COLLAPSE
@@ -17,11 +18,10 @@ const GREEN = "#34d399";
 const FAINT = "rgba(255,255,255,0.03)";
 const LINE = "rgba(255,255,255,0.06)";
 
-const sans = { fontFamily: "'Segoe UI', system-ui, -apple-system, sans-serif" };
-const serif = { fontFamily: "Georgia, 'Times New Roman', serif" };
-const mono = {
-  fontFamily: "'SF Mono', 'Cascadia Code', 'Consolas', monospace",
-};
+// Apple typographic stack — interior identity colors stay
+const sans = { fontFamily: F.display };
+const serif = { fontFamily: F.text };
+const mono = { fontFamily: F.mono };
 
 function Reveal({ children, delay = 0 }) {
   const ref = useRef(null);
@@ -882,8 +882,6 @@ function GalaxyTimeline() {
 
 // ═══════════════ MAIN ═══════════════
 export default function JWSTDominoes({ onBack }) {
-  const [backHover, setBackHover] = useState(false);
-
   return (
     <div style={{ background: BG, minHeight: "100vh", color: BONE }}>
       <style>{`
@@ -902,7 +900,6 @@ export default function JWSTDominoes({ onBack }) {
         }}
       />
 
-      {/* Fixed back button */}
       <div
         style={{
           position: "relative",
@@ -912,24 +909,25 @@ export default function JWSTDominoes({ onBack }) {
           padding: "0 24px",
         }}
       >
-        {/* HERO — full viewport */}
-        <div
-          style={{
-            minHeight: "100vh",
-            display: "flex",
-            flexDirection: "column",
-            justifyContent: "center",
-            paddingBottom: 80,
-          }}
-        >
+        {/* HERO — Apple typographic frame */}
+        <section style={{
+          padding: "112px 0 80px",
+          textAlign: "center",
+        }}>
+          <div style={{
+            width: 56, height: 1, background: C.accent,
+            margin: "0 auto 22px", opacity: 0.85,
+            animation: "fadeIn 1s ease both",
+          }} />
           <div
             style={{
-              ...mono,
-              fontSize: 10,
-              letterSpacing: 4,
-              color: EMBER,
+              fontFamily: F.text,
+              fontSize: 13,
+              fontWeight: 500,
+              letterSpacing: "0.18em",
               textTransform: "uppercase",
-              marginBottom: 20,
+              color: "rgba(245,245,247,0.55)",
+              marginBottom: 22,
               animation: "fadeIn 1s ease both",
             }}
           >
@@ -937,37 +935,34 @@ export default function JWSTDominoes({ onBack }) {
           </div>
           <h1
             style={{
-              ...sans,
-              fontSize: "clamp(36px, 7vw, 60px)",
-              fontWeight: 800,
+              fontFamily: F.display,
+              fontWeight: 600,
+              fontSize: "clamp(48px, 8vw, 96px)",
               lineHeight: 1.05,
-              letterSpacing: -2,
-              marginBottom: 24,
-              background: `linear-gradient(135deg, ${EMBER}, ${GHOST})`,
-              WebkitBackgroundClip: "text",
-              WebkitTextFillColor: "transparent",
+              letterSpacing: "-0.045em",
+              color: "#f5f5f7",
+              margin: "0 0 22px",
               animation: "fadeUp 1.2s ease 0.3s both",
             }}
           >
-            The Cosmic
-            <br />
-            Domino Collapse
+            The cosmic domino collapse<span style={{ color: C.accent }}>.</span>
           </h1>
-          <div
+          <p
             style={{
-              ...serif,
-              fontSize: 20,
-              lineHeight: 1.7,
-              color: ASH,
-              maxWidth: 540,
-              fontStyle: "italic",
+              fontFamily: F.display,
+              fontWeight: 400,
+              fontSize: "clamp(20px, 2.4vw, 28px)",
+              lineHeight: 1.3,
+              letterSpacing: "-0.022em",
+              color: "rgba(245,245,247,0.65)",
+              maxWidth: 680,
+              margin: "0 auto",
               animation: "fadeUp 1.2s ease 0.6s both",
             }}
           >
-            If early galaxies account for the entire CMB, modern cosmology loses
-            its calibration standard.
-          </div>
-        </div>
+            If early galaxies account for the entire CMB, modern cosmology loses its calibration standard.
+          </p>
+        </section>
 
         {/* CH I: THE COUNT */}
         <Chapter

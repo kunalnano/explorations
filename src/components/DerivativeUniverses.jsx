@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from "react";
+import { C, F } from "../design.js";
 
 /* ═══════════════════════════════════════════════════════════════
    DERIVATIVE UNIVERSES & THE HIVE MIND
@@ -19,9 +20,10 @@ const GREEN = "#34d399";
 const FAINT = "rgba(255,255,255,0.03)";
 const LINE = "rgba(255,255,255,0.06)";
 
-const sans = { fontFamily: "'Segoe UI', system-ui, -apple-system, sans-serif" };
-const serif = { fontFamily: "Georgia, 'Times New Roman', serif" };
-const mono = { fontFamily: "'SF Mono', 'Cascadia Code', 'Consolas', monospace" };
+// Apple typographic stack — interior identity colors stay
+const sans = { fontFamily: F.display };
+const serif = { fontFamily: F.text };
+const mono = { fontFamily: F.mono };
 
 function useReveal(threshold = 0.12) {
   const ref = useRef(null);
@@ -357,24 +359,37 @@ export default function DerivativeUniverses({ onBack }) {
       }} />
       <div style={{ position: "relative", zIndex: 1, maxWidth: 720, margin: "0 auto", padding: "0 24px" }}>
 
-        <div style={{ paddingTop: 32 }}>
-          </div>
-
-        {/* HERO */}
-        <div style={{ padding: "80px 0 60px" }}>
-          <Reveal><div style={{ ...mono, fontSize: 10, letterSpacing: 4, color: EMBER, textTransform: "uppercase", marginBottom: 20 }}>Copy with noise = evolution = innovation</div></Reveal>
+        {/* HERO — Apple typographic frame */}
+        <section style={{ padding: "112px 0 80px", textAlign: "center" }}>
+          <Reveal>
+            <div style={{
+              width: 56, height: 1, background: C.accent,
+              margin: "0 auto 22px", opacity: 0.85,
+            }} />
+            <div style={{
+              fontFamily: F.text, fontSize: 13, fontWeight: 500,
+              letterSpacing: "0.18em", textTransform: "uppercase",
+              color: "rgba(245,245,247,0.55)", marginBottom: 22,
+            }}>Copy with noise equals evolution</div>
+          </Reveal>
           <Reveal delay={0.15}>
-            <h1 style={{ ...sans, fontSize: "clamp(36px, 7vw, 56px)", fontWeight: 800, lineHeight: 1.05, letterSpacing: -2, marginBottom: 24 }}>
-              Derivative Universes<br />& The <span style={{ color: EMBER }}>Hive Mind</span>
-            </h1>
+            <h1 style={{
+              fontFamily: F.display, fontWeight: 600,
+              fontSize: "clamp(48px, 8vw, 96px)",
+              lineHeight: 1.05, letterSpacing: "-0.045em",
+              color: "#f5f5f7", margin: "0 0 18px",
+            }}>Derivative universes<span style={{ color: C.accent }}>.</span></h1>
           </Reveal>
           <Reveal delay={0.3}>
-            <div style={{ ...serif, fontSize: 18, lineHeight: 1.7, color: ASH, maxWidth: 540, fontStyle: "italic" }}>
-              Child universes gain power through mutation. Your brain is already a hive mind.
-              Neuralink is just monitoring NYC by tapping 1,000 phone lines.
-            </div>
+            <p style={{
+              fontFamily: F.display, fontWeight: 400,
+              fontSize: "clamp(20px, 2.4vw, 28px)",
+              lineHeight: 1.3, letterSpacing: "-0.022em",
+              color: "rgba(245,245,247,0.65)",
+              maxWidth: 640, margin: "0 auto",
+            }}>Child universes outgrow their parents. Your brain is already a hive mind. Neuralink is just monitoring a city by tapping a thousand phone lines.</p>
           </Reveal>
-        </div>
+        </section>
 
         <Chapter label="Chapter I — Copy With Noise" title="Errors are the engine">
           <Reveal>
