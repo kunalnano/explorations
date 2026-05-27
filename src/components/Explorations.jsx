@@ -3,6 +3,14 @@ import { C, F, T } from "../design.js";
 import imgTheTell from "../assets/explorations/the-tell.jpg";
 import imgSoftwareFactory from "../assets/explorations/software-factory.jpg";
 import imgFinalFiveYears from "../assets/explorations/final-five-years.jpg";
+import imgAlsLimit from "../assets/explorations/als-limit.jpg";
+import imgAncientWisdom from "../assets/explorations/ancient-wisdom.jpg";
+import imgBoltzmannBrain from "../assets/explorations/boltzmann-brain.jpg";
+import imgIntelligenceCurrency from "../assets/explorations/intelligence-currency.jpg";
+import imgMultiAgentCiv from "../assets/explorations/multi-agent-civ.jpg";
+import imgPathDependency from "../assets/explorations/path-dependency.jpg";
+import imgSoftwareTheory from "../assets/explorations/software-theory.jpg";
+import imgTechEntropy from "../assets/explorations/tech-entropy.jpg";
 
 // Per-essay hero image. Cards fall back to the CSS gradient (exp.visual)
 // for any essay not yet in this map.
@@ -10,6 +18,14 @@ const IMAGES = {
   "the-tell": imgTheTell,
   "software-factory": imgSoftwareFactory,
   "final-five-years": imgFinalFiveYears,
+  "als-limit": imgAlsLimit,
+  "ancient-wisdom": imgAncientWisdom,
+  "boltzmann-brain": imgBoltzmannBrain,
+  "intelligence-currency": imgIntelligenceCurrency,
+  "multi-agent-civ": imgMultiAgentCiv,
+  "path-dependency": imgPathDependency,
+  "software-theory": imgSoftwareTheory,
+  "tech-entropy": imgTechEntropy,
 };
 
 const EXPLORATIONS = [

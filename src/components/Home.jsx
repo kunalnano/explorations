@@ -1,12 +1,16 @@
 import { useEffect, useCallback } from "react";
 import imgTheTell from "../assets/explorations/the-tell.jpg";
 import imgSoftwareFactory from "../assets/explorations/software-factory.jpg";
+import imgIntelligenceCurrency from "../assets/explorations/intelligence-currency.jpg";
+import imgAlsLimit from "../assets/explorations/als-limit.jpg";
 
 // Per-essay hero image. Featured cards fall back to the CSS gradient
 // (work.visual) when no image is registered here.
 const IMAGES = {
   "the-tell": imgTheTell,
   "software-factory": imgSoftwareFactory,
+  "intelligence-currency": imgIntelligenceCurrency,
+  "als-limit": imgAlsLimit,
 };
 
 // ── Tokens — Apple direction ───────────────────────────────
