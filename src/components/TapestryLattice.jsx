@@ -160,15 +160,7 @@ export default function TapestryLattice({ onBack }) {
     <div style={{ minHeight: "100vh", background: BG, color: BONE, ...fell }}>
       {/* Back button */}
       <div style={{ position: "fixed", top: 20, left: 20, zIndex: 100 }}>
-        <button onClick={onBack} style={{
-          background: "rgba(26,21,16,0.9)", border: `1px solid ${GOLD_DIM}`,
-          color: GOLD_DIM, padding: "8px 16px", cursor: "pointer", fontSize: 12,
-          letterSpacing: 2, textTransform: "uppercase", ...cinzel, backdropFilter: "blur(8px)",
-        }}
-          onMouseEnter={e => { e.currentTarget.style.color = GOLD; e.currentTarget.style.borderColor = GOLD; }}
-          onMouseLeave={e => { e.currentTarget.style.color = GOLD_DIM; e.currentTarget.style.borderColor = GOLD_DIM; }}
-        >← Return</button>
-      </div>
+        </div>
 
       {/* TAPESTRY FRAME */}
       <div style={{

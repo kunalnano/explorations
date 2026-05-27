@@ -17,21 +17,6 @@ export default function AlsLimit({ onBack }) {
   return (
     <div style={{ background: BG, minHeight: "100vh", color: BONE, ...sans }}>
       {/* Back button */}
-      <button
-        onClick={onBack}
-        style={{
-          position: "fixed", top: 20, left: 20, zIndex: 100,
-          background: "rgba(5,5,8,0.8)", border: `1px solid ${LINE}`,
-          borderRadius: 10, padding: "8px 16px", color: ASH,
-          ...mono, fontSize: 11, cursor: "pointer",
-          backdropFilter: "blur(8px)", transition: "color 0.2s", letterSpacing: 1,
-        }}
-        onMouseEnter={(e) => (e.currentTarget.style.color = BONE)}
-        onMouseLeave={(e) => (e.currentTarget.style.color = ASH)}
-      >
-        ← BACK
-      </button>
-
       {/* Hero */}
       <header style={{
         minHeight: "90vh", display: "flex", flexDirection: "column",

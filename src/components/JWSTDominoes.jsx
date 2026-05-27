@@ -903,29 +903,6 @@ export default function JWSTDominoes({ onBack }) {
       />
 
       {/* Fixed back button */}
-      <button
-        onClick={onBack}
-        onMouseEnter={() => setBackHover(true)}
-        onMouseLeave={() => setBackHover(false)}
-        style={{
-          position: "fixed",
-          top: 28,
-          left: 28,
-          zIndex: 1000,
-          background: "none",
-          border: "none",
-          color: backHover ? BONE : ASH,
-          cursor: "pointer",
-          ...mono,
-          fontSize: 11,
-          letterSpacing: 2,
-          padding: "8px 0",
-          transition: "color 0.3s",
-        }}
-      >
-        ← EXPLORATIONS
-      </button>
-
       <div
         style={{
           position: "relative",

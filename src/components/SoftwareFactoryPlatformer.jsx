@@ -510,14 +510,6 @@ export default function SoftwareFactoryPlatformer({ onBack }) {
   return (
     <div style={{ position: "fixed", inset: 0, background: BG, zIndex: 10, display: "flex", flexDirection: "column" }}>
       {/* Back button */}
-      <button onClick={onBack} style={{
-        position: "absolute", top: 12, left: 12, zIndex: 100,
-        background: "rgba(10,10,15,0.85)", border: `1px solid rgba(74,170,153,0.3)`,
-        color: ACCENT, fontFamily: "'SF Mono', 'Fira Code', monospace",
-        fontSize: 11, letterSpacing: 2, padding: "6px 14px",
-        borderRadius: 6, cursor: "pointer", textTransform: "uppercase",
-      }}>← explorations</button>
-
       {/* HUD */}
       <div style={{
         display: "flex", justifyContent: "space-between", alignItems: "center",

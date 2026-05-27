@@ -361,23 +361,7 @@ export default function GitHubConstellation({ onBack }) {
           Failed to load repositories
         </div>
         <div style={{ fontSize: 14, color: COLORS.ash }}>{error}</div>
-        <button
-          onClick={onBack}
-          style={{
-            marginTop: 24,
-            background: "none",
-            border: `1px solid ${COLORS.goldDim}`,
-            color: COLORS.gold,
-            padding: "8px 18px",
-            fontFamily: FONTS.mono,
-            fontSize: 12,
-            cursor: "pointer",
-            letterSpacing: "0.05em",
-          }}
-        >
-          &larr; EXPLORATIONS
-        </button>
-      </div>
+        </div>
     );
   }
 
@@ -385,25 +369,6 @@ export default function GitHubConstellation({ onBack }) {
     <div style={{ background: COLORS.bg, minHeight: "100vh", color: COLORS.bone }}>
       {/* Header */}
       <div style={{ maxWidth: 1100, margin: "0 auto", padding: "40px 32px 0", position: "relative" }}>
-        <button
-          onClick={onBack}
-          style={{
-            background: "none",
-            border: "none",
-            color: COLORS.gold,
-            fontFamily: FONTS.mono,
-            fontSize: 12,
-            cursor: "pointer",
-            letterSpacing: "0.1em",
-            padding: 0,
-            opacity: headerVisible ? 1 : 0,
-            transform: headerVisible ? "translateY(0)" : "translateY(-8px)",
-            transition: "opacity 0.6s ease, transform 0.6s ease",
-          }}
-        >
-          &larr; EXPLORATIONS
-        </button>
-
         <h1
           style={{
             fontFamily: FONTS.sans,

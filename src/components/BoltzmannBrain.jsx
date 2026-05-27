@@ -726,19 +726,6 @@ export default function BoltzmannBrain({ onBack }) {
       `}</style>
 
       {/* Back button */}
-      <button onClick={onBack} style={{
-        position: "fixed", top: 20, left: 20, zIndex: 100,
-        ...mono, fontSize: 11, letterSpacing: 1, color: ASH,
-        background: "rgba(255,255,255,0.03)", border: `1px solid ${LINE}`,
-        borderRadius: 8, padding: "8px 16px", cursor: "pointer",
-        transition: "color 0.2s",
-      }}
-        onMouseEnter={(e) => e.currentTarget.style.color = ICE}
-        onMouseLeave={(e) => e.currentTarget.style.color = ASH}
-      >
-        ← Back
-      </button>
-
       <div style={{ maxWidth: 740, margin: "0 auto", padding: "0 24px" }}>
 
         {/* ═══ HERO ═══ */}

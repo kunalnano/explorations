@@ -104,17 +104,6 @@ export default function EntropyFilter({ onBack }) {
   return (
     <div style={{ background: BG, color: BONE, minHeight: "100vh" }}>
       {/* Back */}
-      <button onClick={onBack} style={{
-        position: "fixed", top: 20, left: 20, zIndex: 100,
-        background: "rgba(255,255,255,0.03)", border: `1px solid ${LINE}`,
-        borderRadius: 10, padding: "8px 16px",
-        color: ASH, cursor: "pointer", ...mono, fontSize: 11,
-        transition: "all 0.3s",
-      }}
-        onMouseEnter={(e) => { e.currentTarget.style.color = EMBER; e.currentTarget.style.borderColor = EMBER + "44"; }}
-        onMouseLeave={(e) => { e.currentTarget.style.color = ASH; e.currentTarget.style.borderColor = LINE; }}
-      >← Back</button>
-
       {/* ── HERO ── */}
       <header style={{
         minHeight: "100vh", display: "flex", flexDirection: "column",

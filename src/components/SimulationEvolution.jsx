@@ -460,8 +460,7 @@ export default function SimulationEvolution({ onBack }) {
       <div style={{ position: "relative", zIndex: 1, maxWidth: 720, margin: "0 auto", padding: "0 24px" }}>
 
         <div style={{ paddingTop: 32 }}>
-          <button onClick={onBack} style={{ background: "none", border: "none", color: ASH, cursor: "pointer", ...mono, fontSize: 11, letterSpacing: 2, padding: "8px 0" }}>← EXPLORATIONS</button>
-        </div>
+          </div>
 
         {/* HERO */}
         <div style={{ padding: "80px 0 60px" }}>

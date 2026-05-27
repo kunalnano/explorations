@@ -2,17 +2,20 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><defs><linearGradient id='g' x1='0' y1='0' x2='1' y2='1'><stop offset='0%25' stop-color='%2300d4ff'/><stop offset='100%25' stop-color='%238b5cf6'/></linearGradient></defs><circle cx='16' cy='16' r='8' fill='url(%23g)'/><circle cx='16' cy='16' r='12' fill='none' stroke='url(%23g)' stroke-width='1' opacity='0.4'/></svg>" />
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><circle cx='16' cy='16' r='8' fill='%23c9a84c'/><circle cx='16' cy='16' r='12' fill='none' stroke='%23c9a84c' stroke-width='1' opacity='0.4'/></svg>" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="Al Sharma — I build things that think. AI systems, interactive explorations, and the software factory." />
-    <meta property="og:title" content="Al Sharma" />
-    <meta property="og:description" content="I build things that think. Founder, Dark Vector Cognition." />
+    <meta name="description" content="Al Sharma — Post-sales strategy for AI-native software. I close the gap between what enterprises buy and what they realize from it, and I build the agents I'd want them to use." />
+    <meta property="og:title" content="Al Sharma — Post-Sales Strategy for AI-Native Software" />
+    <meta property="og:description" content="Post-sales strategist and AI-native practitioner. Explorations on agents, platform engineering, and the operator's craft." />
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://alsharma.com" />
-    <title>Al Sharma</title>
+    <title>Al Sharma — Post-Sales Strategy for AI-Native Software</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,200..600;1,9..144,200..600&family=JetBrains+Mono:wght@300;400&display=swap" />
     <style>
       * { margin: 0; padding: 0; box-sizing: border-box; }
-      body { background: #08080f; }
+      html, body { background: #ffffff; }
     </style>
   </head>
   <body>
@@ -37,13 +40,13 @@
           // Outer ring
           ctx.beginPath();
           ctx.arc(H, H, 12, 0, Math.PI * 2);
-          ctx.strokeStyle = 'rgba(0,212,255,' + (0.25 * pulse) + ')';
+          ctx.strokeStyle = 'rgba(201,168,76,' + (0.3 * pulse) + ')';
           ctx.lineWidth = 1;
           ctx.stroke();
 
           // Glow
           const g = ctx.createRadialGradient(H, H, 0, H, H, 10 + pulse * 3);
-          g.addColorStop(0, 'rgba(0,212,255,' + (0.35 * pulse) + ')');
+          g.addColorStop(0, 'rgba(201,168,76,' + (0.35 * pulse) + ')');
           g.addColorStop(1, 'transparent');
           ctx.fillStyle = g;
           ctx.fillRect(0, 0, S, S);
@@ -52,8 +55,8 @@
           ctx.beginPath();
           ctx.arc(H, H, 5 + pulse * 1.5, 0, Math.PI * 2);
           const ng = ctx.createRadialGradient(H - 2, H - 2, 0, H, H, 7);
-          ng.addColorStop(0, '#00d4ff');
-          ng.addColorStop(1, '#8b5cf6');
+          ng.addColorStop(0, '#e8d48b');
+          ng.addColorStop(1, '#8b7a3a');
           ctx.fillStyle = ng;
           ctx.fill();
 
@@ -65,11 +68,11 @@
     </script>
     <!-- ═══ CONTACT PANEL ═══ -->
     <div id="contact-backdrop" onclick="toggleContact(false)" style="position:fixed;inset:0;z-index:9998;background:rgba(0,0,0,0.5);backdrop-filter:blur(2px);opacity:0;pointer-events:none;transition:opacity 0.3s;"></div>
-    <div id="contact-panel" style="position:fixed;top:0;right:0;bottom:0;width:min(400px,90vw);z-index:9999;background:#0a0a10;border-left:1px solid rgba(0,212,255,0.12);transform:translateX(100%);transition:transform 0.35s cubic-bezier(0.16,1,0.3,1);display:flex;flex-direction:column;overflow:hidden;">
+    <div id="contact-panel" style="position:fixed;top:0;right:0;bottom:0;width:min(400px,90vw);z-index:9999;background:#0a0a10;border-left:1px solid rgba(201,168,76,0.18);transform:translateX(100%);transition:transform 0.35s cubic-bezier(0.16,1,0.3,1);display:flex;flex-direction:column;overflow:hidden;">
       <div style="padding:24px 28px 16px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid rgba(255,255,255,0.06);">
         <div>
-          <p style="font-family:system-ui;font-size:11px;color:#00d4ff;letter-spacing:3px;text-transform:uppercase;margin:0;">GET IN TOUCH</p>
-          <p style="font-family:system-ui;font-size:13px;color:rgba(255,255,255,0.4);margin:4px 0 0;">I'll respond within 24 hours.</p>
+          <p style="font-family:'JetBrains Mono',monospace;font-size:11px;color:#c9a84c;letter-spacing:3px;text-transform:uppercase;margin:0;">GET IN TOUCH</p>
+          <p style="font-family:'Fraunces',Georgia,serif;font-size:14px;color:rgba(232,230,221,0.55);margin:6px 0 0;font-style:italic;">I'll respond within 24 hours.</p>
         </div>
         <button onclick="toggleContact(false)" style="background:none;border:none;color:rgba(255,255,255,0.3);font-size:22px;cursor:pointer;padding:4px 8px;line-height:1;">&times;</button>
       </div>
@@ -78,18 +81,19 @@
           <div><label style="font-family:monospace;font-size:11px;color:rgba(255,255,255,0.35);letter-spacing:2px;display:block;margin-bottom:6px;">NAME</label><input id="cf-name" placeholder="Your name" style="width:100%;padding:12px 14px;font-size:14px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);border-radius:4px;color:#fff;outline:none;box-sizing:border-box;" /></div>
           <div><label style="font-family:monospace;font-size:11px;color:rgba(255,255,255,0.35);letter-spacing:2px;display:block;margin-bottom:6px;">EMAIL</label><input id="cf-email" type="email" placeholder="you@company.com" style="width:100%;padding:12px 14px;font-size:14px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);border-radius:4px;color:#fff;outline:none;box-sizing:border-box;" /></div>
           <div><label style="font-family:monospace;font-size:11px;color:rgba(255,255,255,0.35);letter-spacing:2px;display:block;margin-bottom:6px;">MESSAGE</label><textarea id="cf-msg" rows="5" placeholder="What's on your mind?" style="width:100%;padding:12px 14px;font-size:14px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);border-radius:4px;color:#fff;outline:none;resize:vertical;min-height:100px;box-sizing:border-box;"></textarea></div>
-          <p id="cf-error" style="font-size:13px;color:#e55;margin:0;display:none;">Something went wrong. Try <a href="mailto:hello@darkvectorcognition.ai" target="_blank" style="color:#00d4ff;text-decoration:none;">emailing directly</a>.</p>
-          <button id="cf-submit" onclick="submitContact()" style="padding:14px 28px;font-family:monospace;font-size:13px;letter-spacing:1.5px;text-transform:uppercase;background:linear-gradient(135deg,rgba(0,212,255,0.12),rgba(139,92,246,0.08));color:#00d4ff;border:1px solid rgba(0,212,255,0.25);border-radius:4px;cursor:pointer;">SEND MESSAGE</button>
+          <p id="cf-error" style="font-size:13px;color:#e55;margin:0;display:none;">Something went wrong. Try <a href="mailto:hello@darkvectorcognition.ai" target="_blank" style="color:#c9a84c;text-decoration:none;">emailing directly</a>.</p>
+          <button id="cf-submit" onclick="submitContact()" style="padding:14px 28px;font-family:monospace;font-size:13px;letter-spacing:1.5px;text-transform:uppercase;background:#c9a84c;color:#0a0a10;border:none;border-radius:999px;cursor:pointer;font-weight:500;">SEND MESSAGE</button>
         </div>
       </div>
     </div>
-    <button id="contact-fab" onclick="toggleContact(true)" style="position:fixed;bottom:28px;right:28px;z-index:9997;width:56px;height:56px;border-radius:50%;background:linear-gradient(135deg,#00d4ff,#8b5cf6);border:none;cursor:pointer;box-shadow:0 4px 20px rgba(0,212,255,0.3);display:flex;align-items:center;justify-content:center;">
-      <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M20 2H4C2.9 2 2 2.9 2 4V22L6 18H20C21.1 18 22 17.1 22 16V4C22 2.9 21.1 2 20 2Z" fill="#08080f"/></svg>
+    <button id="contact-fab" onclick="toggleContact(true)" style="position:fixed;bottom:28px;right:28px;z-index:9997;width:56px;height:56px;border-radius:50%;background:#1d1d1f;border:none;cursor:pointer;box-shadow:0 4px 20px rgba(0,0,0,0.18);display:flex;align-items:center;justify-content:center;">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M20 2H4C2.9 2 2 2.9 2 4V22L6 18H20C21.1 18 22 17.1 22 16V4C22 2.9 21.1 2 20 2Z" fill="#ffffff"/></svg>
     </button>
     <script>
       function toggleContact(open){var p=document.getElementById('contact-panel'),b=document.getElementById('contact-backdrop'),f=document.getElementById('contact-fab');if(open){p.style.transform='translateX(0)';p.style.boxShadow='-20px 0 60px rgba(0,0,0,0.6)';b.style.opacity='1';b.style.pointerEvents='auto';f.style.display='none';}else{p.style.transform='translateX(100%)';p.style.boxShadow='none';b.style.opacity='0';b.style.pointerEvents='none';f.style.display='flex';}}
-      function submitContact(){var n=document.getElementById('cf-name').value,e=document.getElementById('cf-email').value,m=document.getElementById('cf-msg').value,btn=document.getElementById('cf-submit'),err=document.getElementById('cf-error');if(!n||!e||!m)return;btn.textContent='TRANSMITTING...';btn.style.opacity='0.4';err.style.display='none';fetch('https://formspree.io/f/mykboegz',{method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json'},body:JSON.stringify({name:n,email:e,message:m})}).then(function(r){if(r.ok){document.getElementById('contact-body').innerHTML='<div style="text-align:center;padding-top:60px;"><div style="font-size:40px;margin-bottom:16px;color:#00d4ff;">&#10003;</div><p style="font-size:16px;color:#00d4ff;">Message received.</p><p style="font-size:14px;color:rgba(255,255,255,0.4);margin-top:8px;">I\'ll be in touch shortly.</p><button onclick="toggleContact(false)" style="margin-top:24px;padding:10px 24px;font-family:monospace;font-size:12px;background:transparent;color:#8b5cf6;border:1px solid rgba(139,92,246,0.2);border-radius:4px;cursor:pointer;">CLOSE</button></div>';}else{throw new Error();}}).catch(function(){btn.textContent='SEND MESSAGE';btn.style.opacity='1';err.style.display='block';});}
+      function submitContact(){var n=document.getElementById('cf-name').value,e=document.getElementById('cf-email').value,m=document.getElementById('cf-msg').value,btn=document.getElementById('cf-submit'),err=document.getElementById('cf-error');if(!n||!e||!m)return;btn.textContent='SENDING...';btn.style.opacity='0.5';err.style.display='none';fetch('https://formspree.io/f/mykboegz',{method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json'},body:JSON.stringify({name:n,email:e,message:m})}).then(function(r){if(r.ok){document.getElementById('contact-body').innerHTML='<div style="text-align:center;padding-top:60px;"><div style="font-size:40px;margin-bottom:16px;color:#c9a84c;">&#10003;</div><p style="font-family:Fraunces,Georgia,serif;font-style:italic;font-size:20px;color:#e8e6dd;">Message received.</p><p style="font-family:Fraunces,Georgia,serif;font-size:15px;color:rgba(232,230,221,0.55);margin-top:8px;">I\'ll be in touch shortly.</p><button onclick="toggleContact(false)" style="margin-top:28px;padding:11px 26px;font-family:JetBrains Mono,monospace;font-size:11px;letter-spacing:3px;text-transform:uppercase;background:transparent;color:#c9a84c;border:1px solid rgba(201,168,76,0.4);border-radius:999px;cursor:pointer;">CLOSE</button></div>';}else{throw new Error();}}).catch(function(){btn.textContent='SEND MESSAGE';btn.style.opacity='1';err.style.display='block';});}
       document.addEventListener('keydown',function(e){if(e.key==='Escape')toggleContact(false);});
+      window.addEventListener('open-contact',function(){toggleContact(true);});
     </script>
   </body>
 </html>
