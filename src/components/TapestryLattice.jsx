@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef, useCallback } from "react";
+import { C, F } from "../design.js";
 
 /* ═══════════════════════════════════════════════════════════════
    THE TAPESTRY OF THE LATTICE — MAGNUS OPUM
@@ -26,7 +27,7 @@ const FAINT = `rgba(201,168,76,0.03)`;
 const cinzelDec = { fontFamily: "'Cinzel Decorative', Georgia, serif" };
 const cinzel = { fontFamily: "'Cinzel', Georgia, serif" };
 const fell = { fontFamily: "'IM Fell English', Georgia, serif" };
-const mono = { fontFamily: "'SF Mono', 'Cascadia Code', Consolas, monospace" };
+const mono = { fontFamily: F.mono };
 
 function Reveal({ children, delay = 0 }) {
   const ref = useRef(null);
@@ -158,11 +159,46 @@ export default function TapestryLattice({ onBack }) {
 
   return (
     <div style={{ minHeight: "100vh", background: BG, color: BONE, ...fell }}>
-      {/* Back button */}
-      <div style={{ position: "fixed", top: 20, left: 20, zIndex: 100 }}>
-        </div>
 
-      {/* TAPESTRY FRAME */}
+      {/* ═══ HERO — Apple-direction frame; the parchment myth lives below ═══ */}
+      <section style={{ padding: "112px 22px 80px", textAlign: "center", maxWidth: 1024, margin: "0 auto" }}>
+        <Reveal>
+          <div style={{
+            width: 56, height: 1, background: C.accent,
+            margin: "0 auto 28px", opacity: 0.85,
+          }} />
+        </Reveal>
+        <Reveal>
+          <div style={{
+            fontFamily: F.text, fontSize: 13, fontWeight: 500,
+            letterSpacing: "0.18em", textTransform: "uppercase",
+            color: "rgba(245,245,247,0.55)", marginBottom: 28,
+          }}>Magnus Opum</div>
+        </Reveal>
+        <Reveal delay={0.15}>
+          <h1 style={{
+            fontFamily: F.display, fontWeight: 600,
+            fontSize: "clamp(48px, 8vw, 96px)",
+            lineHeight: 1.04, letterSpacing: "-0.045em",
+            margin: "0 0 22px", color: "#f5f5f7",
+          }}>
+            The tapestry of the lattice<span style={{ color: C.accent }}>.</span>
+          </h1>
+        </Reveal>
+        <Reveal delay={0.3}>
+          <p style={{
+            fontFamily: F.display, fontWeight: 400,
+            fontSize: "clamp(20px, 2.4vw, 28px)",
+            lineHeight: 1.3, letterSpacing: "-0.022em",
+            color: "rgba(245,245,247,0.65)",
+            maxWidth: 680, margin: "0 auto",
+          }}>
+            From sand to silicon, from dust the word. A syncretic mythology of the crystal lattice.
+          </p>
+        </Reveal>
+      </section>
+
+      {/* TAPESTRY FRAME — interior keeps its mythic aesthetic */}
       <div style={{
         maxWidth: 1100, margin: "0 auto",
         border: `3px solid ${GOLD_DIM}`, outline: `1px solid ${GOLD_DIM}`, outlineOffset: 6,
@@ -172,7 +208,7 @@ export default function TapestryLattice({ onBack }) {
         {/* KNOTWORK TOP */}
         <KnotworkBorder runes="᛭ ᚦ ᛝ ᚨ ᛗ ᛁ ᚾ ᛖ ᚱ ᚨ ᛚ ᛁ ᛊ   ᛋ ᛁ ᛚ ᛁ ᚲ ᛟ ᚾ ᛁ ᛊ   ᚷ ᛖ ᚾ ᛖ ᛊ ᛁ ᛊ ᛭" />
 
-        {/* TITLE CARTOUCHE */}
+        {/* INTERIOR CARTOUCHE — Latin motto + scattered rune line, no longer the page hero */}
         <Reveal>
           <div style={{
             textAlign: "center", padding: "60px 40px 30px", position: "relative",
@@ -185,12 +221,9 @@ export default function TapestryLattice({ onBack }) {
             <div style={{ ...mono, color: GOLD_DIM, letterSpacing: 8, fontSize: 11, marginBottom: 20, opacity: 0.6 }}>
               ᛏ ᚺ ᛖ   ᛏ ᚨ ᛈ ᛖ ᛊ ᛏ ᚱ ᛃ   ᛟ ᚠ   ᛏ ᚺ ᛖ   ᛚ ᚨ ᛏ ᛏ ᛁ ᚲ ᛖ
             </div>
-            <h1 style={{ ...cinzelDec, fontWeight: 900, fontSize: "clamp(28px, 5vw, 52px)", color: GOLD, letterSpacing: 6, textTransform: "uppercase", lineHeight: 1.2, textShadow: `0 0 40px rgba(201,168,76,0.3), 0 2px 4px rgba(0,0,0,0.8)`, marginBottom: 8 }}>
-              The Tapestry<br/>of the Lattice
-            </h1>
-            <div style={{ ...cinzel, fontWeight: 400, fontSize: "clamp(13px, 2vw, 18px)", color: BONE_DIM, letterSpacing: 10, textTransform: "uppercase", marginBottom: 20 }}>Magnus Opum</div>
-            <div style={{ ...fell, fontStyle: "italic", fontSize: 15, color: GOLD_DIM, letterSpacing: 3 }}>Ab Arena ad Silicium — Ex Pulvere, Verbum</div>
-            <div style={{ marginTop: 20, fontSize: 12, color: BONE_DIM, letterSpacing: 2 }}>FROM SAND TO SILICON — FROM DUST, THE WORD</div>
+            <div style={{ ...cinzel, fontWeight: 400, fontSize: "clamp(13px, 2vw, 18px)", color: BONE_DIM, letterSpacing: 10, textTransform: "uppercase", marginBottom: 20 }}>Ab Arena ad Silicium</div>
+            <div style={{ ...fell, fontStyle: "italic", fontSize: 15, color: GOLD_DIM, letterSpacing: 3 }}>Ex Pulvere, Verbum</div>
+            <div style={{ marginTop: 20, fontSize: 12, color: BONE_DIM, letterSpacing: 2 }}>FROM DUST, THE WORD</div>
             <Divider symbol="◆ ◇ ◆" />
           </div>
         </Reveal>

@@ -236,7 +236,7 @@ const FILTERS = [
 ];
 
 // ── Component ─────────────────────────────────────────────
-export default function Travel({ onBack }) {
+export default function Travel() {
   const [filter, setFilter] = useState("all");
   const [expanded, setExpanded] = useState(null);
 
@@ -279,11 +279,6 @@ export default function Travel({ onBack }) {
 
       <div style={S.container}>
         <header style={S.header}>
-          {onBack && (
-            <button onClick={onBack} style={S.backBtn} type="button">
-              ← back
-            </button>
-          )}
           <div style={S.eyebrow}>HANK · TRAVEL INDEX</div>
           <h1 style={S.title}>Bucket List</h1>
           <p style={S.lede}>
@@ -493,18 +488,6 @@ const S = {
   },
   header: {
     marginBottom: 48,
-  },
-  backBtn: {
-    background: "transparent",
-    border: "1px solid rgba(255, 255, 255, 0.18)",
-    color: "#e8e6df",
-    padding: "6px 12px",
-    fontFamily: MONO,
-    fontSize: 11,
-    letterSpacing: "0.08em",
-    cursor: "pointer",
-    marginBottom: 24,
-    borderRadius: 2,
   },
   eyebrow: {
     fontFamily: MONO,

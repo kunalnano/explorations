@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from "react";
+import { C, F } from "../design.js";
 
 /* ═══════════════════════════════════════════════════════════════
    DECLARATIVE AGENTS
@@ -17,9 +18,10 @@ const GREEN = "#34d399";
 const FAINT = "rgba(255,255,255,0.03)";
 const LINE = "rgba(255,255,255,0.06)";
 
-const sans = { fontFamily: "'Segoe UI', system-ui, -apple-system, sans-serif" };
-const serif = { fontFamily: "Georgia, 'Times New Roman', serif" };
-const mono = { fontFamily: "'SF Mono', 'Cascadia Code', 'Consolas', monospace" };
+// Apple-direction font tokens — sans-first, mono retained for accents.
+const sans = { fontFamily: F.display };
+const serif = { fontFamily: F.text };
+const mono = { fontFamily: F.mono };
 
 function useReveal(threshold = 0.12) {
   const ref = useRef(null);
@@ -332,23 +334,43 @@ export default function DeclarativeAgents({ onBack }) {
       }} />
       <div style={{ position: "relative", zIndex: 1, maxWidth: 720, margin: "0 auto", padding: "0 24px" }}>
 
-        <div style={{ paddingTop: 32 }}>
-          </div>
-
-        <div style={{ padding: "80px 0 60px" }}>
-          <Reveal><div style={{ ...mono, fontSize: 10, letterSpacing: 4, color: ICE, textTransform: "uppercase", marginBottom: 20 }}>The paradigm shift in software</div></Reveal>
+        {/* ═══ HERO — Apple-direction, hairline accent rule + short accent line under title ═══ */}
+        <section style={{ padding: "112px 22px 80px", textAlign: "center" }}>
+          <Reveal>
+            <div style={{
+              width: 56, height: 1, background: C.accent,
+              margin: "0 auto 28px", opacity: 0.85,
+            }} />
+          </Reveal>
+          <Reveal>
+            <div style={{
+              fontFamily: F.text, fontSize: 13, fontWeight: 500,
+              letterSpacing: "0.18em", textTransform: "uppercase",
+              color: "rgba(245,245,247,0.55)", marginBottom: 28,
+            }}>The paradigm shift in software</div>
+          </Reveal>
           <Reveal delay={0.15}>
-            <h1 style={{ ...sans, fontSize: "clamp(36px, 7vw, 56px)", fontWeight: 800, lineHeight: 1.05, letterSpacing: -2, marginBottom: 24 }}>
-              Declarative<br /><span style={{ color: ICE }}>Agents</span>
+            <h1 style={{
+              fontFamily: F.display, fontWeight: 600,
+              fontSize: "clamp(48px, 8vw, 96px)",
+              lineHeight: 1.04, letterSpacing: "-0.045em",
+              margin: "0 0 22px", color: "#f5f5f7",
+            }}>
+              Declarative agents<span style={{ color: ICE }}>.</span>
             </h1>
           </Reveal>
           <Reveal delay={0.3}>
-            <div style={{ ...serif, fontSize: 18, lineHeight: 1.7, color: ASH, maxWidth: 540, fontStyle: "italic" }}>
-              You're not a developer anymore. You're a director casting AI actors.
-              The complexity didn't disappear — it got abstracted.
-            </div>
+            <p style={{
+              fontFamily: F.display, fontWeight: 400,
+              fontSize: "clamp(20px, 2.4vw, 28px)",
+              lineHeight: 1.3, letterSpacing: "-0.022em",
+              color: "rgba(245,245,247,0.65)",
+              maxWidth: 640, margin: "0 auto",
+            }}>
+              You&apos;re not a developer anymore. You&apos;re a director casting AI actors. The complexity didn&apos;t disappear, it got abstracted.
+            </p>
           </Reveal>
-        </div>
+        </section>
 
         <Chapter label="Chapter I — The Shift" title="From step-by-step to describe-and-go">
           <Reveal><div style={{ ...serif, fontSize: 16, lineHeight: 1.7, color: ASH, maxWidth: 540, marginBottom: 32 }}>

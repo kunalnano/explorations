@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from "react";
+import { C, F } from "../design.js";
 import {
   CorridorVisualization,
   BootstrapParadoxVis,
@@ -25,9 +26,10 @@ const FAINT = "rgba(255,255,255,0.03)";
 const LINE = "rgba(255,255,255,0.06)";
 const CRIMSON = "#e6394a";
 
-const sans = { fontFamily: "'Segoe UI', system-ui, -apple-system, sans-serif" };
-const serif = { fontFamily: "Georgia, 'Times New Roman', serif" };
-const mono = { fontFamily: "'SF Mono', 'Cascadia Code', 'Consolas', monospace" };
+// Apple-direction font tokens — sans-first, mono retained for accents.
+const sans = { fontFamily: F.display };
+const serif = { fontFamily: F.text };
+const mono = { fontFamily: F.mono };
 
 // ── Reveal ──
 function Reveal({ children, delay = 0, style }) {
@@ -103,53 +105,58 @@ function Prose({ children }) {
 export default function EntropyFilter({ onBack }) {
   return (
     <div style={{ background: BG, color: BONE, minHeight: "100vh" }}>
-      {/* Back */}
-      {/* ── HERO ── */}
+      {/* ═══ HERO — Apple-direction, ember accent rule under title ═══ */}
       <header style={{
-        minHeight: "100vh", display: "flex", flexDirection: "column",
-        justifyContent: "center", alignItems: "center",
-        padding: "80px 24px", textAlign: "center",
+        padding: "112px 22px 80px", textAlign: "center",
+        maxWidth: 1024, margin: "0 auto",
       }}>
         <Reveal>
           <div style={{
-            ...mono, fontSize: 10, letterSpacing: 4,
-            color: EMBER, textTransform: "uppercase", marginBottom: 24,
-          }}>A THERMODYNAMIC ANSWER TO FERMI</div>
+            fontFamily: F.text, fontSize: 13, fontWeight: 500,
+            letterSpacing: "0.18em", textTransform: "uppercase",
+            color: "rgba(245,245,247,0.55)", marginBottom: 28,
+          }}>A thermodynamic answer to Fermi</div>
         </Reveal>
         <Reveal delay={0.15}>
           <h1 style={{
-            ...sans, fontSize: "clamp(40px, 8vw, 80px)",
-            fontWeight: 800, letterSpacing: -3, lineHeight: 1.05, marginBottom: 20,
-            background: `linear-gradient(135deg, ${BONE} 0%, ${EMBER} 100%)`,
-            WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent",
-            backgroundClip: "text",
-          }}>The Entropy Filter</h1>
+            fontFamily: F.display, fontWeight: 600,
+            fontSize: "clamp(48px, 8vw, 96px)",
+            lineHeight: 1.04, letterSpacing: "-0.045em",
+            margin: "0 0 22px", color: "#f5f5f7",
+          }}>
+            The entropy filter<span style={{ color: EMBER }}>.</span>
+          </h1>
+        </Reveal>
+        <Reveal delay={0.25}>
+          <div style={{
+            width: 64, height: 1, background: EMBER,
+            margin: "0 auto 28px", opacity: 0.85,
+          }} />
         </Reveal>
         <Reveal delay={0.3}>
           <p style={{
-            ...serif, fontSize: "clamp(16px, 2.5vw, 22px)",
-            fontStyle: "italic", color: ASH, maxWidth: 560, lineHeight: 1.6,
+            fontFamily: F.display, fontWeight: 400,
+            fontSize: "clamp(20px, 2.4vw, 28px)",
+            lineHeight: 1.3, letterSpacing: "-0.022em",
+            color: "rgba(245,245,247,0.65)",
+            maxWidth: 680, margin: "0 auto 36px",
           }}>
-            Why the corridor between "smart enough to try" and<br />
-            "coordinated enough to succeed" closes before anyone gets through.
+            Why the corridor between &ldquo;smart enough to try&rdquo; and &ldquo;coordinated enough to succeed&rdquo; closes before anyone gets through.
           </p>
         </Reveal>
         <Reveal delay={0.5}>
           <div style={{
-            marginTop: 40, padding: "16px 24px",
+            display: "inline-block", padding: "12px 22px",
             background: FAINT, border: `1px solid ${LINE}`,
-            borderRadius: 12, maxWidth: 440,
+            borderRadius: 12,
           }}>
-            <div style={{ ...mono, fontSize: 9, color: ASH, letterSpacing: 1 }}>
-              Based on a conversation between Hank Sharma and Claude
-            </div>
-            <div style={{ ...mono, fontSize: 9, color: ASH, letterSpacing: 1, marginTop: 4 }}>
-              March 13, 2026 · Canyon Lake, Texas
+            <div style={{
+              fontFamily: F.text, fontSize: 12, fontWeight: 500,
+              color: "rgba(245,245,247,0.5)", letterSpacing: "0.04em",
+            }}>
+              Hank Sharma + Claude &middot; March 2026 &middot; Canyon Lake, TX
             </div>
           </div>
-        </Reveal>
-        <Reveal delay={0.7}>
-          <div style={{ marginTop: 48, color: ASH, fontSize: 20, opacity: 0.4 }}>↓</div>
         </Reveal>
       </header>
 
