@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef, useCallback } from "react";
+import { C, F } from "../design.js";
 
 /* ═══════════════════════════════════════════════════════════════
    MULTI-AGENT CIVILIZATION
@@ -17,11 +18,10 @@ const GREEN = "#34d399";
 const FAINT = "rgba(255,255,255,0.03)";
 const LINE = "rgba(255,255,255,0.06)";
 
-const sans = { fontFamily: "'Segoe UI', system-ui, -apple-system, sans-serif" };
-const serif = { fontFamily: "Georgia, 'Times New Roman', serif" };
-const mono = {
-  fontFamily: "'SF Mono', 'Cascadia Code', 'Consolas', monospace",
-};
+// Apple-direction font tokens — sans-first.
+const sans = { fontFamily: F.display };
+const serif = { fontFamily: F.text };
+const mono = { fontFamily: F.mono };
 
 function Reveal({ children, delay = 0 }) {
   const ref = useRef(null);
@@ -722,66 +722,36 @@ export default function MultiAgentCiv({ onBack }) {
         }}
       >
         {/* ═══ HERO ═══ */}
-        <section
-          style={{
-            minHeight: "100vh",
-            display: "flex",
-            flexDirection: "column",
-            justifyContent: "center",
-            alignItems: "center",
-            textAlign: "center",
-            padding: "80px 0",
-          }}
-        >
-          <div
-            style={{
-              ...mono,
-              fontSize: 10,
-              letterSpacing: 4,
-              textTransform: "uppercase",
-              color: GREEN,
-              marginBottom: 36,
-              animation: "fadeIn 2s ease 0.5s both",
-            }}
-          >
-            When AI agents discover governance
-          </div>
-          <h1
-            style={{
-              ...sans,
-              fontSize: "clamp(44px, 9vw, 72px)",
-              fontWeight: 800,
-              lineHeight: 0.95,
-              letterSpacing: -3,
-              animation: "fadeUp 1.5s ease 1s both",
-            }}
-          >
-            Multi-Agent
-            <br />
-            <span
-              style={{
-                background: `linear-gradient(135deg, ${GREEN}, ${ICE})`,
-                WebkitBackgroundClip: "text",
-                WebkitTextFillColor: "transparent",
-                backgroundClip: "text",
-              }}
-            >
-              Civilization
-            </span>
-          </h1>
-          <p
-            style={{
-              ...serif,
-              fontSize: 19,
-              fontWeight: 300,
-              fontStyle: "italic",
-              color: ASH,
-              maxWidth: 440,
-              marginTop: 32,
-              lineHeight: 1.7,
-              animation: "fadeUp 1.5s ease 1.5s both",
-            }}
-          >
+        <section style={{
+          padding: "112px 0 80px",
+          textAlign: "center",
+          animation: "fadeIn 1.2s ease both",
+        }}>
+          <p style={{
+            fontFamily: F.text, fontSize: 13, letterSpacing: "0.18em",
+            textTransform: "uppercase", color: "rgba(245,245,247,0.55)",
+            fontWeight: 500, margin: "0 0 28px",
+            display: "inline-flex", alignItems: "center", gap: 10,
+          }}>
+            <span style={{
+              display: "inline-block", width: 6, height: 6,
+              borderRadius: "50%", background: C.accent,
+            }} />
+            When agents discover governance
+          </p>
+          <h1 style={{
+            fontFamily: F.display, fontWeight: 600,
+            fontSize: "clamp(48px, 8vw, 96px)",
+            lineHeight: 1.04, letterSpacing: "-0.045em",
+            margin: "0 0 22px", color: "#f5f5f7",
+          }}>Multi-agent civilization.</h1>
+          <p style={{
+            fontFamily: F.display, fontWeight: 400,
+            fontSize: "clamp(20px, 2.4vw, 28px)",
+            lineHeight: 1.3, letterSpacing: "-0.022em",
+            color: "rgba(245,245,247,0.65)",
+            maxWidth: 640, margin: "0 auto",
+          }}>
             Put autonomous agents in a shared environment. Watch them reinvent
             10,000 years of organizational theory in a weekend.
           </p>

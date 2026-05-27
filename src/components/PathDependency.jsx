@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from "react";
+import { C, F } from "../design.js";
 
 /* ═══════════════════════════════════════════════════════════════
    PATH DEPENDENCY OF INNOVATION
@@ -19,11 +20,10 @@ const WAYMO_BLUE = "#4285f4";
 const FAINT = "rgba(255,255,255,0.03)";
 const LINE = "rgba(255,255,255,0.06)";
 
-const sans = { fontFamily: "'Segoe UI', system-ui, -apple-system, sans-serif" };
-const serif = { fontFamily: "Georgia, 'Times New Roman', serif" };
-const mono = {
-  fontFamily: "'SF Mono', 'Cascadia Code', 'Consolas', monospace",
-};
+// Apple-direction font tokens — sans-first.
+const sans = { fontFamily: F.display };
+const serif = { fontFamily: F.text };
+const mono = { fontFamily: F.mono };
 
 function Reveal({ children, delay = 0 }) {
   const ref = useRef(null);
@@ -1293,9 +1293,7 @@ function ConvergenceFunnel() {
 }
 
 // ═══════════════ MAIN ═══════════════
-export default function PathDependency({ onBack }) {
-  const [backHover, setBackHover] = useState(false);
-
+export default function PathDependency() {
   return (
     <div style={{ background: BG, minHeight: "100vh", color: BONE }}>
       <style>{`
@@ -1323,62 +1321,38 @@ export default function PathDependency({ onBack }) {
           padding: "0 24px",
         }}
       >
-        {/* HERO — full viewport */}
-        <div
-          style={{
-            minHeight: "100vh",
-            display: "flex",
-            flexDirection: "column",
-            justifyContent: "center",
-            paddingBottom: 80,
-          }}
-        >
-          <div
-            style={{
-              ...mono,
-              fontSize: 10,
-              letterSpacing: 4,
-              color: GOLD,
-              textTransform: "uppercase",
-              marginBottom: 20,
-              animation: "fadeIn 1s ease both",
-            }}
-          >
-            Why "rational" actors build opposite solutions
-          </div>
-          <h1
-            style={{
-              ...sans,
-              fontSize: "clamp(36px, 7vw, 56px)",
-              fontWeight: 800,
-              lineHeight: 1.05,
-              letterSpacing: -2,
-              marginBottom: 24,
-              background: `linear-gradient(135deg, ${BONE}, ${GOLD})`,
-              WebkitBackgroundClip: "text",
-              WebkitTextFillColor: "transparent",
-              animation: "fadeUp 1.2s ease 0.3s both",
-            }}
-          >
-            The Path Dependency
-            <br />
-            of Innovation
-          </h1>
-          <div
-            style={{
-              ...serif,
-              fontSize: 20,
-              lineHeight: 1.7,
-              color: ASH,
-              maxWidth: 540,
-              fontStyle: "italic",
-              animation: "fadeUp 1.2s ease 0.6s both",
-            }}
-          >
-            Tesla and Waymo didn't choose different strategies. Their ecosystems
-            chose for them.
-          </div>
-        </div>
+        {/* ═══ HERO ═══ */}
+        <section style={{
+          padding: "112px 0 64px",
+          textAlign: "center",
+          animation: "fadeIn 1.2s ease both",
+        }}>
+          <p style={{
+            fontFamily: F.text, fontSize: 13, letterSpacing: "0.18em",
+            textTransform: "uppercase", color: "rgba(245,245,247,0.55)",
+            fontWeight: 500, margin: "0 0 28px",
+          }}>Why &ldquo;rational&rdquo; actors build opposite solutions</p>
+          <h1 style={{
+            fontFamily: F.display, fontWeight: 600,
+            fontSize: "clamp(48px, 8vw, 96px)",
+            lineHeight: 1.04, letterSpacing: "-0.045em",
+            margin: "0 0 22px", color: "#f5f5f7",
+          }}>Path dependency of innovation.</h1>
+          <p style={{
+            fontFamily: F.display, fontWeight: 400,
+            fontSize: "clamp(20px, 2.4vw, 28px)",
+            lineHeight: 1.3, letterSpacing: "-0.022em",
+            color: "rgba(245,245,247,0.65)",
+            maxWidth: 640, margin: "0 auto",
+          }}>
+            Tesla and Waymo didn&rsquo;t choose different strategies. Their ecosystems chose for them.
+          </p>
+        </section>
+        {/* Black-bleed break — subtle full-width pause before chapters */}
+        <div style={{
+          height: 1, background: C.accent, width: 56,
+          margin: "0 auto 80px",
+        }} />
 
         {/* CH I: THE THESIS — visual constraint filter */}
         <Chapter

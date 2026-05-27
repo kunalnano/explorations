@@ -1,9 +1,10 @@
 import { useState, useEffect, useRef, useCallback } from "react";
+import { C, F } from "../design.js";
 
-// ── Shared styles ──
-const mono = { fontFamily: "'SF Mono', 'Fira Code', 'Consolas', monospace" };
-const serif = { fontFamily: "'Georgia', 'Times New Roman', serif" };
-const sans = { fontFamily: "'Segoe UI', system-ui, -apple-system, sans-serif" };
+// ── Shared styles — Apple direction ──
+const mono = { fontFamily: F.mono };
+const serif = { fontFamily: F.text };
+const sans = { fontFamily: F.display };
 
 const EMBER = "#ff4d2e";
 const ICE = "#6ee7f0";
@@ -725,43 +726,35 @@ export default function BoltzmannBrain({ onBack }) {
         @keyframes fadeUp { from { opacity: 0; transform: translateY(28px); } to { opacity: 1; transform: translateY(0); } }
       `}</style>
 
-      {/* Back button */}
       <div style={{ maxWidth: 740, margin: "0 auto", padding: "0 24px" }}>
 
         {/* ═══ HERO ═══ */}
         <section style={{
-          minHeight: "100vh", display: "flex", flexDirection: "column",
-          justifyContent: "center", alignItems: "center", textAlign: "center", padding: "80px 0",
+          padding: "112px 0 80px", textAlign: "center",
+          animation: "fadeIn 1.2s ease both",
         }}>
-          <div style={{
-            ...mono, fontSize: 10, letterSpacing: 4, textTransform: "uppercase", color: EMBER,
-            marginBottom: 36, animation: "fadeIn 2s ease 0.5s both",
-          }}>
-            The Boltzmann Brain Problem
-          </div>
+          <p style={{
+            fontFamily: F.text, fontSize: 13, letterSpacing: "0.18em",
+            textTransform: "uppercase", color: "rgba(245,245,247,0.55)",
+            fontWeight: 500, margin: "0 0 28px",
+          }}>The Boltzmann Brain Problem</p>
           <h1 style={{
-            ...sans, fontSize: "clamp(44px, 9vw, 88px)", fontWeight: 800,
-            lineHeight: 0.95, letterSpacing: -3, animation: "fadeUp 1.5s ease 1s both",
+            fontFamily: F.display, fontWeight: 600,
+            fontSize: "clamp(48px, 8vw, 96px)",
+            lineHeight: 1.04, letterSpacing: "-0.045em",
+            margin: "0 0 22px", color: "#f5f5f7",
           }}>
-            Are You<br />
-            <span style={{
-              background: `linear-gradient(135deg, ${EMBER}, ${GHOST})`,
-              WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text",
-            }}>Actually Real?</span>
+            Are you actually real
+            <span style={{ color: C.accent }}>?</span>
           </h1>
           <p style={{
-            ...serif, fontSize: 19, fontWeight: 300, fontStyle: "italic", color: ASH,
-            maxWidth: 440, marginTop: 32, lineHeight: 1.7, animation: "fadeUp 1.5s ease 1.5s both",
+            fontFamily: F.display, fontWeight: 400,
+            fontSize: "clamp(20px, 2.4vw, 28px)",
+            lineHeight: 1.3, letterSpacing: "-0.022em",
+            color: "rgba(245,245,247,0.65)", maxWidth: 640, margin: "0 auto",
           }}>
-            Thermodynamics says you probably aren't. Physics can't prove it wrong.
+            Thermodynamics says you probably aren&rsquo;t. Physics can&rsquo;t prove it wrong.
           </p>
-          <div style={{
-            ...mono, fontSize: 11, letterSpacing: 1, color: EMBER, marginTop: 44,
-            padding: "10px 24px", border: `1px solid ${EMBER}26`, borderRadius: 100,
-            background: `${EMBER}08`, animation: "fadeIn 2s ease 2.2s both",
-          }}>
-            ⚠ This is not a thought experiment. It's an open problem.
-          </div>
         </section>
 
         {/* ═══ CH I: THE SETUP — entropy fluctuation vis ═══ */}

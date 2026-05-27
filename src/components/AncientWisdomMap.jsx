@@ -1,4 +1,5 @@
 import { useState, useCallback, useMemo } from "react";
+import { C, F } from "../design.js";
 
 const TRADITIONS = [
   {
@@ -249,11 +250,29 @@ export default function AncientWisdomMap() {
   const activeFilter = selected || hoveredBridge || selectedBridge;
 
   return (
-    <div style={{ background: "#0B1120", minHeight: "100vh", fontFamily: "'Inter', system-ui, sans-serif", padding: 20 }}>
-      <div style={{ textAlign: "center", marginBottom: 8 }}>
-        <h1 style={{ color: "#E2E8F0", fontSize: 26, fontWeight: 800, margin: "0 0 6px", letterSpacing: -0.5 }}>Ancient Wisdom · Decision Map</h1>
-        <p style={{ color: "#64748B", fontSize: 13, margin: 0 }}>Click a tradition to explore · Hover connections to see bridges · Click connections for details</p>
-      </div>
+    <div style={{ background: "#0B1120", minHeight: "100vh", fontFamily: F.text }}>
+      {/* ═══ HERO ═══ */}
+      <section style={{ padding: "112px 22px 64px", textAlign: "center", maxWidth: 1024, margin: "0 auto" }}>
+        <div style={{ width: 56, height: 1, background: C.accent, margin: "0 auto 28px" }} />
+        <p style={{
+          fontFamily: F.text, fontSize: 13, letterSpacing: "0.18em",
+          textTransform: "uppercase", color: "rgba(245,245,247,0.55)",
+          fontWeight: 500, margin: "0 0 24px",
+        }}>Decision Map</p>
+        <h1 style={{
+          fontFamily: F.display, fontWeight: 600,
+          fontSize: "clamp(48px, 8vw, 96px)",
+          lineHeight: 1.04, letterSpacing: "-0.045em",
+          margin: "0 0 18px", color: "#f5f5f7",
+        }}>Ancient wisdom.</h1>
+        <p style={{
+          fontFamily: F.display, fontWeight: 400,
+          fontSize: "clamp(20px, 2.4vw, 28px)",
+          lineHeight: 1.3, letterSpacing: "-0.022em",
+          color: "rgba(245,245,247,0.65)", maxWidth: 640, margin: "0 auto",
+        }}>Six traditions, thirteen bridges. A decision lens for modern operators.</p>
+      </section>
+      <div style={{ padding: "0 20px 20px" }}>
       <div style={{ display: "grid", gridTemplateColumns: selected || selectedBridge ? "1fr 380px" : "1fr", gap: 20, maxWidth: 1400, margin: "0 auto" }}>
         <div style={{ background: "#111827", borderRadius: 16, border: "1px solid #1E293B", overflow: "hidden" }}>
           <svg viewBox="0 0 960 600" style={{ width: "100%", display: "block" }}>
@@ -283,6 +302,7 @@ export default function AncientWisdomMap() {
         {TRADITIONS.map((t) => (
           <button key={t.id} onClick={() => handleSelect(t.id)} style={{ background: selected === t.id ? t.color + "22" : "transparent", border: `1px solid ${selected === t.id ? t.color : "#334155"}`, borderRadius: 20, padding: "6px 16px", color: selected === t.id ? t.color : "#94A3B8", fontSize: 12, fontWeight: 600, cursor: "pointer", transition: "all 0.2s" }}>{t.name}</button>
         ))}
+      </div>
       </div>
     </div>
   );
