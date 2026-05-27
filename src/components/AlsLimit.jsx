@@ -1,3 +1,4 @@
+import { C, F } from "../design.js";
 import {
   BG, BONE, ASH, ICE, EMBER, GHOST, GOLD, GREEN, FAINT, LINE,
   sans, serif, mono, TIERS,
@@ -16,12 +17,9 @@ import {
 export default function AlsLimit({ onBack }) {
   return (
     <div style={{ background: BG, minHeight: "100vh", color: BONE, ...sans }}>
-      {/* Back button */}
-      {/* Hero */}
+      {/* ═══ HERO — Apple-direction, gold period + hairline accent under title ═══ */}
       <header style={{
-        minHeight: "90vh", display: "flex", flexDirection: "column",
-        justifyContent: "center", alignItems: "center", textAlign: "center",
-        padding: "0 24px", position: "relative",
+        padding: "112px 22px 80px", textAlign: "center", position: "relative",
       }}>
         <div style={{
           position: "absolute", inset: 0,
@@ -29,41 +27,45 @@ export default function AlsLimit({ onBack }) {
           pointerEvents: "none",
         }} />
 
-        <Reveal>
-          <div style={{ ...mono, fontSize: 10, letterSpacing: 6, color: GHOST, textTransform: "uppercase", marginBottom: 32 }}>
-            A Kardashev Scale for Software Complexity
-          </div>
-        </Reveal>
+        <div style={{ position: "relative", maxWidth: 1024, margin: "0 auto" }}>
+          <Reveal>
+            <p style={{
+              fontFamily: F.text, fontSize: 13, fontWeight: 500,
+              letterSpacing: "0.18em", textTransform: "uppercase",
+              color: "rgba(245,245,247,0.55)", margin: "0 0 28px",
+            }}>A Kardashev Scale for Software Complexity</p>
+          </Reveal>
 
-        <Reveal delay={0.15}>
-          <h1 style={{
-            fontSize: "clamp(48px, 8vw, 96px)", fontWeight: 800,
-            letterSpacing: -3, lineHeight: 0.95, margin: "0 0 24px",
-            background: `linear-gradient(135deg, ${BONE}, ${GHOST})`,
-            WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent",
-          }}>
-            Al's Limit
-          </h1>
-        </Reveal>
+          <Reveal delay={0.15}>
+            <h1 style={{
+              fontFamily: F.display, fontWeight: 600,
+              fontSize: "clamp(48px, 8vw, 96px)",
+              lineHeight: 1.02, letterSpacing: "-0.045em",
+              margin: "0 0 22px", color: "#f5f5f7",
+            }}>
+              Al&rsquo;s limit<span style={{ color: GOLD }}>.</span>
+            </h1>
+          </Reveal>
 
-        <Reveal delay={0.3}>
-          <p style={{
-            ...serif, fontSize: "clamp(16px, 2.5vw, 22px)", color: ASH,
-            maxWidth: 560, lineHeight: 1.6, margin: "0 0 40px",
-          }}>
-            Software systems grow through discrete cognitive complexity regimes.
-            Each regime fundamentally changes what's required to make progress.
-            AI doesn't eliminate these transitions. It enables them.
-          </p>
-        </Reveal>
+          <Reveal delay={0.25}>
+            <div style={{
+              width: 56, height: 1, background: C.accent,
+              margin: "0 auto 28px", opacity: 0.8,
+            }} />
+          </Reveal>
 
-        <Reveal delay={0.5}>
-          <div style={{ ...mono, fontSize: 11, color: ASH, letterSpacing: 2, animation: "pulse 2s ease-in-out infinite" }}>
-            SCROLL TO EXPLORE
-          </div>
-        </Reveal>
-
-        <style>{`@keyframes pulse { 0%, 100% { opacity: 0.4; } 50% { opacity: 1; } }`}</style>
+          <Reveal delay={0.3}>
+            <p style={{
+              fontFamily: F.display, fontWeight: 400,
+              fontSize: "clamp(20px, 2.4vw, 28px)",
+              lineHeight: 1.32, letterSpacing: "-0.022em",
+              color: "rgba(245,245,247,0.65)",
+              maxWidth: 640, margin: "0 auto",
+            }}>
+              Software systems grow through discrete cognitive complexity regimes. AI doesn&rsquo;t eliminate these transitions. It enables them.
+            </p>
+          </Reveal>
+        </div>
       </header>
 
       {/* Content */}

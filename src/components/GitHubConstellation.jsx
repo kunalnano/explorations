@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef, useMemo } from "react";
+import { C, F } from "../design.js";
 import ConstellationCanvas, {
   COLORS,
   FONTS,
@@ -367,57 +368,63 @@ export default function GitHubConstellation({ onBack }) {
 
   return (
     <div style={{ background: COLORS.bg, minHeight: "100vh", color: COLORS.bone }}>
-      {/* Header */}
-      <div style={{ maxWidth: 1100, margin: "0 auto", padding: "40px 32px 0", position: "relative" }}>
-        <h1
-          style={{
-            fontFamily: FONTS.sans,
-            fontSize: "clamp(28px, 4vw, 44px)",
-            fontWeight: 300,
-            letterSpacing: "-0.01em",
-            marginTop: 20,
-            marginBottom: 8,
-            background: `linear-gradient(135deg, ${COLORS.gold}, ${COLORS.goldLight})`,
-            WebkitBackgroundClip: "text",
-            WebkitTextFillColor: "transparent",
-            backgroundClip: "text",
-            opacity: headerVisible ? 1 : 0,
-            transform: headerVisible ? "translateY(0)" : "translateY(12px)",
-            transition: "opacity 0.8s ease 0.1s, transform 0.8s ease 0.1s",
-          }}
-        >
-          GitHub Constellation
-        </h1>
+      {/* ═══ HERO — Apple-direction, gold dot in eyebrow + gold period on title ═══ */}
+      <section style={{ padding: "112px 22px 64px", textAlign: "center", position: "relative" }}>
+        <div style={{ maxWidth: 1024, margin: "0 auto" }}>
+          <div
+            style={{
+              display: "inline-flex", alignItems: "center", gap: 10,
+              marginBottom: 28,
+              opacity: headerVisible ? 1 : 0,
+              transform: headerVisible ? "translateY(0)" : "translateY(8px)",
+              transition: "opacity 0.8s ease, transform 0.8s ease",
+            }}
+          >
+            <span style={{
+              width: 7, height: 7, borderRadius: "50%",
+              background: C.accent, display: "inline-block",
+              boxShadow: `0 0 12px ${C.accent}`,
+            }} />
+            <span style={{
+              fontFamily: F.text, fontSize: 13, fontWeight: 500,
+              letterSpacing: "0.18em", textTransform: "uppercase",
+              color: "rgba(245,245,247,0.55)",
+            }}>
+              Live from GitHub API
+            </span>
+          </div>
 
-        <p
-          style={{
-            fontFamily: FONTS.serif,
-            fontStyle: "italic",
-            fontSize: 16,
-            color: COLORS.ash,
-            margin: "0 0 6px",
-            opacity: headerVisible ? 1 : 0,
-            transform: headerVisible ? "translateY(0)" : "translateY(10px)",
-            transition: "opacity 0.8s ease 0.25s, transform 0.8s ease 0.25s",
-          }}
-        >
-          A living map of code, languages, and ideas.
-        </p>
+          <h1
+            style={{
+              fontFamily: F.display, fontWeight: 600,
+              fontSize: "clamp(48px, 8vw, 96px)",
+              lineHeight: 1.02, letterSpacing: "-0.045em",
+              margin: "0 0 22px",
+              color: "#f5f5f7",
+              opacity: headerVisible ? 1 : 0,
+              transform: headerVisible ? "translateY(0)" : "translateY(12px)",
+              transition: "opacity 0.8s ease 0.1s, transform 0.8s ease 0.1s",
+            }}
+          >
+            GitHub constellation<span style={{ color: C.accent }}>.</span>
+          </h1>
 
-        <span
-          style={{
-            fontFamily: FONTS.mono,
-            fontSize: 10,
-            letterSpacing: "0.15em",
-            color: COLORS.goldDim,
-            textTransform: "uppercase",
-            opacity: headerVisible ? 1 : 0,
-            transition: "opacity 0.8s ease 0.4s",
-          }}
-        >
-          LIVE FROM GITHUB API
-        </span>
-      </div>
+          <p
+            style={{
+              fontFamily: F.display, fontWeight: 400,
+              fontSize: "clamp(20px, 2.4vw, 28px)",
+              lineHeight: 1.32, letterSpacing: "-0.022em",
+              color: "rgba(245,245,247,0.65)",
+              maxWidth: 640, margin: "0 auto",
+              opacity: headerVisible ? 1 : 0,
+              transform: headerVisible ? "translateY(0)" : "translateY(10px)",
+              transition: "opacity 0.8s ease 0.25s, transform 0.8s ease 0.25s",
+            }}
+          >
+            A living map of code, languages, and ideas.
+          </p>
+        </div>
+      </section>
 
       {/* Canvas + detail panel */}
       <div

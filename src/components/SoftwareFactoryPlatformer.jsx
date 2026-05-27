@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef, useCallback } from "react";
+import { F } from "../design.js";
 
 const BG = "#0e1018";
 const ACCENT = "#4aaa99";
@@ -508,20 +509,34 @@ export default function SoftwareFactoryPlatformer({ onBack }) {
   const sevBg = { critical: "rgba(255,85,85,0.1)", high: "rgba(255,170,51,0.1)", medium: "rgba(68,204,136,0.1)", info: "rgba(102,170,255,0.1)" };
 
   return (
-    <div style={{ position: "fixed", inset: 0, background: BG, zIndex: 10, display: "flex", flexDirection: "column" }}>
-      {/* Back button */}
-      {/* HUD */}
+    <div style={{ position: "fixed", inset: 0, top: 48, background: BG, zIndex: 10, display: "flex", flexDirection: "column", fontFamily: F.text }}>
+      {/* HUD — Apple-direction typography; canvas + game preserved */}
       <div style={{
         display: "flex", justifyContent: "space-between", alignItems: "center",
-        padding: "10px 16px", paddingLeft: 180, background: "rgba(0,0,0,0.4)",
-        borderBottom: "1px solid rgba(255,255,255,0.06)", flexShrink: 0,
+        padding: "10px 22px", background: "rgba(0,0,0,0.55)",
+        borderBottom: "1px solid rgba(255,255,255,0.08)", flexShrink: 0,
+        backdropFilter: "saturate(180%) blur(20px)",
+        WebkitBackdropFilter: "saturate(180%) blur(20px)",
       }}>
-        <div>
-          <span style={{ color: currentStation.color, fontSize: 11, letterSpacing: 2, fontFamily: "monospace" }}>STATION {currentStation.num}</span>
-          <span style={{ color: "#ccc", fontSize: 14, marginLeft: 12, fontWeight: 500 }}>{currentStation.name}</span>
-          <span style={{ color: "rgba(255,255,255,0.35)", fontSize: 11, marginLeft: 8 }}>{currentStation.sub}</span>
+        <div style={{ display: "flex", alignItems: "baseline", gap: 12 }}>
+          <span style={{
+            color: currentStation.color, fontSize: 11,
+            letterSpacing: "0.18em", textTransform: "uppercase",
+            fontFamily: F.mono, fontWeight: 500,
+          }}>Station {currentStation.num}</span>
+          <span style={{
+            color: "#f5f5f7", fontSize: 15, fontWeight: 500,
+            fontFamily: F.display, letterSpacing: "-0.015em",
+          }}>{currentStation.name}</span>
+          <span style={{
+            color: "rgba(245,245,247,0.45)", fontSize: 12,
+            fontFamily: F.text, letterSpacing: "-0.005em",
+          }}>{currentStation.sub}</span>
         </div>
-        <div style={{ color: "rgba(255,255,255,0.25)", fontSize: 10, fontFamily: "monospace" }}>
+        <div style={{
+          color: "rgba(245,245,247,0.4)", fontSize: 11,
+          fontFamily: F.mono, letterSpacing: "0.04em",
+        }}>
           {isMobile ? "use controls below" : "[←→] move · [↑/space] jump · [E] inspect"}
         </div>
       </div>
@@ -566,7 +581,7 @@ export default function SoftwareFactoryPlatformer({ onBack }) {
         }}>
           <button onClick={() => setInfo(null)} style={{
             position: "absolute", top: 10, right: 14, background: "none", border: "none",
-            color: "rgba(255,255,255,0.4)", cursor: "pointer", fontSize: 18, fontFamily: "monospace",
+            color: "rgba(255,255,255,0.4)", cursor: "pointer", fontSize: 18, fontFamily: F.mono,
           }}>×</button>
           <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 8 }}>
             <span style={{ fontSize: 15, fontWeight: 600, color: "#ddd" }}>{info.title}</span>

@@ -1,9 +1,10 @@
 import { useState, useEffect, useRef } from "react";
+import { F } from "../design.js";
 
-// ── Shared styles ──
-const mono = { fontFamily: "'SF Mono', 'Fira Code', 'Consolas', monospace" };
-const serif = { fontFamily: "'Georgia', 'Times New Roman', serif" };
-const sans = { fontFamily: "'Segoe UI', system-ui, -apple-system, sans-serif" };
+// ── Shared styles — Apple-direction; mono retained for small accents ──
+const mono = { fontFamily: F.mono };
+const serif = { fontFamily: F.text };
+const sans = { fontFamily: F.display };
 
 const BG = "#0a0807";
 const BONE = "#ece7dc";
@@ -442,47 +443,48 @@ export default function TheTell({ onBack }) {
         @keyframes fadeUp { from { opacity: 0; transform: translateY(28px); } to { opacity: 1; transform: translateY(0); } }
       `}</style>
 
-      {/* Back button */}
-      <div style={{ maxWidth: 740, margin: "0 auto", padding: "0 24px" }}>
-
-        {/* ═══ HERO ═══ */}
-        <section style={{
-          minHeight: "100vh", display: "flex", flexDirection: "column",
-          justifyContent: "center", alignItems: "flex-start", padding: "80px 0",
-        }}>
+      {/* ═══ HERO — Apple-direction, centered, hairline copper rule above eyebrow ═══ */}
+      <section style={{ padding: "112px 22px 80px", textAlign: "center" }}>
+        <div style={{ maxWidth: 1024, margin: "0 auto" }}>
           <div style={{
-            ...mono, fontSize: 10, letterSpacing: 4, textTransform: "uppercase", color: COPPER,
+            width: 56, height: 1, background: COPPER,
+            margin: "0 auto 28px", opacity: 0.85,
+            animation: "fadeIn 1.8s ease 0.2s both",
+          }} />
+          <div style={{
+            fontFamily: F.text, fontSize: 13, fontWeight: 500,
+            letterSpacing: "0.18em", textTransform: "uppercase",
+            color: "rgba(245,245,247,0.55)",
             marginBottom: 28, animation: "fadeIn 2s ease 0.4s both",
           }}>
-            A Saturday morning · April 11, 2026
+            A Saturday morning &middot; April 11, 2026
           </div>
           <h1 style={{
-            ...sans, fontSize: "clamp(48px, 9vw, 92px)", fontWeight: 800,
-            lineHeight: 0.95, letterSpacing: -3, animation: "fadeUp 1.4s ease 0.8s both",
-            color: BONE,
+            fontFamily: F.display, fontWeight: 600,
+            fontSize: "clamp(48px, 8vw, 96px)",
+            lineHeight: 1.02, letterSpacing: "-0.045em",
+            margin: "0 0 22px", color: BONE,
+            animation: "fadeUp 1.4s ease 0.8s both",
           }}>
-            The Tell<br />
-            <span style={{
-              background: `linear-gradient(135deg, ${COPPER}, ${OCHRE})`,
-              WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text",
-            }}>is Taller</span>
+            The tell is taller<span style={{ color: COPPER }}>.</span>
           </h1>
           <p style={{
-            ...serif, fontSize: 20, fontStyle: "italic", color: ASH,
-            maxWidth: 540, marginTop: 28, lineHeight: 1.7,
+            fontFamily: F.display, fontWeight: 400,
+            fontSize: "clamp(20px, 2.4vw, 28px)",
+            lineHeight: 1.32, letterSpacing: "-0.022em",
+            color: "rgba(236,231,220,0.65)",
+            maxWidth: 640, margin: "0 auto",
             animation: "fadeUp 1.4s ease 1.2s both",
           }}>
-            Memory is bloatware. Cognition is the scarce compute. The mound is what
-            you climb to start each next conversation.
+            Memory is bloatware. Cognition is the scarce compute. The mound is what you climb to start each next conversation.
           </p>
-          <div style={{
-            ...mono, fontSize: 11, letterSpacing: 1, color: COPPER, marginTop: 48,
-            padding: "10px 22px", border: `1px solid ${COPPER}33`, borderRadius: 100,
-            background: `${COPPER}08`, animation: "fadeIn 2s ease 1.8s both",
-          }}>
-            an essay on memory, substrate, and the new scoring function
-          </div>
-        </section>
+        </div>
+      </section>
+
+      {/* ═══ Black bleed break ═══ */}
+      <div style={{ background: "#000", height: 96 }} />
+
+      <div style={{ maxWidth: 740, margin: "0 auto", padding: "0 24px" }}>
 
         {/* ═══ CH I: THE INVERSION ═══ */}
         <Chapter label="Chapter I — The Inversion" title="Memory is bloatware. Cognition is the scarce compute.">

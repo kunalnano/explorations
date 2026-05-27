@@ -1,4 +1,5 @@
 import { useEffect, useRef, useCallback } from "react";
+import { F } from "../design.js";
 
 export const COLORS = {
   bg: "#050508",
@@ -10,10 +11,11 @@ export const COLORS = {
   deepAsh: "#4a4860",
 };
 
+// Apple-direction: sans for body/headings, mono for accents, text for prose.
 export const FONTS = {
-  mono: "'SF Mono', 'Cascadia Code', 'Consolas', monospace",
-  serif: "Georgia, 'Times New Roman', serif",
-  sans: "'Segoe UI', system-ui, -apple-system, sans-serif",
+  mono: F.mono,
+  serif: F.text,
+  sans: F.display,
 };
 
 const LANG_COLORS = {
