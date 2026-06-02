@@ -4,7 +4,7 @@ import { C, F } from "../design.js";
 const BG = "#050508";
 const GLOW = "#00ffd5";
 
-export default function EmergentLifeLab({ onBack }) {
+export default function EmergentLifeLab() {
   const iframeRef = useRef(null);
 
   useEffect(() => {

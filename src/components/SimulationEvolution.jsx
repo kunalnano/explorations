@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, useCallback } from "react";
+import { useState, useEffect, useRef } from "react";
 import { C, F } from "../design.js";
 
 /* ═══════════════════════════════════════════════════════════════
@@ -72,17 +72,6 @@ function BootstrapLadder() {
   const [ref, vis] = useReveal(0.2);
   const [step, setStep] = useState(-1);
 
-  useEffect(() => {
-    if (!vis) return;
-    let i = 0;
-    const iv = setInterval(() => {
-      setStep(i);
-      i++;
-      if (i >= rungs.length) clearInterval(iv);
-    }, 400);
-    return () => clearInterval(iv);
-  }, [vis]);
-
   const rungs = [
     { label: "Carbon chemistry", sub: "Self-replicating molecules", color: GOLD, icon: "⚛️" },
     { label: "Biology", sub: "Cells → organisms → nervous systems", color: GOLD, icon: "🧬" },
@@ -93,6 +82,17 @@ function BootstrapLadder() {
     { label: "Artificial intelligence", sub: "Intelligence on a different substrate", color: GHOST, icon: "✨" },
     { label: "???", sub: "The thing after us that we can't imagine", color: EMBER, icon: "∞" },
   ];
+
+  useEffect(() => {
+    if (!vis) return;
+    let i = 0;
+    const iv = setInterval(() => {
+      setStep(i);
+      i++;
+      if (i >= rungs.length) clearInterval(iv);
+    }, 400);
+    return () => clearInterval(iv);
+  }, [rungs.length, vis]);
 
   return (
     <div ref={ref} style={{ padding: "20px 0" }}>
@@ -452,7 +452,7 @@ function SimulationDepth() {
 
 
 // ═══════════════ MAIN ═══════════════
-export default function SimulationEvolution({ onBack }) {
+export default function SimulationEvolution() {
   return (
     <div style={{ background: BG, minHeight: "100vh", color: BONE }}>
       <div style={{

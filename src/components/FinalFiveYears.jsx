@@ -307,7 +307,7 @@ function Countdown() {
 
 
 // ═══════════════ MAIN ═══════════════
-export default function FinalFiveYears({ onBack }) {
+export default function FinalFiveYears() {
   return (
     <div style={{ background: BG, minHeight: "100vh", color: BONE }}>
       <div style={{

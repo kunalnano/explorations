@@ -71,7 +71,7 @@ function Chapter({ label, title, children }) {
 }
 
 // ═══════════════ MAIN ═══════════════
-export default function IntelligenceAsCurrency({ onBack }) {
+export default function IntelligenceAsCurrency() {
   return (
     <div style={{ background: BG, minHeight: "100vh", color: BONE }}>
       <div style={{

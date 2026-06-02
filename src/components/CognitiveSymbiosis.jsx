@@ -401,7 +401,7 @@ function CognitionTypes() {
 
 
 // ═══════════════ MAIN ═══════════════
-export default function CognitiveSymbiosis({ onBack }) {
+export default function CognitiveSymbiosis() {
   return (
     <div style={{ background: BG, minHeight: "100vh", color: BONE }}>
       <div style={{

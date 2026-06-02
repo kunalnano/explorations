@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, useCallback } from "react";
+import { useState, useEffect, useRef } from "react";
 import { C, F } from "../design.js";
 
 /* ═══════════════════════════════════════════════════════════════
@@ -1414,7 +1414,7 @@ function ClaimStrengthVis() {
 }
 
 // ═══════════════ MAIN COMPONENT ═══════════════
-export default function SoftwareTheory({ onBack }) {
+export default function SoftwareTheory() {
   return (
     <div style={{ background: BG, minHeight: "100vh", color: BONE }}>
       <style>{`

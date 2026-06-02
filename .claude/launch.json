@@ -7,6 +7,12 @@
       "runtimeArgs": ["run", "dev"],
       "port": 5173,
       "autoPort": true
+    },
+    {
+      "name": "moment",
+      "runtimeExecutable": "sh",
+      "runtimeArgs": ["-c", "MOMENT_PORT=\"${PORT:-8473}\" python3 /Users/alsharma/Projects/moment/serve.py"],
+      "port": 8473
     }
   ]
 }

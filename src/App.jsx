@@ -1,6 +1,5 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, lazy, Suspense } from "react";
 import Home from "./components/Home";
-import Operator from "./components/Operator";
 import Explorations from "./components/Explorations";
 import Resume from "./components/Resume";
 import AncientWisdomMap from "./components/AncientWisdomMap";
@@ -26,6 +25,8 @@ import TheTell from "./components/TheTell";
 import Travel from "./pages/travel/Travel";
 import PageFrame from "./components/PageFrame";
 import { ROUTE_META } from "./routeMeta";
+
+const Operator = lazy(() => import("./components/Operator"));
 
 const PATH_ROUTES = new Set(["travel"]);
 const HOSTNAME_ROUTES = { travel: "travel" };
@@ -71,6 +72,25 @@ const ROUTES = {
 // Routes that need the PageFrame chrome (not Home or Operator)
 const FRAMED = new Set(Object.keys(ROUTE_META));
 
+function OperatorFallback() {
+  return (
+    <div
+      style={{
+        minHeight: "100vh",
+        background: "#000",
+        color: "rgba(245,245,247,0.72)",
+        display: "grid",
+        placeItems: "center",
+        fontFamily:
+          '-apple-system, BlinkMacSystemFont, "SF Pro Text", "Helvetica Neue", Helvetica, Arial, sans-serif',
+        fontSize: 14,
+      }}
+    >
+      Loading operator.
+    </div>
+  );
+}
+
 export default function App() {
   const [route, setRoute] = useState(getRoute);
 
@@ -113,7 +133,11 @@ export default function App() {
 
   // Operator — full-bleed cinematic, no chrome
   if (route === "operator") {
-    return <Operator onBegin={finishIntro} />;
+    return (
+      <Suspense fallback={<OperatorFallback />}>
+        <Operator onBegin={finishIntro} />
+      </Suspense>
+    );
   }
 
   const entry = ROUTES[route];

@@ -14,7 +14,7 @@ import {
    unlocks the next entropy regime.
    ═══════════════════════════════════════════════════════════════ */
 
-export default function AlsLimit({ onBack }) {
+export default function AlsLimit() {
   return (
     <div style={{ background: BG, minHeight: "100vh", color: BONE, ...sans }}>
       {/* ═══ HERO — Apple-direction, gold period + hairline accent under title ═══ */}

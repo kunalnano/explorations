@@ -275,6 +275,15 @@ function CommoditizationTimeline() {
   const [ref, vis] = useReveal(0.2);
   const [step, setStep] = useState(-1);
 
+  const items = [
+    { before: "Train your own ASR model", after: "API call", color: GHOST },
+    { before: "Build TTS pipeline", after: "API call", color: GHOST },
+    { before: "Orchestrate tool calling", after: "MCP standard", color: ICE },
+    { before: "Host inference infrastructure", after: "Serverless", color: GREEN },
+    { before: "Voice cloning from hours of data", after: "Upload one sample", color: GOLD },
+    { before: "Build memory systems", after: "Config option", color: EMBER },
+  ];
+
   useEffect(() => {
     if (!vis) return;
     let s = 0;
@@ -284,16 +293,7 @@ function CommoditizationTimeline() {
       if (s >= items.length) clearInterval(iv);
     }, 350);
     return () => clearInterval(iv);
-  }, [vis]);
-
-  const items = [
-    { before: "Train your own ASR model", after: "API call", color: GHOST },
-    { before: "Build TTS pipeline", after: "API call", color: GHOST },
-    { before: "Orchestrate tool calling", after: "MCP standard", color: ICE },
-    { before: "Host inference infrastructure", after: "Serverless", color: GREEN },
-    { before: "Voice cloning from hours of data", after: "Upload one sample", color: GOLD },
-    { before: "Build memory systems", after: "Config option", color: EMBER },
-  ];
+  }, [items.length, vis]);
 
   return (
     <div ref={ref} style={{ background: FAINT, border: `1px solid ${LINE}`, borderRadius: 16, padding: "24px 20px" }}>
@@ -325,7 +325,7 @@ function CommoditizationTimeline() {
 
 
 // ═══════════════ MAIN ═══════════════
-export default function DeclarativeAgents({ onBack }) {
+export default function DeclarativeAgents() {
   return (
     <div style={{ background: BG, minHeight: "100vh", color: BONE }}>
       <div style={{

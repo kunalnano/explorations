@@ -41,7 +41,7 @@ export default function PageFrame({
     color: ink, opacity: 0.85, fontSize: 14, fontWeight: 400,
     letterSpacing: "-0.01em", cursor: "pointer",
     background: "none", border: "none", fontFamily: F.text,
-    padding: 0, textDecoration: "none",
+    padding: 0, textDecoration: "none", whiteSpace: "nowrap",
   };
 
   return (
@@ -57,13 +57,9 @@ export default function PageFrame({
         <div style={{
           maxWidth: 1024, margin: "0 auto", padding: "0 22px",
           height: "100%", display: "flex", alignItems: "center",
-          justifyContent: "space-between",
+          justifyContent: "flex-start",
         }}>
           <button onClick={onBack} style={linkStyle}>{"\u2039 "}{backLabel}</button>
-          <span style={{
-            fontFamily: F.text, fontSize: 14, fontWeight: 500,
-            color: ink, opacity: 0.85, letterSpacing: "-0.01em",
-          }}>sharma</span>
         </div>
       </nav>
       <div style={{ paddingTop: 48 }}>{children}</div>

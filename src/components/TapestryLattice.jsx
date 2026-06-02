@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, useCallback } from "react";
+import { useState, useEffect, useRef } from "react";
 import { C, F } from "../design.js";
 
 /* ═══════════════════════════════════════════════════════════════
@@ -148,7 +148,7 @@ const GENESIS_PARALLEL = [
    MAIN COMPONENT
    ═══════════════════════════════════════════════════════════════ */
 
-export default function TapestryLattice({ onBack }) {
+export default function TapestryLattice() {
   useEffect(() => {
     const link = document.createElement("link");
     link.href = "https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700;900&family=Cinzel:wght@400;500;600;700&family=IM+Fell+English:ital@0;1&display=swap";

@@ -335,10 +335,10 @@ function DestinationCard({ dest, expanded, onToggle }) {
   const gallery = dest.gallery || [];
   const slides = [{ src: dest.image, caption: dest.hero }, ...gallery];
   const [slideIdx, setSlideIdx] = useState(0);
-  // Reset to hero when the card collapses, so re-expand starts fresh.
-  useEffect(() => {
+  const handleToggle = () => {
     if (!expanded) setSlideIdx(0);
-  }, [expanded]);
+    onToggle();
+  };
   const activeSrc = slides[slideIdx]?.src || dest.image;
   const cardStyle = expanded
     ? { ...S.card, ...S.cardExpanded }
@@ -352,13 +352,13 @@ function DestinationCard({ dest, expanded, onToggle }) {
   return (
     <article
       style={cardStyle}
-      onClick={onToggle}
+      onClick={handleToggle}
       role="button"
       tabIndex={0}
       onKeyDown={(e) => {
         if (e.key === "Enter" || e.key === " ") {
           e.preventDefault();
-          onToggle();
+          handleToggle();
         }
       }}
       aria-expanded={expanded}

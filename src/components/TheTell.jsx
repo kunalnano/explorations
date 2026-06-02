@@ -140,7 +140,6 @@ function ArchaeologicalMound() {
 
   // Strata are widest at the bottom, narrowing toward the top (mound shape)
   const layers = STRATA.map((s, i) => {
-    const fromTop = i; // 0 = top
     const fromBottom = STRATA.length - 1 - i;
     const w = widest * (0.35 + 0.65 * (fromBottom / (STRATA.length - 1)));
     const y = baseY - (fromBottom + 1) * layerH;
@@ -435,7 +434,7 @@ function FourGenerationsLadder() {
 // ═══════════════════════════════════════════════════════════════
 // MAIN COMPONENT
 // ═══════════════════════════════════════════════════════════════
-export default function TheTell({ onBack }) {
+export default function TheTell() {
   return (
     <div style={{ background: BG, color: BONE, minHeight: "100vh" }}>
       <style>{`

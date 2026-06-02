@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, useCallback } from "react";
+import { useState, useEffect, useRef } from "react";
 import { C, F } from "../design.js";
 
 /* ═══════════════════════════════════════════════════════════════
@@ -1144,13 +1144,83 @@ function InevitabilityGauge() {
         ref={ref}
         style={{
           display: "grid",
-          gridTemplateColumns: "1fr 1fr",
+          gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))",
           gap: 16,
           margin: "32px 0",
           borderRadius: 16,
           overflow: "hidden",
+          opacity: vis ? 1 : 0,
+          transform: vis ? "translateY(0)" : "translateY(18px)",
+          transition: "opacity 700ms ease, transform 700ms ease",
         }}
       >
+        <div
+          style={{
+            gridColumn: "1 / -1",
+            background: FAINT,
+            border: `1px solid ${LINE}`,
+            borderRadius: 16,
+            padding: "22px 20px 28px",
+          }}
+        >
+          <div
+            style={{
+              ...mono,
+              fontSize: 9,
+              letterSpacing: 2,
+              color: GHOST,
+              marginBottom: 18,
+            }}
+          >
+            INEVITABILITY THERMOMETER
+          </div>
+          <div
+            style={{
+              position: "relative",
+              height: 8,
+              borderRadius: 999,
+              background: `linear-gradient(90deg, ${EMBER}, ${GOLD}, ${ICE}, ${GREEN}, ${GHOST})`,
+              boxShadow: `0 0 24px ${GHOST}22`,
+            }}
+          >
+            {markers.map((marker) => (
+              <div
+                key={marker.label}
+                style={{
+                  position: "absolute",
+                  left: `${marker.pct}%`,
+                  top: "50%",
+                  transform: "translate(-50%, -50%)",
+                  width: 10,
+                  height: 10,
+                  borderRadius: "50%",
+                  background: BG,
+                  border: `2px solid ${marker.color}`,
+                  boxShadow: `0 0 14px ${marker.color}55`,
+                }}
+              />
+            ))}
+          </div>
+          <div style={{ position: "relative", height: 30 }}>
+            {markers.map((marker) => (
+              <span
+                key={marker.label}
+                style={{
+                  ...mono,
+                  position: "absolute",
+                  left: `${marker.pct}%`,
+                  top: 12,
+                  transform: "translateX(-50%)",
+                  color: ASH,
+                  fontSize: 8,
+                  whiteSpace: "nowrap",
+                }}
+              >
+                {marker.label}
+              </span>
+            ))}
+          </div>
+        </div>
         {/* For */}
         <div
           style={{
@@ -1247,7 +1317,7 @@ function InevitabilityGauge() {
 }
 
 // ═══════════════ MAIN COMPONENT ═══════════════
-export default function TechEntropy({ onBack }) {
+export default function TechEntropy() {
   return (
     <div style={{ background: BG, minHeight: "100vh", color: BONE }}>
       <style>{`

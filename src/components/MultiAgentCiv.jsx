@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, useCallback } from "react";
+import { useState, useEffect, useRef } from "react";
 import { C, F } from "../design.js";
 
 /* ═══════════════════════════════════════════════════════════════
@@ -691,7 +691,7 @@ function EscalationDiagram() {
 }
 
 // ═══════════════ MAIN ═══════════════
-export default function MultiAgentCiv({ onBack }) {
+export default function MultiAgentCiv() {
   const [agentCount, setAgentCount] = useState(3);
 
   return (

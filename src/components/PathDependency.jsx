@@ -108,7 +108,6 @@ function BranchingTree() {
     return () => obs.disconnect();
   }, []);
 
-  const draw = (pct) => (pct > 0 ? 1 : 0);
   const p = progress;
 
   return (
@@ -510,7 +509,6 @@ function SensorComparison() {
 
   // Generate pseudo-random point cloud for LiDAR
   const lidarPoints = [];
-  const seed = 42;
   for (let i = 0; i < 120; i++) {
     const angle = ((i * 137.508 + frame * 0.3) * Math.PI) / 180;
     const r = 20 + (i % 7) * 12 + Math.sin(i * 0.5 + frame * 0.02) * 8;

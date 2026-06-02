@@ -305,7 +305,7 @@ class Particle {
 }
 
 // ─── Component ───
-export default function SoftwareFactoryPlatformer({ onBack }) {
+export default function SoftwareFactoryPlatformer() {
   const canvasRef = useRef(null);
   const gameRef = useRef({
     px: 100, py: GROUND_Y, vy: 0, onGround: true,
@@ -315,7 +315,9 @@ export default function SoftwareFactoryPlatformer({ onBack }) {
   });
   const [info, setInfo] = useState(null);
   const [currentStation, setCurrentStation] = useState(STATIONS[0]);
-  const [isMobile, setIsMobile] = useState(false);
+  const [isMobile, setIsMobile] = useState(
+    () => window.innerWidth < 640 || "ontouchstart" in window,
+  );
 
   const showInfo = useCallback((obj) => setInfo(obj), []);
 
@@ -327,7 +329,6 @@ export default function SoftwareFactoryPlatformer({ onBack }) {
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
-    setIsMobile(window.innerWidth < 640 || "ontouchstart" in window);
     const parent = canvas.parentElement;
     const g = gameRef.current;
 
@@ -341,6 +342,7 @@ export default function SoftwareFactoryPlatformer({ onBack }) {
       canvas.style.height = h + "px";
       g.viewW = w;
       g.viewH = h;
+      setIsMobile(window.innerWidth < 640 || "ontouchstart" in window);
     };
     resize();
     window.addEventListener("resize", resize);

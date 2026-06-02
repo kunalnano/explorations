@@ -6,6 +6,21 @@ import ConstellationCanvas, {
   getLangColor,
 } from "./GitHubConstellationCanvas";
 
+const CACHE_KEY = "gh_constellation_repos";
+const CACHE_TTL = 60 * 60 * 1000; // 1 hour
+
+function readCachedRepos() {
+  try {
+    const cached = localStorage.getItem(CACHE_KEY);
+    if (!cached) return null;
+    const { data, ts } = JSON.parse(cached);
+    if (Date.now() - ts < CACHE_TTL && Array.isArray(data)) return data;
+  } catch {
+    // Cache miss or corrupt, fetch fresh data.
+  }
+  return null;
+}
+
 function DetailPanel({ selected, onClose }) {
   if (!selected) return null;
   return (
@@ -252,8 +267,8 @@ function LanguageBar({ langCounts }) {
   );
 }
 
-export default function GitHubConstellation({ onBack }) {
-  const [repos, setRepos] = useState(null);
+export default function GitHubConstellation() {
+  const [repos, setRepos] = useState(readCachedRepos);
   const [error, setError] = useState(null);
   const [selected, setSelected] = useState(null);
   const [hovered, setHovered] = useState(null);
@@ -267,22 +282,7 @@ export default function GitHubConstellation({ onBack }) {
 
   useEffect(() => {
     let cancelled = false;
-    const CACHE_KEY = "gh_constellation_repos";
-    const CACHE_TTL = 60 * 60 * 1000; // 1 hour
-
-    // Check cache first
-    try {
-      const cached = localStorage.getItem(CACHE_KEY);
-      if (cached) {
-        const { data, ts } = JSON.parse(cached);
-        if (Date.now() - ts < CACHE_TTL && Array.isArray(data)) {
-          setRepos(data);
-          return;
-        }
-      }
-    } catch (_) {
-      // Cache miss or corrupt, proceed to fetch
-    }
+    if (repos !== null) return;
 
     fetch("https://api.github.com/users/kunalnano/repos?per_page=100&sort=updated")
       .then((r) => {
@@ -294,7 +294,7 @@ export default function GitHubConstellation({ onBack }) {
           setRepos(data);
           try {
             localStorage.setItem(CACHE_KEY, JSON.stringify({ data, ts: Date.now() }));
-          } catch (_) {
+          } catch {
             // Storage full, no-op
           }
         }
@@ -305,7 +305,7 @@ export default function GitHubConstellation({ onBack }) {
     return () => {
       cancelled = true;
     };
-  }, []);
+  }, [repos]);
 
   const langCounts = useMemo(() => {
     if (!repos) return {};

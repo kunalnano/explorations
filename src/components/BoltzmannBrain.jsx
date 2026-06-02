@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, useCallback } from "react";
+import { useState, useEffect, useRef } from "react";
 import { C, F } from "../design.js";
 
 // ── Shared styles — Apple direction ──
@@ -718,7 +718,7 @@ function EscapeVerdictBoard() {
 // ═══════════════════════════════════════════════════════════════
 // MAIN COMPONENT
 // ═══════════════════════════════════════════════════════════════
-export default function BoltzmannBrain({ onBack }) {
+export default function BoltzmannBrain() {
   return (
     <div style={{ background: BG, color: BONE, minHeight: "100vh" }}>
       <style>{`

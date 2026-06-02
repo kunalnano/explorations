@@ -4,7 +4,6 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>EMERGENT LIFE LAB</title>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.49/Tone.js"></script>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Orbitron:wght@400;700;900&display=swap');
 
@@ -444,7 +443,7 @@
 // ============================================================
 
 const canvas = document.getElementById('life-canvas');
-const ctx = canvas.getContext('2d');
+const ctx = canvas.getContext('2d', { willReadFrequently: true });
 
 // --- State ---
 let CELL_SIZE = 4;
@@ -479,13 +478,33 @@ const RULES = {
 let currentRule = RULES.conway;
 
 // --- Sound Engine ---
+const TONE_URL = 'https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.49/Tone.js';
 let soundEnabled = false;
 let audioStarted = false;
+let toneLoadPromise = null;
 let synths = {};
 let masterVol;
 
+function loadTone() {
+  if (window.Tone) return Promise.resolve(window.Tone);
+  if (toneLoadPromise) return toneLoadPromise;
+
+  toneLoadPromise = new Promise((resolve, reject) => {
+    const script = document.createElement('script');
+    script.src = TONE_URL;
+    script.async = true;
+    script.onload = () => resolve(window.Tone);
+    script.onerror = () => reject(new Error('Tone.js failed to load'));
+    document.head.appendChild(script);
+  });
+
+  return toneLoadPromise;
+}
+
 function initAudio() {
   if (audioStarted) return;
+  const Tone = window.Tone;
+  if (!Tone) return;
   audioStarted = true;
 
   masterVol = new Tone.Volume(-20).toDestination();
@@ -870,12 +889,17 @@ function setSoundMode(val) { /* reactive — mode is read in sonify() */ }
 
 function toggleSound() {
   if (!audioStarted) {
-    Tone.start().then(() => {
+    document.getElementById('sound-label').textContent = 'LOADING SOUND…';
+    loadTone().then((Tone) => Tone.start()).then(() => {
       initAudio();
       soundEnabled = true;
       document.getElementById('sound-indicator').classList.add('on');
       document.getElementById('sound-label').textContent = 'SOUND ON';
       setVolume(document.getElementById('volume').value);
+    }).catch(() => {
+      soundEnabled = false;
+      document.getElementById('sound-indicator').classList.remove('on');
+      document.getElementById('sound-label').textContent = 'SOUND UNAVAILABLE';
     });
   } else {
     soundEnabled = !soundEnabled;

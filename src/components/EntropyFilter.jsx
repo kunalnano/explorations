@@ -102,7 +102,7 @@ function Prose({ children }) {
 }
 
 // ══════════════════════════════════════════════════════════════
-export default function EntropyFilter({ onBack }) {
+export default function EntropyFilter() {
   return (
     <div style={{ background: BG, color: BONE, minHeight: "100vh" }}>
       {/* ═══ HERO — Apple-direction, ember accent rule under title ═══ */}

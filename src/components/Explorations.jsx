@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback } from "react";
 import { C, F, T } from "../design.js";
 import imgTheTell from "../assets/explorations/the-tell.jpg";
+import imgGitHubConstellation from "../assets/explorations/github-constellation.jpg";
 import imgSoftwareFactory from "../assets/explorations/software-factory.jpg";
 import imgFinalFiveYears from "../assets/explorations/final-five-years.jpg";
 import imgAlsLimit from "../assets/explorations/als-limit.jpg";
@@ -11,11 +12,20 @@ import imgMultiAgentCiv from "../assets/explorations/multi-agent-civ.jpg";
 import imgPathDependency from "../assets/explorations/path-dependency.jpg";
 import imgSoftwareTheory from "../assets/explorations/software-theory.jpg";
 import imgTechEntropy from "../assets/explorations/tech-entropy.jpg";
+import imgEntropyFilter from "../assets/explorations/entropy-filter.jpg";
+import imgEmergentLifeLab from "../assets/explorations/emergent-life-lab.jpg";
+import imgCognitiveSymbiosis from "../assets/explorations/cognitive-symbiosis.jpg";
+import imgDeclarativeAgents from "../assets/explorations/declarative-agents.jpg";
+import imgDerivativeUniverses from "../assets/explorations/derivative-universes.jpg";
+import imgJWSTDominoes from "../assets/explorations/jwst-dominoes.jpg";
+import imgSimulationEvolution from "../assets/explorations/simulation-evolution.jpg";
+import imgTapestryLattice from "../assets/explorations/tapestry-lattice.jpg";
 
 // Per-essay hero image. Cards fall back to the CSS gradient (exp.visual)
 // for any essay not yet in this map.
 const IMAGES = {
   "the-tell": imgTheTell,
+  "github-constellation": imgGitHubConstellation,
   "software-factory": imgSoftwareFactory,
   "final-five-years": imgFinalFiveYears,
   "als-limit": imgAlsLimit,
@@ -26,6 +36,14 @@ const IMAGES = {
   "path-dependency": imgPathDependency,
   "software-theory": imgSoftwareTheory,
   "tech-entropy": imgTechEntropy,
+  "entropy-filter": imgEntropyFilter,
+  "emergent-life-lab": imgEmergentLifeLab,
+  "cognitive-symbiosis": imgCognitiveSymbiosis,
+  "declarative-agents": imgDeclarativeAgents,
+  "derivative-universes": imgDerivativeUniverses,
+  "jwst-dominoes": imgJWSTDominoes,
+  "simulation-evolution": imgSimulationEvolution,
+  "tapestry-lattice": imgTapestryLattice,
 };
 
 const EXPLORATIONS = [

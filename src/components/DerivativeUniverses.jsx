@@ -287,7 +287,7 @@ function HiveMindScale() {
 // Visual: parent → children with mutations branching
 // ═══════════════════════════════════════════════════════
 function UniverseTree() {
-  const [ref, vis] = useReveal(0.15);
+  const [ref] = useReveal(0.15);
 
   return (
     <div ref={ref}>
@@ -350,7 +350,7 @@ function UniverseTree() {
 
 
 // ═══════════════ MAIN ═══════════════
-export default function DerivativeUniverses({ onBack }) {
+export default function DerivativeUniverses() {
   return (
     <div style={{ background: BG, minHeight: "100vh", color: BONE }}>
       <div style={{

@@ -1,0 +1,4 @@
+Contact: mailto:hello@darkvectorcognition.ai
+Canonical: https://alsharma.com/.well-known/security.txt
+Preferred-Languages: en
+Expires: 2027-05-31T23:59:59Z

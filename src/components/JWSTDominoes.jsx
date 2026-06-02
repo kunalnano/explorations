@@ -224,27 +224,20 @@ function DramaticCounter() {
 // ── DOMINO CASCADE — click to topple ──
 function DominoCascade() {
   const [toppled, setToppled] = useState(-1);
-  const [autoRunning, setAutoRunning] = useState(false);
   const timerRef = useRef(null);
 
   const startCascade = useCallback(() => {
     setToppled(0);
-    setAutoRunning(true);
   }, []);
 
   useEffect(() => {
-    if (!autoRunning || toppled < 0) return;
-    if (toppled >= ALL_DOMINOES.length - 1) {
-      setAutoRunning(false);
-      return;
-    }
+    if (toppled < 0 || toppled >= ALL_DOMINOES.length - 1) return;
     timerRef.current = setTimeout(() => setToppled((t) => t + 1), 120);
     return () => clearTimeout(timerRef.current);
-  }, [toppled, autoRunning]);
+  }, [toppled]);
 
   const reset = () => {
     setToppled(-1);
-    setAutoRunning(false);
   };
 
   const cols = 5;
@@ -271,6 +264,7 @@ function DominoCascade() {
             const y = 10 + row * cellH;
             const isFallen = i <= toppled;
             const isFalling = i === toppled;
+            const tilt = 2 + ((i * 37) % 30) / 10;
 
             return (
               <g
@@ -292,9 +286,7 @@ function DominoCascade() {
                   strokeWidth={isFalling ? 2.5 : isFallen ? 1.5 : 0.8}
                   style={{
                     transition: "all 0.3s ease",
-                    transform: isFallen
-                      ? `rotate(${2 + Math.random() * 3}deg)`
-                      : "none",
+                    transform: isFallen ? `rotate(${tilt}deg)` : "none",
                     transformOrigin: `${x + cellW / 2}px ${y + cellH}px`,
                     filter: isFalling
                       ? `drop-shadow(0 0 12px ${d.color}66)`
@@ -714,8 +706,7 @@ function GalaxyTimeline() {
     H = 320,
     padL = 50,
     padR = 50,
-    padT = 40,
-    padB = 80;
+    padT = 40;
   const gW = W - padL - padR;
   const minY = 2022.0,
     maxY = 2025.5;
@@ -881,7 +872,7 @@ function GalaxyTimeline() {
 }
 
 // ═══════════════ MAIN ═══════════════
-export default function JWSTDominoes({ onBack }) {
+export default function JWSTDominoes() {
   return (
     <div style={{ background: BG, minHeight: "100vh", color: BONE }}>
       <style>{`
