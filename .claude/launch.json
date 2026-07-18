@@ -13,6 +13,13 @@
       "runtimeExecutable": "sh",
       "runtimeArgs": ["-c", "MOMENT_PORT=\"${PORT:-8473}\" python3 /Users/alsharma/Projects/moment/serve.py"],
       "port": 8473
+    },
+    {
+      "name": "dvc-web",
+      "runtimeExecutable": "sh",
+      "runtimeArgs": ["-c", "cd /Users/alsharma/Projects/dvc/web && npm run dev"],
+      "port": 3000,
+      "autoPort": true
     }
   ]
 }

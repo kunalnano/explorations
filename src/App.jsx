@@ -1,32 +1,33 @@
 import { useState, useEffect, useCallback, lazy, Suspense } from "react";
-import Home from "./components/Home";
-import Explorations from "./components/Explorations";
-import Resume from "./components/Resume";
-import AncientWisdomMap from "./components/AncientWisdomMap";
-import BoltzmannBrain from "./components/BoltzmannBrain";
-import SoftwareTheory from "./components/SoftwareTheory";
-import MultiAgentCiv from "./components/MultiAgentCiv";
-import PathDependency from "./components/PathDependency";
-import TechEntropy from "./components/TechEntropy";
-import JWSTDominoes from "./components/JWSTDominoes";
-import SimulationEvolution from "./components/SimulationEvolution";
-import DerivativeUniverses from "./components/DerivativeUniverses";
-import FinalFiveYears from "./components/FinalFiveYears";
-import CognitiveSymbiosis from "./components/CognitiveSymbiosis";
-import DeclarativeAgents from "./components/DeclarativeAgents";
-import TapestryLattice from "./components/TapestryLattice";
-import IntelligenceAsCurrency from "./components/IntelligenceAsCurrency";
-import EmergentLifeLab from "./components/EmergentLifeLab";
-import EntropyFilter from "./components/EntropyFilter";
-import AlsLimit from "./components/AlsLimit";
-import SoftwareFactoryPlatformer from "./components/SoftwareFactoryPlatformer";
-import GitHubConstellation from "./components/GitHubConstellation";
-import TheTell from "./components/TheTell";
-import Travel from "./pages/travel/Travel";
+import Home from "./components/KineticHome";
 import PageFrame from "./components/PageFrame";
 import { ROUTE_META } from "./routeMeta";
 
+const Explorations = lazy(() => import("./components/Explorations"));
 const Operator = lazy(() => import("./components/Operator"));
+const Resume = lazy(() => import("./components/Resume"));
+const AncientWisdomMap = lazy(() => import("./components/AncientWisdomMap"));
+const BoltzmannBrain = lazy(() => import("./components/BoltzmannBrain"));
+const SoftwareTheory = lazy(() => import("./components/SoftwareTheory"));
+const MultiAgentCiv = lazy(() => import("./components/MultiAgentCiv"));
+const PathDependency = lazy(() => import("./components/PathDependency"));
+const TechEntropy = lazy(() => import("./components/TechEntropy"));
+const JWSTDominoes = lazy(() => import("./components/JWSTDominoes"));
+const SimulationEvolution = lazy(() => import("./components/SimulationEvolution"));
+const DerivativeUniverses = lazy(() => import("./components/DerivativeUniverses"));
+const FinalFiveYears = lazy(() => import("./components/FinalFiveYears"));
+const CognitiveSymbiosis = lazy(() => import("./components/CognitiveSymbiosis"));
+const DeclarativeAgents = lazy(() => import("./components/DeclarativeAgents"));
+const TapestryLattice = lazy(() => import("./components/TapestryLattice"));
+const IntelligenceAsCurrency = lazy(() => import("./components/IntelligenceAsCurrency"));
+const EmergentLifeLab = lazy(() => import("./components/EmergentLifeLab"));
+const EntropyFilter = lazy(() => import("./components/EntropyFilter"));
+const AlsLimit = lazy(() => import("./components/AlsLimit"));
+const SoftwareFactoryPlatformer = lazy(() => import("./components/SoftwareFactoryPlatformer"));
+const GitHubConstellation = lazy(() => import("./components/GitHubConstellation"));
+const TheTell = lazy(() => import("./components/TheTell"));
+const Travel = lazy(() => import("./pages/travel/Travel"));
+
 
 const PATH_ROUTES = new Set(["travel"]);
 const HOSTNAME_ROUTES = { travel: "travel" };
@@ -91,6 +92,28 @@ function OperatorFallback() {
   );
 }
 
+function RouteFallback({ surface = "light" }) {
+  const dark = surface === "dark";
+  return (
+    <div
+      style={{
+        minHeight: "100vh",
+        background: dark ? "#050508" : "#ffffff",
+        color: dark ? "rgba(245,245,247,0.72)" : "#1d1d1f",
+        display: "grid",
+        placeItems: "center",
+        fontFamily:
+          '"JetBrains Mono", "SF Mono", ui-monospace, monospace',
+        fontSize: 12,
+        letterSpacing: "0.14em",
+        textTransform: "uppercase",
+      }}
+    >
+      Loading.
+    </div>
+  );
+}
+
 export default function App() {
   const [route, setRoute] = useState(getRoute);
 
@@ -149,12 +172,18 @@ export default function App() {
   const backFn = meta.backLabel === "Home" ? goHome : goExplorations;
 
   if (!FRAMED.has(route)) {
-    return <Component {...componentProps} />;
+    return (
+      <Suspense fallback={<RouteFallback surface={meta.surface} />}>
+        <Component {...componentProps} />
+      </Suspense>
+    );
   }
 
   return (
     <PageFrame surface={meta.surface} onBack={backFn} backLabel={meta.backLabel}>
-      <Component {...componentProps} />
+      <Suspense fallback={<RouteFallback surface={meta.surface} />}>
+        <Component {...componentProps} />
+      </Suspense>
     </PageFrame>
   );
 }
