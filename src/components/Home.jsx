@@ -98,6 +98,7 @@ function Nav({ onNav }) {
           flexShrink: 0,
         }}>sharma</span>
         <div style={{ display: "flex", gap: "clamp(8px, 2.4vw, 28px)" }}>
+          <button onClick={() => onNav("resume")} style={linkStyle}>R&eacute;sum&eacute;</button>
           <button onClick={() => onNav("explorations")} style={linkStyle}>Explorations</button>
           <button onClick={() => onNav("operator")} style={linkStyle}>Operator</button>
           <a href="https://darkvectorcognition.ai" target="_blank" rel="noopener noreferrer" style={linkStyle}>DVC</a>
@@ -431,17 +432,110 @@ function Hero({ onNav }) {
         fontSize: "clamp(22px, 2.6vw, 30px)",
         lineHeight: 1.2, letterSpacing: "-0.022em",
         color: C.ink, maxWidth: 760, margin: "0 auto 12px",
-      }}>Post-sales strategy for AI-native software.</p>
+      }}>Post-sales executive for developer platforms.</p>
       <p style={{
         fontFamily: F.text, fontSize: 18, color: C.inkSoft,
         letterSpacing: "-0.012em", maxWidth: 640,
         margin: "0 auto 28px", lineHeight: 1.45,
-      }}>I close the gap between what enterprises buy and what they realize from it. I also build the agents I&apos;d want them to use.</p>
+      }}>Fifteen years running customer success, support and services through developer-platform scale-ups &mdash; HashiCorp, Snyk, Harness &mdash; and now Technical Success for the Americas at Port. I build the AI agents I ask enterprise customers to adopt, and I ship them.</p>
       <div style={{ display: "flex", justifyContent: "center", gap: 18, flexWrap: "wrap" }}>
-        <button onClick={() => onNav("explorations")} style={pillFilled}>See the work</button>
-        <a href="https://darkvectorcognition.ai" target="_blank" rel="noopener noreferrer" style={pillGhost}>{"Dark Vector Cognition \u203A"}</a>
+        <button onClick={() => onNav("resume")} style={pillFilled}>R&eacute;sum&eacute;</button>
+        <a href="https://www.linkedin.com/in/alsharma" target="_blank" rel="noopener noreferrer" style={pillGhost}>{"LinkedIn \u203A"}</a>
+        <button onClick={() => window.dispatchEvent(new CustomEvent("open-contact"))} style={pillGhost}>{"Get in touch \u203A"}</button>
       </div>
       <HeroStage onNav={onNav} />
+    </section>
+  );
+}
+
+const PROOF = [
+  { n: "$125M", l: "cumulative ARR book", sub: "developer platforms, AppSec, cloud infra" },
+  { n: "135%+", l: "net revenue retention", sub: "Snyk enterprise portfolio, 2022\u20132024" },
+  { n: "12+", l: "technical CSMs hired & developed", sub: "career frameworks, enablement, $100M+ book" },
+  { n: "3", l: "post-sales orgs built or rebuilt", sub: "Snyk \u00B7 Harness \u00B7 Port" },
+];
+
+function ProofBar() {
+  return (
+    <section aria-label="Track record" style={{ background: C.bg, padding: "8px 22px 72px" }}>
+      <div style={{
+        maxWidth: 1024, margin: "0 auto",
+        display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(min(100%, 220px), 1fr))",
+        gap: 1, background: C.rule, border: `1px solid ${C.rule}`, borderRadius: 18, overflow: "hidden",
+      }}>
+        {PROOF.map((p) => (
+          <div key={p.l} style={{ background: C.bg, padding: "28px 26px" }}>
+            <div style={{
+              fontFamily: F.display, fontWeight: 600, fontSize: "clamp(34px, 3.6vw, 44px)",
+              letterSpacing: "-0.035em", lineHeight: 1, color: C.ink, fontVariantNumeric: "tabular-nums",
+            }}>{p.n}</div>
+            <div style={{ fontFamily: F.text, fontSize: 15, color: C.ink, marginTop: 10, letterSpacing: "-0.01em" }}>{p.l}</div>
+            <div style={{ fontFamily: F.text, fontSize: 13, color: C.inkMute, marginTop: 4 }}>{p.sub}</div>
+          </div>
+        ))}
+      </div>
+    </section>
+  );
+}
+
+const THESES = [
+  { k: "01", t: "Agents dissolve absorbed complexity.", b: "Any product whose moat is \u201Cwe aggregate context so you don\u2019t have to\u201D is exposed the moment agents do that aggregation natively. Post-sales has to sell outcomes the agent can\u2019t reach on its own, or it is selling a shrinking asset." },
+  { k: "02", t: "Telemetry is the durable layer.", b: "Agents generate data; they don\u2019t replace it. Observability, audit and evidence get structurally safer as workflows go agent-native \u2014 so that is where a post-sales org should anchor its value and its renewals." },
+  { k: "03", t: "Security has to stay a third party.", b: "Codegen vendors can\u2019t credibly police their own output. An agnostic layer has to do it \u2014 which is why the customer-engineering motion around AI security is a leadership job, not a support queue." },
+];
+
+function Thesis() {
+  return (
+    <section style={{ background: C.bgSoft, padding: "96px 22px" }}>
+      <div style={{ maxWidth: 1024, margin: "0 auto" }}>
+        <p style={{ fontFamily: F.text, fontSize: 13, letterSpacing: "0.18em", textTransform: "uppercase", color: C.inkMute, margin: "0 0 18px", textAlign: "center" }}>Operating thesis</p>
+        <h2 style={{
+          fontFamily: F.display, fontWeight: 600, fontSize: "clamp(32px, 4.4vw, 50px)",
+          lineHeight: 1.08, letterSpacing: "-0.035em", margin: "0 auto 48px", color: C.ink, textAlign: "center", maxWidth: 760,
+        }}>What changes about post-sales when the customer is an agent.</h2>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(min(100%, 280px), 1fr))", gap: 20 }}>
+          {THESES.map((x) => (
+            <article key={x.k} style={{ background: C.bg, borderRadius: 22, padding: "30px 28px 34px" }}>
+              <p style={{ fontFamily: F.mono, fontSize: 12, color: C.accent, margin: "0 0 14px", letterSpacing: "0.08em" }}>{x.k}</p>
+              <h3 style={{ fontFamily: F.display, fontWeight: 600, fontSize: 24, lineHeight: 1.15, letterSpacing: "-0.024em", margin: "0 0 12px", color: C.ink }}>{x.t}</h3>
+              <p style={{ fontFamily: F.text, fontSize: 16, lineHeight: 1.55, color: C.inkSoft, margin: 0, letterSpacing: "-0.01em" }}>{x.b}</p>
+            </article>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+const BUILT = [
+  { name: "Witness", what: "Open-source agent flight recorder \u2014 a transparent MCP proxy writing a tamper-evident record of every tool call.", meta: "Apache-2.0 \u00B7 Node", href: "https://github.com/dark-vector-cognition/witness" },
+  { name: "Agent Flight Check", what: "A two-week, fixed-price audit of every agent, MCP server and tool acting inside a company.", meta: "Dark Vector Cognition \u00B7 service", href: "https://darkvectorcognition.ai/flight-check/" },
+  { name: "Moment", what: "A calm, local-first follow-through app. Weather, one visible next move, and nothing that sells your attention.", meta: "iPhone \u00B7 iPad \u00B7 Mac \u00B7 Vision", href: "https://apps.apple.com/us/app/id6779027217" },
+  { name: "QuarterMaster", what: "An editorial field manual for real rooms \u2014 six situations, thirty-six durable objects, a bounded guide.", meta: "quartermaster.style", href: "https://quartermaster.style" },
+];
+
+function Built() {
+  return (
+    <section style={{ background: C.bg, padding: "96px 22px" }}>
+      <div style={{ maxWidth: 1024, margin: "0 auto" }}>
+        <p style={{ fontFamily: F.text, fontSize: 13, letterSpacing: "0.18em", textTransform: "uppercase", color: C.inkMute, margin: "0 0 18px", textAlign: "center" }}>Shipped, not slide-ware</p>
+        <h2 style={{
+          fontFamily: F.display, fontWeight: 600, fontSize: "clamp(32px, 4.4vw, 50px)",
+          lineHeight: 1.08, letterSpacing: "-0.035em", margin: "0 auto 14px", color: C.ink, textAlign: "center", maxWidth: 760,
+        }}>The executive who also builds.</h2>
+        <p style={{ fontFamily: F.display, fontSize: "clamp(18px, 2vw, 22px)", color: C.inkSoft, textAlign: "center", maxWidth: 640, margin: "0 auto 48px", lineHeight: 1.35, letterSpacing: "-0.015em" }}>Everything below is live, under Dark Vector Cognition &mdash; the studio I run on my own hardware and time.</p>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(min(100%, 230px), 1fr))", gap: 20 }}>
+          {BUILT.map((b) => (
+            <a key={b.name} href={b.href} target="_blank" rel="noopener noreferrer" style={{
+              display: "block", background: C.bgSoft, borderRadius: 22, padding: "28px 26px 30px", textDecoration: "none",
+            }}>
+              <h3 style={{ fontFamily: F.display, fontWeight: 600, fontSize: 22, letterSpacing: "-0.022em", margin: "0 0 10px", color: C.ink }}>{b.name}{" \u203A"}</h3>
+              <p style={{ fontFamily: F.text, fontSize: 15, lineHeight: 1.5, color: C.inkSoft, margin: "0 0 14px", letterSpacing: "-0.01em" }}>{b.what}</p>
+              <p style={{ fontFamily: F.text, fontSize: 12, color: C.inkMute, margin: 0, letterSpacing: "0.02em" }}>{b.meta}</p>
+            </a>
+          ))}
+        </div>
+      </div>
     </section>
   );
 }
@@ -530,32 +624,6 @@ function ExplorationsGrid({ onNav }) {
           fontFamily: F.text, fontSize: 17, letterSpacing: "-0.01em",
           cursor: "pointer",
         }}>{"See all twenty explorations \u203A"}</button>
-      </div>
-    </section>
-  );
-}
-
-function DVCBlock() {
-  return (
-    <section style={{ background: C.bgFooter, padding: "112px 22px" }}>
-      <div style={{ maxWidth: 920, margin: "0 auto", textAlign: "center" }}>
-        <p style={{
-          fontFamily: F.text, fontSize: 13, letterSpacing: "0.18em",
-          textTransform: "uppercase", color: C.inkMute, margin: "0 0 28px",
-        }}>Dark Vector Cognition</p>
-        <h2 style={{
-          fontFamily: F.display, fontWeight: 500,
-          fontSize: "clamp(32px, 4.4vw, 50px)",
-          lineHeight: 1.12, letterSpacing: "-0.03em",
-          margin: "0 0 22px", color: C.ink,
-        }}>A studio for systems that think.</h2>
-        <p style={{
-          fontFamily: F.display, fontWeight: 400,
-          fontSize: "clamp(22px, 2.6vw, 32px)",
-          lineHeight: 1.3, letterSpacing: "-0.022em",
-          color: C.ink, margin: "0 auto 32px", maxWidth: 720,
-        }}>Legacy software was built for humans clicking buttons. The next layer is built for agents doing work. We sit at that seam.</p>
-        <a href="https://darkvectorcognition.ai" target="_blank" rel="noopener noreferrer" style={pillFilled}>Visit DVC</a>
       </div>
     </section>
   );
@@ -655,9 +723,11 @@ export default function Home({ onNavigate }) {
     }}>
       <Nav onNav={go} />
       <Hero onNav={go} />
-      <ExplorationsGrid onNav={go} />
-      <DVCBlock />
+      <ProofBar />
+      <Thesis />
       <CareerStrip onNav={go} />
+      <Built />
+      <ExplorationsGrid onNav={go} />
       <FooterStrip />
     </div>
   );
