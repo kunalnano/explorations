@@ -512,6 +512,28 @@ function RealGalaxyCanvas() {
     const rand = seededRandom(123987);
     const galaxyImage = new Image();
     let galaxyReady = false;
+    // The photo's sky isn't pure black, so screen-blending the raw square
+    // leaves a visible rectangle. Fade its edges to transparent once.
+    let featheredPlate = null;
+    let featheredFrom = null;
+    const getFeatheredPlate = (source) => {
+      if (featheredPlate && featheredFrom === source) return featheredPlate;
+      const size = 1536;
+      const plate = document.createElement("canvas");
+      plate.width = size;
+      plate.height = size;
+      const pctx = plate.getContext("2d");
+      pctx.drawImage(source, 0, 0, size, size);
+      const fade = pctx.createRadialGradient(size / 2, size / 2, size * 0.3, size / 2, size / 2, size * 0.5);
+      fade.addColorStop(0, "rgba(0,0,0,1)");
+      fade.addColorStop(1, "rgba(0,0,0,0)");
+      pctx.globalCompositeOperation = "destination-in";
+      pctx.fillStyle = fade;
+      pctx.fillRect(0, 0, size, size);
+      featheredPlate = plate;
+      featheredFrom = source;
+      return plate;
+    };
     let galaxyFailed = false;
     let fallbackPlate = null;
     const stars = Array.from({ length: 1400 }, () => ({
@@ -602,7 +624,7 @@ function RealGalaxyCanvas() {
         ctx.filter = "saturate(1.22) contrast(1.12) brightness(1.04)";
         ctx.shadowColor = "rgba(116,174,255,0.24)";
         ctx.shadowBlur = 38;
-        ctx.drawImage(galaxySource, -drawSize / 2, -drawSize / 2, drawSize, drawSize);
+        ctx.drawImage(getFeatheredPlate(galaxySource), -drawSize / 2, -drawSize / 2, drawSize, drawSize);
         ctx.restore();
         ctx.filter = "none";
         ctx.shadowBlur = 0;

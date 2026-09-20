@@ -95,7 +95,12 @@ export default function App() {
   const [route, setRoute] = useState(getRoute);
 
   useEffect(() => {
-    const onHash = () => setRoute(getRoute());
+    // Back/forward and deep links change the hash without going through
+    // navigate(), so reset scroll here or the next page opens mid-scroll.
+    const onHash = () => {
+      setRoute(getRoute());
+      window.scrollTo(0, 0);
+    };
     window.addEventListener("hashchange", onHash);
     return () => window.removeEventListener("hashchange", onHash);
   }, []);

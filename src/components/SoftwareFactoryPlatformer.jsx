@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef, useCallback } from "react";
-import { F } from "../design.js";
+import { F, L } from "../design.js";
 
 const BG = "#0e1018";
 const ACCENT = "#4aaa99";
@@ -511,7 +511,7 @@ export default function SoftwareFactoryPlatformer() {
   const sevBg = { critical: "rgba(255,85,85,0.1)", high: "rgba(255,170,51,0.1)", medium: "rgba(68,204,136,0.1)", info: "rgba(102,170,255,0.1)" };
 
   return (
-    <div style={{ position: "fixed", inset: 0, top: 48, background: BG, zIndex: 10, display: "flex", flexDirection: "column", fontFamily: F.text }}>
+    <div style={{ position: "fixed", inset: 0, top: L.navH, background: BG, zIndex: 10, display: "flex", flexDirection: "column", fontFamily: F.text }}>
       <h1 style={{ position: "absolute", width: 1, height: 1, padding: 0, margin: -1, overflow: "hidden", clip: "rect(0,0,0,0)", whiteSpace: "nowrap", border: 0 }}>
         The software factory.
       </h1>

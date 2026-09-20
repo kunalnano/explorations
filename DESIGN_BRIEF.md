@@ -4,6 +4,23 @@
 **Last checkpoint:** `01d0cb7`
 **Build:** ✅ `npm run build` green (1.3s, 1.1 MB main bundle)
 
+> **SUPERSEDED 2026-09-19 — enterprise-advisory direction** (branch `redesign/dvc-monochrome`).
+> Source: the "make darkvectorcognition.ai an enterprise advisory site" brief (dvc-web PR #72).
+> Applied here as:
+> - **One job.** Home exists to get a hiring exec, board member or recruiter to get in touch.
+>   One primary CTA ("Get in touch") in nav, hero and the closing section; résumé is secondary.
+> - **Order:** hero → track record → operating thesis → the arc → shipped → final CTA →
+>   "Also on this site" strip → footer.
+> - **Demote, don't delete.** Explorations, The Operator, Enablement and DVC get one line each
+>   in the bottom strip — no images, no big headings. Their pages stay live and unchanged.
+> - **No toys above the fold.** No floating widget, no cinematic stage in the hero.
+> - **No drift.** Home and Résumé carry the same positioning line.
+> - **Visual system** = darkvectorcognition.ai default theme: Space Grotesk / IBM Plex Sans /
+>   JetBrains Mono (self-hosted in `public/fonts`), black ink on white, hairline rules, square
+>   corners. Tokens in `src/design.js` (`C`, `F`, `L`, `T`, `pill`, `textLink`, `wordmark`).
+> The PageFrame contract and "essays keep their interior world" below still hold; the Apple
+> typography / colour / pill specifics and the old identity lines do not.
+
 ---
 
 ## The thesis

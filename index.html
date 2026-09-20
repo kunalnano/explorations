@@ -15,9 +15,21 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,200..600;1,9..144,200..600&family=JetBrains+Mono:wght@300;400&display=swap" />
+    <link rel="preload" href="/fonts/space-grotesk-600.ttf" as="font" type="font/ttf" crossorigin />
     <style>
+      /* Self-hosted, same faces as darkvectorcognition.ai */
+      @font-face { font-family: "Space Grotesk"; src: url("/fonts/space-grotesk-500.ttf"); font-weight: 500; font-display: swap; }
+      @font-face { font-family: "Space Grotesk"; src: url("/fonts/space-grotesk-600.ttf"); font-weight: 600; font-display: swap; }
+      @font-face { font-family: "Space Grotesk"; src: url("/fonts/space-grotesk-700.ttf"); font-weight: 700; font-display: swap; }
+      @font-face { font-family: "IBM Plex Sans"; src: url("/fonts/ibm-plex-sans-300.ttf"); font-weight: 300; font-display: swap; }
+      @font-face { font-family: "IBM Plex Sans"; src: url("/fonts/ibm-plex-sans-400.ttf"); font-weight: 400; font-display: swap; }
+      @font-face { font-family: "IBM Plex Sans"; src: url("/fonts/ibm-plex-sans-500.ttf"); font-weight: 500; font-display: swap; }
+      @font-face { font-family: "JetBrains Mono"; src: url("/fonts/jetbrains-mono-400.ttf"); font-weight: 400; font-display: swap; }
+      @font-face { font-family: "JetBrains Mono"; src: url("/fonts/jetbrains-mono-500.ttf"); font-weight: 500; font-display: swap; }
       * { margin: 0; padding: 0; box-sizing: border-box; }
       html, body { background: #ffffff; }
+      :focus-visible { outline: 2px solid #050505; outline-offset: 3px; }
+      @media (prefers-reduced-motion: reduce) { * { scroll-behavior: auto !important; transition: none !important; animation: none !important; } }
     </style>
   </head>
   <body>
@@ -68,33 +80,33 @@
         requestAnimationFrame(draw);
       })();
     </script>
-    <!-- ═══ CONTACT PANEL ═══ -->
-    <div id="contact-backdrop" onclick="toggleContact(false)" style="position:fixed;inset:0;z-index:9998;background:rgba(0,0,0,0.5);backdrop-filter:blur(2px);opacity:0;pointer-events:none;transition:opacity 0.3s;"></div>
-    <div id="contact-panel" style="position:fixed;top:0;right:0;bottom:0;width:min(400px,90vw);z-index:9999;background:#0a0a10;border-left:1px solid rgba(201,168,76,0.18);transform:translateX(100%);transition:transform 0.35s cubic-bezier(0.16,1,0.3,1);display:flex;flex-direction:column;overflow:hidden;">
-      <div style="padding:24px 28px 16px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid rgba(255,255,255,0.06);">
+    <!-- ═══ CONTACT PANEL ═══ opened by the "Get in touch" CTAs via the open-contact event -->
+    <div id="contact-backdrop" onclick="toggleContact(false)" style="position:fixed;inset:0;z-index:9998;background:rgba(5,5,8,0.16);backdrop-filter:blur(4px);opacity:0;pointer-events:none;transition:opacity 0.3s;"></div>
+    <div id="contact-panel" role="dialog" aria-modal="true" aria-labelledby="contact-title" inert style="position:fixed;top:0;right:0;bottom:0;width:min(430px,calc(100vw - 22px));z-index:9999;background:#fff;border-left:1px solid rgba(5,5,8,0.14);transform:translateX(100%);transition:transform 0.35s cubic-bezier(0.16,1,0.3,1);display:flex;flex-direction:column;overflow:hidden;">
+      <div style="padding:24px 28px 20px;display:flex;justify-content:space-between;align-items:flex-start;border-bottom:1px solid rgba(5,5,8,0.11);">
         <div>
-          <p style="font-family:'JetBrains Mono',monospace;font-size:11px;color:#c9a84c;letter-spacing:3px;text-transform:uppercase;margin:0;">GET IN TOUCH</p>
-          <p style="font-family:'Fraunces',Georgia,serif;font-size:14px;color:rgba(232,230,221,0.55);margin:6px 0 0;font-style:italic;">I'll respond within 24 hours.</p>
+          <p style="font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:500;color:rgba(5,5,5,0.58);letter-spacing:0.14em;text-transform:uppercase;margin:0;">Replies within 24 hours</p>
+          <p id="contact-title" style="font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:26px;letter-spacing:-0.035em;color:#050505;margin:8px 0 0;">Get in touch.</p>
         </div>
-        <button onclick="toggleContact(false)" style="background:none;border:none;color:rgba(255,255,255,0.3);font-size:22px;cursor:pointer;padding:4px 8px;line-height:1;">&times;</button>
+        <button aria-label="Close contact form" onclick="toggleContact(false)" style="background:none;border:none;color:rgba(5,5,5,0.69);font-size:28px;cursor:pointer;width:44px;height:44px;line-height:1;">&times;</button>
       </div>
       <div id="contact-body" style="flex:1;overflow-y:auto;padding:28px;">
         <div style="display:flex;flex-direction:column;gap:20px;">
-          <div><label style="font-family:monospace;font-size:11px;color:rgba(255,255,255,0.35);letter-spacing:2px;display:block;margin-bottom:6px;">NAME</label><input id="cf-name" placeholder="Your name" style="width:100%;padding:12px 14px;font-size:14px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);border-radius:4px;color:#fff;outline:none;box-sizing:border-box;" /></div>
-          <div><label style="font-family:monospace;font-size:11px;color:rgba(255,255,255,0.35);letter-spacing:2px;display:block;margin-bottom:6px;">EMAIL</label><input id="cf-email" type="email" placeholder="you@company.com" style="width:100%;padding:12px 14px;font-size:14px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);border-radius:4px;color:#fff;outline:none;box-sizing:border-box;" /></div>
-          <div><label style="font-family:monospace;font-size:11px;color:rgba(255,255,255,0.35);letter-spacing:2px;display:block;margin-bottom:6px;">MESSAGE</label><textarea id="cf-msg" rows="5" placeholder="What's on your mind?" style="width:100%;padding:12px 14px;font-size:14px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);border-radius:4px;color:#fff;outline:none;resize:vertical;min-height:100px;box-sizing:border-box;"></textarea></div>
-          <p id="cf-error" style="font-size:13px;color:#e55;margin:0;display:none;">Something went wrong. Try <a href="mailto:hello@darkvectorcognition.ai" target="_blank" style="color:#c9a84c;text-decoration:none;">emailing directly</a>.</p>
-          <button id="cf-submit" onclick="submitContact()" style="padding:14px 28px;font-family:monospace;font-size:13px;letter-spacing:1.5px;text-transform:uppercase;background:#c9a84c;color:#0a0a10;border:none;border-radius:999px;cursor:pointer;font-weight:500;">SEND MESSAGE</button>
+          <div><label for="cf-name" style="font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:500;color:rgba(5,5,5,0.58);letter-spacing:0.14em;text-transform:uppercase;display:block;margin-bottom:8px;">Name</label><input id="cf-name" autocomplete="name" style="width:100%;padding:13px 14px;font-family:'IBM Plex Sans',sans-serif;font-size:16px;background:#fff;border:1px solid rgba(5,5,8,0.22);border-radius:0;color:#050505;box-sizing:border-box;" /></div>
+          <div><label for="cf-email" style="font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:500;color:rgba(5,5,5,0.58);letter-spacing:0.14em;text-transform:uppercase;display:block;margin-bottom:8px;">Email</label><input id="cf-email" type="email" autocomplete="email" style="width:100%;padding:13px 14px;font-family:'IBM Plex Sans',sans-serif;font-size:16px;background:#fff;border:1px solid rgba(5,5,8,0.22);border-radius:0;color:#050505;box-sizing:border-box;" /></div>
+          <div><label for="cf-msg" style="font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:500;color:rgba(5,5,5,0.58);letter-spacing:0.14em;text-transform:uppercase;display:block;margin-bottom:8px;">Message</label><textarea id="cf-msg" rows="6" style="width:100%;padding:13px 14px;font-family:'IBM Plex Sans',sans-serif;font-size:16px;background:#fff;border:1px solid rgba(5,5,8,0.22);border-radius:0;color:#050505;box-sizing:border-box;resize:vertical;min-height:120px;"></textarea></div>
+          <p id="cf-error" role="alert" style="font-family:'IBM Plex Sans',sans-serif;font-size:14px;line-height:1.5;color:#a01818;margin:0;display:none;"></p>
+          <button id="cf-submit" onclick="submitContact()" style="font-family:'JetBrains Mono',monospace;min-height:48px;padding:0 22px;font-size:11px;font-weight:500;letter-spacing:0.08em;text-transform:uppercase;border-radius:0;cursor:pointer;background:#050505;color:#fff;border:1px solid #050505;">Send message</button>
+          <p style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.08em;text-transform:uppercase;color:rgba(5,5,5,0.58);margin:0;">Or email <a href="mailto:hello@darkvectorcognition.ai" style="color:#050505;">hello@darkvectorcognition.ai</a></p>
         </div>
       </div>
     </div>
-    <button id="contact-fab" onclick="toggleContact(true)" style="position:fixed;bottom:28px;right:28px;z-index:9997;width:56px;height:56px;border-radius:50%;background:#1d1d1f;border:none;cursor:pointer;box-shadow:0 4px 20px rgba(0,0,0,0.18);display:flex;align-items:center;justify-content:center;">
-      <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M20 2H4C2.9 2 2 2.9 2 4V22L6 18H20C21.1 18 22 17.1 22 16V4C22 2.9 21.1 2 20 2Z" fill="#ffffff"/></svg>
-    </button>
     <script>
-      function toggleContact(open){var p=document.getElementById('contact-panel'),b=document.getElementById('contact-backdrop'),f=document.getElementById('contact-fab');if(open){p.style.transform='translateX(0)';p.style.boxShadow='-20px 0 60px rgba(0,0,0,0.6)';b.style.opacity='1';b.style.pointerEvents='auto';f.style.display='none';}else{p.style.transform='translateX(100%)';p.style.boxShadow='none';b.style.opacity='0';b.style.pointerEvents='none';f.style.display='flex';}}
-      function submitContact(){var n=document.getElementById('cf-name').value,e=document.getElementById('cf-email').value,m=document.getElementById('cf-msg').value,btn=document.getElementById('cf-submit'),err=document.getElementById('cf-error');if(!n||!e||!m)return;btn.textContent='SENDING...';btn.style.opacity='0.5';err.style.display='none';fetch('https://formspree.io/f/mykboegz',{method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json'},body:JSON.stringify({name:n,email:e,message:m})}).then(function(r){if(r.ok){document.getElementById('contact-body').innerHTML='<div style="text-align:center;padding-top:60px;"><div style="font-size:40px;margin-bottom:16px;color:#c9a84c;">&#10003;</div><p style="font-family:Fraunces,Georgia,serif;font-style:italic;font-size:20px;color:#e8e6dd;">Message received.</p><p style="font-family:Fraunces,Georgia,serif;font-size:15px;color:rgba(232,230,221,0.55);margin-top:8px;">I\'ll be in touch shortly.</p><button onclick="toggleContact(false)" style="margin-top:28px;padding:11px 26px;font-family:JetBrains Mono,monospace;font-size:11px;letter-spacing:3px;text-transform:uppercase;background:transparent;color:#c9a84c;border:1px solid rgba(201,168,76,0.4);border-radius:999px;cursor:pointer;">CLOSE</button></div>';}else{throw new Error();}}).catch(function(){btn.textContent='SEND MESSAGE';btn.style.opacity='1';err.style.display='block';});}
-      document.addEventListener('keydown',function(e){if(e.key==='Escape')toggleContact(false);});
+      var contactReturnFocus=null;
+      function toggleContact(open){var p=document.getElementById('contact-panel'),b=document.getElementById('contact-backdrop');if(open){contactReturnFocus=document.activeElement;p.inert=false;p.style.transform='translateX(0)';p.style.boxShadow='-28px 0 90px rgba(5,5,8,0.12)';b.style.opacity='1';b.style.pointerEvents='auto';var n=document.getElementById('cf-name');if(n)setTimeout(function(){n.focus();},60);}else{p.inert=true;p.style.transform='translateX(100%)';p.style.boxShadow='none';b.style.opacity='0';b.style.pointerEvents='none';if(contactReturnFocus&&contactReturnFocus.focus)contactReturnFocus.focus();}}
+      function contactFail(msg){var btn=document.getElementById('cf-submit'),err=document.getElementById('cf-error');btn.textContent='Send message';btn.style.opacity='1';btn.disabled=false;err.textContent=msg;err.style.display='block';}
+      function submitContact(){var n=document.getElementById('cf-name').value.trim(),e=document.getElementById('cf-email').value.trim(),m=document.getElementById('cf-msg').value.trim(),btn=document.getElementById('cf-submit'),err=document.getElementById('cf-error');err.style.display='none';if(!n||!e||!m){contactFail('Name, email and a message are all needed.');return;}if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(e)){contactFail('That email address does not look right.');return;}btn.textContent='Sending\u2026';btn.style.opacity='0.5';btn.disabled=true;fetch('https://formspree.io/f/mykboegz',{method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json'},body:JSON.stringify({name:n,email:e,message:m})}).then(function(r){if(!r.ok)throw new Error();document.getElementById('contact-body').innerHTML='<div style="padding-top:40px;"><p style="font-family:Space Grotesk,sans-serif;font-weight:600;font-size:30px;letter-spacing:-0.04em;color:#050505;margin:0 0 12px;">Message received.</p><p style="font-family:IBM Plex Sans,sans-serif;font-size:17px;line-height:1.6;color:rgba(5,5,5,0.69);margin:0 0 28px;">I will reply within 24 hours.</p><button onclick="toggleContact(false)" style="font-family:JetBrains Mono,monospace;min-height:48px;padding:0 22px;font-size:11px;font-weight:500;letter-spacing:0.08em;text-transform:uppercase;border-radius:0;cursor:pointer;background:transparent;color:#050505;border:1px solid rgba(5,5,8,0.22);">Close</button></div>';}).catch(function(){contactFail('That did not send. Email hello@darkvectorcognition.ai instead.');});}
+      document.addEventListener('keydown',function(ev){if(ev['key']==='Escape')toggleContact(false);});
       window.addEventListener('open-contact',function(){toggleContact(true);});
     </script>
   </body>

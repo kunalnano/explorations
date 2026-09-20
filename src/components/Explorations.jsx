@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from "react";
-import { C, F, T } from "../design.js";
+import { C, F, L, T } from "../design.js";
 import imgTheTell from "../assets/explorations/the-tell.jpg";
 import imgGitHubConstellation from "../assets/explorations/github-constellation.jpg";
 import imgSoftwareFactory from "../assets/explorations/software-factory.jpg";
@@ -279,8 +279,8 @@ function Card({ exp, onClick }) {
       onMouseLeave={() => setHovered(false)}
       style={{
         background: C.bg,
-        border: "none",
-        borderRadius: 22,
+        border: `1px solid ${hovered ? C.ink : C.ruleStrong}`,
+        borderRadius: 0,
         overflow: "hidden",
         padding: 0,
         cursor: "pointer",
@@ -289,14 +289,10 @@ function Card({ exp, onClick }) {
         minHeight: 360,
         textAlign: "left",
         fontFamily: F.text,
-        transform: hovered ? "translateY(-4px)" : "translateY(0)",
-        boxShadow: hovered
-          ? "0 14px 40px rgba(0,0,0,0.08)"
-          : "0 1px 0 rgba(0,0,0,0.04)",
-        transition: "transform .35s cubic-bezier(0.16,1,0.3,1), box-shadow .35s ease",
+        transition: "border-color .2s ease",
       }}
     >
-      <div style={{ height: 180, overflow: "hidden", position: "relative" }}>
+      <div style={{ aspectRatio: "16 / 9", width: "100%", overflow: "hidden", position: "relative", background: exp.visual }}>
         {image ? (
           <img
             src={image}
@@ -320,10 +316,7 @@ function Card({ exp, onClick }) {
           <p style={{ ...T.eyebrow, margin: 0 }}>{exp.eyebrow}</p>
           <span
             style={{
-              fontFamily: F.text,
-              fontSize: 12,
-              color: C.inkMute,
-              letterSpacing: "-0.008em",
+              ...T.meta,
             }}
           >
             {exp.date}
@@ -358,15 +351,13 @@ function Card({ exp, onClick }) {
         <span
           style={{
             marginTop: 18,
-            fontFamily: F.text,
-            fontSize: 14,
-            color: C.link,
-            letterSpacing: "-0.008em",
+            ...T.meta,
+            color: C.ink,
             transform: hovered ? "translateX(3px)" : "translateX(0)",
             transition: "transform .3s ease",
           }}
         >
-          Explore ›
+          Explore →
         </span>
       </div>
     </button>
@@ -403,10 +394,10 @@ export default function Explorations({ onNavigate }) {
       {/* Hero */}
       <section
         style={{
-          padding: "96px 22px 64px",
-          maxWidth: 980,
+          padding: `clamp(56px, 8vw, 112px) ${L.gutter} clamp(40px, 5vw, 64px)`,
+          maxWidth: `calc(${L.max}px + 2 * ${L.gutter})`,
           margin: "0 auto",
-          textAlign: "center",
+          textAlign: "left",
           opacity: entered ? 1 : 0,
           transform: entered ? "translateY(0)" : "translateY(16px)",
           transition: "all 0.9s cubic-bezier(0.16,1,0.3,1)",
@@ -417,27 +408,16 @@ export default function Explorations({ onNavigate }) {
         </p>
         <h1
           style={{
-            fontFamily: F.display,
-            fontWeight: 600,
-            fontSize: "clamp(48px, 8vw, 96px)",
-            lineHeight: 1.02,
-            letterSpacing: "-0.045em",
-            color: C.ink,
-            margin: "0 0 14px",
+            ...T.h1,
+            margin: "0 0 24px",
           }}
         >
           Explorations.
         </h1>
         <p
           style={{
-            fontFamily: F.display,
-            fontWeight: 400,
-            fontSize: "clamp(20px, 2.4vw, 28px)",
-            lineHeight: 1.3,
-            letterSpacing: "-0.022em",
-            color: C.inkSoft,
-            maxWidth: 720,
-            margin: "0 auto",
+            ...T.lede,
+            maxWidth: 680,
           }}
         >
           Interactive essays on agents, platform engineering, cosmology, and
@@ -446,14 +426,14 @@ export default function Explorations({ onNavigate }) {
       </section>
 
       {/* Grid */}
-      <section style={{ background: C.bgSoft, padding: "48px 22px 112px" }}>
+      <section style={{ background: C.bgSoft, borderTop: `1px solid ${C.rule}`, padding: `clamp(40px, 5vw, 64px) ${L.gutter} ${L.section}` }}>
         <div
           style={{
-            maxWidth: 1080,
+            maxWidth: L.max,
             margin: "0 auto",
             display: "grid",
-            gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))",
-            gap: 20,
+            gridTemplateColumns: "repeat(auto-fill, minmax(min(100%, 320px), 1fr))",
+            gap: 16,
           }}
         >
           {EXPLORATIONS.map((exp) => (
@@ -465,12 +445,10 @@ export default function Explorations({ onNavigate }) {
       {/* Footer */}
       <footer
         style={{
-          background: C.bgSoft,
+          ...T.meta,
+          background: C.bg,
           borderTop: `1px solid ${C.rule}`,
-          padding: "28px 22px",
-          fontFamily: F.text,
-          fontSize: 12,
-          color: C.inkMute,
+          padding: `26px ${L.gutter}`,
           textAlign: "center",
         }}
       >

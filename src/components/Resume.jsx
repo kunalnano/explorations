@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import { C, F, T } from "../design.js";
+import { C, F, L, T } from "../design.js";
 
 // ── Scroll reveal ──
 function useReveal(threshold = 0.12) {
@@ -167,7 +167,7 @@ function TimelineRole({ role, index, last }) {
           top: 10,
           width: 13,
           height: 13,
-          borderRadius: "50%",
+          borderRadius: 0,
           border: `2px solid ${role.accent}`,
           background: C.bg,
         }}
@@ -180,7 +180,7 @@ function TimelineRole({ role, index, last }) {
               left: 2,
               width: 5,
               height: 5,
-              borderRadius: "50%",
+              borderRadius: 0,
               background: C.live,
             }}
           />
@@ -212,7 +212,6 @@ function TimelineRole({ role, index, last }) {
           fontSize: 16,
           color: C.ink,
           marginBottom: 2,
-          letterSpacing: "-0.01em",
           fontWeight: 500,
         }}
       >
@@ -226,7 +225,6 @@ function TimelineRole({ role, index, last }) {
           fontSize: 14,
           color: C.inkMute,
           marginBottom: 18,
-          letterSpacing: "-0.008em",
         }}
       >
         {role.context}
@@ -242,7 +240,6 @@ function TimelineRole({ role, index, last }) {
               fontSize: 15,
               lineHeight: 1.55,
               color: C.inkSoft,
-              letterSpacing: "-0.008em",
               paddingLeft: 14,
               position: "relative",
             }}
@@ -254,7 +251,7 @@ function TimelineRole({ role, index, last }) {
                 top: "0.55em",
                 width: 4,
                 height: 4,
-                borderRadius: "50%",
+                borderRadius: 0,
                 background: role.accent,
               }}
             />
@@ -280,22 +277,17 @@ export default function Resume() {
       {/* ── Hero ── */}
       <section
         style={{
-          padding: "96px 22px 64px",
-          maxWidth: 880,
+          padding: `clamp(56px, 8vw, 112px) ${L.gutter} clamp(40px, 5vw, 64px)`,
+          maxWidth: `calc(${L.max}px + 2 * ${L.gutter})`,
           margin: "0 auto",
-          textAlign: "center",
+          textAlign: "left",
         }}
       >
         <p style={{ ...T.eyebrow, marginBottom: 20 }}>Curriculum vitæ</p>
         <h1
           style={{
-            fontFamily: F.display,
-            fontWeight: 600,
-            fontSize: "clamp(48px, 8vw, 96px)",
-            lineHeight: 1.02,
-            letterSpacing: "-0.045em",
-            color: C.ink,
-            margin: "0 0 14px",
+            ...T.h1,
+            margin: "0 0 24px",
           }}
         >
           Al Sharma.
@@ -303,25 +295,24 @@ export default function Resume() {
         <p
           style={{
             fontFamily: F.display,
-            fontWeight: 400,
-            fontSize: "clamp(22px, 2.6vw, 30px)",
-            lineHeight: 1.22,
-            letterSpacing: "-0.022em",
+            fontWeight: 500,
+            fontSize: "clamp(22px, 2.6vw, 32px)",
+            lineHeight: 1.1,
+            letterSpacing: "-0.03em",
             color: C.ink,
             maxWidth: 720,
-            margin: "0 auto 12px",
+            margin: "0 0 16px",
           }}
         >
-          Post-sales strategy for AI-native software.
+          Post-sales executive for developer platforms.
         </p>
         <p
           style={{
             fontFamily: F.text,
             fontSize: 18,
             color: C.inkSoft,
-            letterSpacing: "-0.012em",
             maxWidth: 640,
-            margin: "0 auto 28px",
+            margin: "0 0 28px",
             lineHeight: 1.5,
           }}
         >
@@ -332,13 +323,12 @@ export default function Resume() {
         <div
           style={{
             display: "flex",
-            justifyContent: "center",
+            justifyContent: "flex-start",
             gap: 24,
             flexWrap: "wrap",
             fontFamily: F.text,
             fontSize: 14,
             color: C.inkMute,
-            letterSpacing: "-0.008em",
           }}
         >
           <span>Austin, TX</span>
@@ -347,14 +337,14 @@ export default function Resume() {
             href="https://www.linkedin.com/in/alsharma"
             target="_blank"
             rel="noopener noreferrer"
-            style={{ color: C.link, textDecoration: "none" }}
+            style={{ color: C.ink, textDecoration: "underline", textUnderlineOffset: 3 }}
           >
             linkedin.com/in/alsharma
           </a>
           <span aria-hidden="true">·</span>
           <a
             href="mailto:hello@darkvectorcognition.ai"
-            style={{ color: C.link, textDecoration: "none" }}
+            style={{ color: C.ink, textDecoration: "underline", textUnderlineOffset: 3 }}
           >
             hello@darkvectorcognition.ai
           </a>
@@ -362,17 +352,16 @@ export default function Resume() {
       </section>
 
       {/* ── Capabilities ── */}
-      <section style={{ background: C.bgSoft, padding: "80px 22px" }}>
-        <div style={{ maxWidth: 1024, margin: "0 auto" }}>
+      <section style={{ background: C.bgSoft, padding: `${L.section} ${L.gutter}` }}>
+        <div style={{ maxWidth: L.max, margin: "0 auto" }}>
           <Reveal>
-            <p style={{ ...T.eyebrow, textAlign: "center", marginBottom: 14 }}>
+            <p style={{ ...T.eyebrow, marginBottom: 16 }}>
               Signature capabilities
             </p>
             <h2
               style={{
                 ...T.h2,
-                textAlign: "center",
-                marginBottom: 48,
+                marginBottom: "clamp(36px, 4.5vw, 60px)",
               }}
             >
               What I bring to the room.
@@ -381,7 +370,7 @@ export default function Resume() {
           <div
             style={{
               display: "grid",
-              gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))",
+              gridTemplateColumns: "repeat(auto-fit, minmax(min(100%, 260px), 1fr))",
               gap: 12,
             }}
           >
@@ -391,12 +380,11 @@ export default function Resume() {
                   style={{
                     background: C.bg,
                     border: `1px solid ${C.rule}`,
-                    borderRadius: 14,
+                    borderRadius: 0,
                     padding: "18px 22px",
                     fontFamily: F.text,
                     fontSize: 15,
                     color: C.ink,
-                    letterSpacing: "-0.01em",
                     lineHeight: 1.4,
                   }}
                 >
@@ -409,7 +397,7 @@ export default function Resume() {
       </section>
 
       {/* ── Experience ── */}
-      <section style={{ background: C.bg, padding: "96px 22px" }}>
+      <section style={{ background: C.bg, padding: `${L.section} ${L.gutter}` }}>
         <div style={{ maxWidth: 760, margin: "0 auto" }}>
           <Reveal>
             <p style={{ ...T.eyebrow, marginBottom: 14 }}>Experience</p>
@@ -429,10 +417,10 @@ export default function Resume() {
       </section>
 
       {/* ── Education + Credentials ── */}
-      <section style={{ background: C.bgSoft, padding: "96px 22px" }}>
+      <section style={{ background: C.bgSoft, padding: `${L.section} ${L.gutter}` }}>
         <div
           style={{
-            maxWidth: 1024,
+            maxWidth: L.max,
             margin: "0 auto",
             display: "grid",
             gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))",
@@ -467,7 +455,6 @@ export default function Resume() {
                       fontFamily: F.text,
                       fontSize: 15,
                       color: C.inkSoft,
-                      letterSpacing: "-0.008em",
                     }}
                   >
                     {edu.school}
@@ -485,12 +472,14 @@ export default function Resume() {
                   style={{
                     background: C.bg,
                     border: `1px solid ${C.rule}`,
-                    borderRadius: 999,
-                    padding: "8px 16px",
-                    fontFamily: F.text,
-                    fontSize: 13,
+                    borderRadius: 0,
+                    padding: "9px 12px",
+                    fontFamily: F.mono,
+                    fontSize: 10,
+                    fontWeight: 500,
                     color: C.ink,
-                    letterSpacing: "-0.008em",
+                    letterSpacing: "0.08em",
+                    textTransform: "uppercase",
                   }}
                 >
                   {cert}
@@ -502,7 +491,7 @@ export default function Resume() {
       </section>
 
       {/* ── AI Systems (Apple dark inset) ── */}
-      <section style={{ background: C.bgInk, padding: "112px 22px" }}>
+      <section style={{ background: C.bgInk, padding: `${L.section} ${L.gutter}` }}>
         <div
           style={{
             maxWidth: 920,
@@ -562,14 +551,14 @@ export default function Resume() {
         style={{
           background: C.bgSoft,
           borderTop: `1px solid ${C.rule}`,
-          padding: "28px 22px",
+          padding: `26px ${L.gutter}`,
           fontFamily: F.text,
           fontSize: 12,
           color: C.inkMute,
           textAlign: "center",
         }}
       >
-        <div style={{ maxWidth: 1024, margin: "0 auto" }}>
+        <div style={{ maxWidth: L.max, margin: "0 auto" }}>
           {"© 2026 Al Sharma. Built in Austin."}
         </div>
       </footer>
