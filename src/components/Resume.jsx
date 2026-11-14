@@ -55,9 +55,9 @@ const CAPABILITIES = [
 
 const EXPERIENCE = [
   {
-    title: "Head of Technical Success, AMER",
+    title: "Head of Technical Success Managers, AMER",
     company: "Port.io",
-    period: "Aug 2025 — Present",
+    period: "Aug 2025 - Present",
     context: "Series C Internal Developer Platform",
     accent: C.accent,
     live: true,
@@ -70,9 +70,9 @@ const EXPERIENCE = [
     ],
   },
   {
-    title: "Sr. Technical Program Manager / Manager, CS",
+    title: "Senior Technical Program Manager",
     company: "Harness",
-    period: "2021 — 2022, 2024 — 2025",
+    period: "Jun 2024 - Sep 2025",
     context: "CI/CD and Software Delivery Platform (Series D)",
     accent: C.accent,
     bullets: [
@@ -82,9 +82,31 @@ const EXPERIENCE = [
     ],
   },
   {
-    title: "Sr. Manager, Customer Solutions",
+    title: "Manager, Technical Customer Success",
+    company: "Harness",
+    period: "Oct 2023 - Jul 2024",
+    context: "CI/CD and Software Delivery Platform (Series D)",
+    accent: C.accent,
+    bullets: [
+      "Led growth and adoption initiatives for strategic accounts through cross-functional customer engagement.",
+      "Guided enterprise teams through secure CI/CD adoption, application security programs, and risk management.",
+    ],
+  },
+  {
+    title: "Sr. Manager, Technical Success - Strategic Accounts",
     company: "Snyk",
-    period: "Apr 2022 — Jun 2024",
+    period: "Sep 2021 - Nov 2023",
+    context: "Application Security Leader (Series F)",
+    accent: C.accent,
+    bullets: [
+      "Led implementation and adoption of cloud-native application security for strategic accounts.",
+      "Advised enterprise teams on secure software development and vulnerability management, and brought adoption feedback to product teams.",
+    ],
+  },
+  {
+    title: "Manager, Customer Solutions Group",
+    company: "Snyk",
+    period: "Feb 2023 - Sep 2023",
     context: "Application Security Leader (Series F)",
     accent: C.accent,
     bullets: [
@@ -94,9 +116,9 @@ const EXPERIENCE = [
     ],
   },
   {
-    title: "User Success Manager",
+    title: "Enterprise User Success Manager",
     company: "HashiCorp",
-    period: "Jan 2021 — Sep 2021",
+    period: "Jan 2021 - Sep 2021",
     context: "Cloud Infrastructure Automation (Pre-IPO)",
     accent: C.accent,
     bullets: [
@@ -105,14 +127,25 @@ const EXPERIENCE = [
     ],
   },
   {
-    title: "Staff Manager, Enterprise Technical Accounts",
+    title: "Staff Enterprise TAM",
     company: "Western Digital",
-    period: "Mar 2013 — Jan 2021",
+    period: "Apr 2013 - Jan 2021",
     context: "Fortune 200 Data Infrastructure ($16B Revenue)",
     accent: C.accent,
     bullets: [
       "Led cross-functional teams of engineers, researchers, and technicians. Built performance frameworks driving sustained productivity and high talent retention.",
       "Led global quality audits achieving full compliance across departments and geographies.",
+    ],
+  },
+  {
+    title: "Business Development Consultant",
+    company: "Element Energy",
+    period: "Jan 2010 - Jul 2012",
+    context: "Renewable Energy",
+    accent: C.accent,
+    bullets: [
+      "Led business development and market entry for solar and other renewable energy projects in India and Southeast Asia.",
+      "Supported solar product registration, testing and compliance, and helped develop a 5 kW hybrid wind-solar system.",
     ],
   },
 ];
@@ -406,7 +439,7 @@ export default function Resume() {
           <div>
             {EXPERIENCE.map((role, i) => (
               <TimelineRole
-                key={role.company}
+                key={`${role.company}-${role.title}`}
                 role={role}
                 index={i}
                 last={i === EXPERIENCE.length - 1}
@@ -423,7 +456,7 @@ export default function Resume() {
             maxWidth: L.max,
             margin: "0 auto",
             display: "grid",
-            gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))",
+            gridTemplateColumns: "repeat(auto-fit, minmax(min(100%, 320px), 1fr))",
             gap: 48,
           }}
         >

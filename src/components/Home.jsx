@@ -1,11 +1,14 @@
 import { useState, useEffect, useCallback } from "react";
 import { C, F, L, T, pill, textLink, wordmark } from "../design.js";
+import momentSample from "../assets/shipped/moment-sample.webp";
+import quartermasterCapture from "../assets/shipped/quartermaster-desktop.webp";
 const CAREER = [
-  { co: "Port.io", role: "Head of Technical Success, Americas", yr: "2025 \u2014 Present", live: true },
-  { co: "Harness", role: "Senior Technical Program Manager", yr: "2024 \u2014 2025" },
-  { co: "Snyk", role: "Manager, Customer Solutions Group", yr: "2022 \u2014 2024" },
+  { co: "Port.io", role: "Head of Technical Success Managers, AMER", yr: "2025 - Present", live: true },
+  { co: "Harness", role: "Manager, Technical Customer Success / Senior Technical Program Manager", yr: "2023 - 2025" },
+  { co: "Snyk", role: "Sr. Manager, Technical Success - Strategic Accounts", yr: "2021 - 2023" },
   { co: "HashiCorp", role: "Enterprise User Success Manager", yr: "2021" },
-  { co: "Western Digital", role: "Staff Manager, Enterprise", yr: "2013 \u2014 2021" },
+  { co: "Western Digital", role: "Staff Enterprise TAM", yr: "2013 - 2021" },
+  { co: "Element Energy", role: "Business Development Consultant", yr: "2010 - 2012" },
 ];
 
 const pillFilled = pill.filled;
@@ -165,7 +168,7 @@ function Hero({ onNav }) {
 
 const PROOF = [
   { n: "$125M", l: "cumulative ARR book", sub: "developer platforms, AppSec, cloud infra" },
-  { n: "135%+", l: "net revenue retention", sub: "Snyk enterprise portfolio, 2022\u20132024" },
+  { n: "135%+", l: "net revenue retention", sub: "Snyk enterprise portfolio" },
   { n: "12+", l: "technical CSMs hired & developed", sub: "career frameworks, enablement, $100M+ book" },
   { n: "3", l: "post-sales orgs built or rebuilt", sub: "Snyk \u00B7 Harness \u00B7 Port" },
 ];
@@ -241,39 +244,66 @@ function Thesis() {
   );
 }
 
-const BUILT = [
-  { name: "Witness", what: "Open-source agent flight recorder \u2014 a transparent MCP proxy writing a tamper-evident record of every tool call.", meta: "Apache-2.0 \u00B7 Node", href: "https://github.com/dark-vector-cognition/witness" },
-  { name: "Agent Flight Check", what: "A two-week, fixed-price audit of every agent, MCP server and tool acting inside a company.", meta: "Dark Vector Cognition \u00B7 service", href: "https://darkvectorcognition.ai/flight-check/" },
-  { name: "Moment", what: "A calm, local-first follow-through app. Weather, one visible next move, and nothing that sells your attention.", meta: "iPhone \u00B7 iPad \u00B7 Mac \u00B7 Vision", href: "https://apps.apple.com/us/app/id6779027217" },
-  { name: "QuarterMaster", what: "An editorial field manual for real rooms \u2014 six situations, thirty-six durable objects, a bounded guide.", meta: "quartermaster.style", href: "https://quartermaster.style" },
+const FEATURED_WORK = [
+  {
+    name: "Moment", category: "Apple application",
+    what: "A calm place for the next visible move.",
+    decision: "Keep the day in view, without turning it into another dashboard to manage.",
+    href: "https://apps.apple.com/us/app/id6779027217",
+    image: momentSample, width: 1600, height: 900,
+    alt: "Existing Moment sample view showing weather and a follow-through board",
+    caption: "Moment · Existing sample view", background: "#090909", fit: "cover",
+  },
+  {
+    name: "QuarterMaster", category: "Editorial guidance",
+    what: "The room decides the kit.",
+    decision: "Start with where someone is going, then help them choose what belongs there.",
+    href: "https://quartermaster.style",
+    image: quartermasterCapture, width: 2880, height: 1800,
+    alt: "Existing QuarterMaster homepage capture with its field manual and work-dinner scene",
+    caption: "QuarterMaster · Existing product capture", background: "#201208", fit: "contain",
+  },
 ];
 
 function Built() {
+  const narrow = useNarrow(760);
   return (
-    <section id="shipped" style={{ background: C.bgSoft, borderTop: `1px solid ${C.rule}`, padding: `${L.section} ${L.gutter}` }}>
+    <section id="shipped" style={{ background: C.bgSoft, borderTop: `1px solid ${C.rule}`, padding: `clamp(48px, 5.6vw, 80px) ${L.gutter} 72px` }}>
       <div style={{ maxWidth: L.max, margin: "0 auto" }}>
-        <SectionHead eyebrow="Shipped, not slide-ware" title="The executive who also builds.">
-          Everything below is live, under Dark Vector Cognition &mdash; the studio I run on my own hardware and time.
-        </SectionHead>
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(min(100%, 250px), 1fr))", gap: 16 }}>
-          {BUILT.map((b, i) => (
-            <a key={b.name} href={b.href} target="_blank" rel="noopener noreferrer"
-              onMouseEnter={(e) => { e.currentTarget.style.borderColor = C.ink; }}
-              onMouseLeave={(e) => { e.currentTarget.style.borderColor = C.rule; }}
-              style={{
-                display: "flex", flexDirection: "column", minHeight: 260,
-                background: C.bg, border: `1px solid ${C.rule}`,
-                padding: "26px 26px 24px", textDecoration: "none",
-                transition: "border-color .2s ease",
-              }}>
-              <p style={T.meta}>{String(i + 1).padStart(2, "0")}</p>
-              <h3 style={{ ...T.h3, margin: "22px 0 12px" }}>{b.name}</h3>
-              <p style={{ ...T.small, margin: "0 0 22px" }}>{b.what}</p>
-              <p style={{ ...T.meta, marginTop: "auto", display: "flex", justifyContent: "space-between", gap: 12 }}>
-                <span>{b.meta}</span><span aria-hidden="true" style={{ color: C.ink }}>{"\u2197"}</span>
+        <div style={{ display: "grid", gridTemplateColumns: narrow ? "1fr" : "1fr 1fr", gap: narrow ? 20 : 72, alignItems: "end", marginBottom: narrow ? 32 : 52 }}>
+          <h2 style={{ ...T.h2, fontSize: "clamp(38px, 4.5vw, 64px)", lineHeight: 1.02, letterSpacing: "-0.04em" }}>The executive<br />who also builds.</h2>
+          <p style={{ ...T.body, fontSize: narrow ? 17 : 18, maxWidth: 460 }}>Products from Dark Vector Cognition. Different problems, carried through to something you can use.</p>
+        </div>
+        {FEATURED_WORK.map((work, i) => (
+          <article key={work.name} style={{ display: "grid", gridTemplateColumns: narrow ? "1fr" : i === 0 ? "5fr 7fr" : "7fr 5fr", gap: narrow ? 24 : 64, alignItems: "center", borderTop: `1px solid ${C.rule}`, padding: narrow ? "28px 0 36px" : "40px 0 48px" }}>
+            <figure style={{ margin: 0, minWidth: 0, order: narrow || i === 1 ? 0 : 1 }}>
+              <div style={{ height: narrow ? 315 : 380, background: work.background, overflow: "hidden" }}>
+                <img src={work.image} alt={work.alt} width={work.width} height={work.height} loading="lazy" decoding="async" style={{ display: "block", width: "100%", height: "100%", objectFit: work.fit }} />
+              </div>
+              <figcaption style={{ ...T.meta, fontSize: 11, paddingTop: 10 }}>{work.caption}</figcaption>
+            </figure>
+            <div style={{ minWidth: 0, order: narrow || i === 1 ? 1 : 0 }}>
+              <p style={{ ...T.meta, marginBottom: 18 }}>{work.category}</p>
+              <h3 style={{ ...T.h3, fontSize: narrow ? 32 : 38, lineHeight: 1.1, letterSpacing: "-0.035em", overflowWrap: "anywhere" }}>{work.name}</h3>
+              <p style={{ ...T.body, fontSize: narrow ? 17 : 18, maxWidth: "43ch", marginTop: 16 }}>{work.what}</p>
+              <p style={{ borderTop: `1px solid ${C.rule}`, margin: `${narrow ? 20 : 28}px 0 0`, paddingTop: 18, fontSize: 15, lineHeight: 1.6, maxWidth: "44ch" }}>
+                <span style={{ ...T.meta, display: "block", marginBottom: 6 }}>The product decision</span>
+                {work.decision}
               </p>
-            </a>
-          ))}
+              <a href={work.href} target="_blank" rel="noopener noreferrer" style={{ ...textLink, marginTop: 18, gap: 12 }}>Explore {work.name} <span aria-hidden="true" style={{ fontSize: 17 }}>{"\u2197"}</span></a>
+            </div>
+          </article>
+        ))}
+        <div style={{ display: "grid", gridTemplateColumns: narrow ? "1fr" : "1fr 1fr", gap: narrow ? 26 : 36, borderTop: `1px solid ${C.rule}`, paddingTop: 26 }}>
+          <div>
+            <h3 style={{ ...T.h3, fontSize: 22 }}>Witness</h3>
+            <p style={{ ...T.small, fontSize: 14, maxWidth: "48ch" }}>Software that makes agent activity inspectable.</p>
+            <a href="https://github.com/dark-vector-cognition/witness" target="_blank" rel="noopener noreferrer" style={{ ...textLink, marginTop: 6, gap: 12 }}>View the project <span aria-hidden="true" style={{ fontSize: 17 }}>{"\u2197"}</span></a>
+          </div>
+          <div>
+            <h3 style={{ ...T.h3, fontSize: 22 }}>Earlier advisory work</h3>
+            <p style={{ ...T.small, fontSize: 14, maxWidth: "48ch" }}>Agent Flight Check. A previous offer, shown here as part of the work rather than a current service.</p>
+          </div>
         </div>
       </div>
     </section>
