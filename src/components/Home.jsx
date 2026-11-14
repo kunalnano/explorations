@@ -3,11 +3,12 @@ import { C, F, L, T, pill, textLink, wordmark } from "../design.js";
 import momentSample from "../assets/shipped/moment-sample.webp";
 import quartermasterCapture from "../assets/shipped/quartermaster-desktop.webp";
 const CAREER = [
-  { co: "Port.io", role: "Head of Technical Success, Americas", yr: "2025 \u2014 Present", live: true },
-  { co: "Harness", role: "Senior Technical Program Manager", yr: "2024 \u2014 2025" },
-  { co: "Snyk", role: "Manager, Customer Solutions Group", yr: "2022 \u2014 2024" },
+  { co: "Port.io", role: "Head of Technical Success Managers, AMER", yr: "2025 - Present", live: true },
+  { co: "Harness", role: "Manager, Technical Customer Success / Senior Technical Program Manager", yr: "2023 - 2025" },
+  { co: "Snyk", role: "Sr. Manager, Technical Success - Strategic Accounts", yr: "2021 - 2023" },
   { co: "HashiCorp", role: "Enterprise User Success Manager", yr: "2021" },
-  { co: "Western Digital", role: "Staff Manager, Enterprise", yr: "2013 \u2014 2021" },
+  { co: "Western Digital", role: "Staff Enterprise TAM", yr: "2013 - 2021" },
+  { co: "Element Energy", role: "Business Development Consultant", yr: "2010 - 2012" },
 ];
 
 const pillFilled = pill.filled;
@@ -167,7 +168,7 @@ function Hero({ onNav }) {
 
 const PROOF = [
   { n: "$125M", l: "cumulative ARR book", sub: "developer platforms, AppSec, cloud infra" },
-  { n: "135%+", l: "net revenue retention", sub: "Snyk enterprise portfolio, 2022\u20132024" },
+  { n: "135%+", l: "net revenue retention", sub: "Snyk enterprise portfolio" },
   { n: "12+", l: "technical CSMs hired & developed", sub: "career frameworks, enablement, $100M+ book" },
   { n: "3", l: "post-sales orgs built or rebuilt", sub: "Snyk \u00B7 Harness \u00B7 Port" },
 ];
