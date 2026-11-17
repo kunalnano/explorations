@@ -18,7 +18,7 @@ const GREEN = "#34d399";
 const FAINT = "rgba(255,255,255,0.03)";
 const LINE = "rgba(255,255,255,0.06)";
 
-// Apple-direction font tokens — sans-first.
+// Apple-direction font tokens - sans-first.
 const sans = { fontFamily: F.display };
 const serif = { fontFamily: F.text };
 const mono = { fontFamily: F.mono };
@@ -89,7 +89,7 @@ function Chapter({ label, title, children }) {
   );
 }
 
-// ── AGENT SIMULATION — interactive swarm with emergent clustering ──
+// ── AGENT SIMULATION - interactive swarm with emergent clustering ──
 function AgentSimulation({ agentCount }) {
   const canvasRef = useRef(null);
   const agents = useRef([]);
@@ -271,7 +271,7 @@ function AgentSimulation({ agentCount }) {
   );
 }
 
-// ── SCALING CONTROL — drag to watch governance emerge ──
+// ── SCALING CONTROL - drag to watch governance emerge ──
 const STAGE_THRESHOLDS = [
   {
     min: 2,
@@ -420,7 +420,7 @@ function ScalingControl({ count, setCount }) {
   );
 }
 
-// ── EMERGENCE MAP — SVG showing agent→institution mapping ──
+// ── EMERGENCE MAP - SVG showing agent→institution mapping ──
 const EMERGENCES = [
   {
     agent: "File ownership",
@@ -579,7 +579,7 @@ function EmergenceMapSVG() {
   );
 }
 
-// ── GOD PROBLEM — escalation visualization ──
+// ── GOD PROBLEM - escalation visualization ──
 function EscalationDiagram() {
   const [step, setStep] = useState(0);
   const steps = [
@@ -711,7 +711,7 @@ export default function MultiAgentCiv() {
         }}
       />
 
-      {/* Back button — fixed position */}
+      {/* Back button - fixed position */}
       <div
         style={{
           position: "relative",
@@ -759,7 +759,7 @@ export default function MultiAgentCiv() {
 
         {/* ═══ CH I: THE OBSERVATION ═══ */}
         <Chapter
-          label="Chapter I — The Observation"
+          label="Chapter I - The Observation"
           title="The coordination problems are the same"
         >
           <Reveal>
@@ -849,7 +849,7 @@ export default function MultiAgentCiv() {
 
         {/* ═══ CH II: INTERACTIVE SIM ═══ */}
         <Chapter
-          label="Chapter II — The Simulation"
+          label="Chapter II - The Simulation"
           title="Drag the slider. Watch governance emerge."
         >
           <AgentSimulation agentCount={agentCount} />
@@ -858,7 +858,7 @@ export default function MultiAgentCiv() {
 
         {/* ═══ CH III: EMERGENCE MAP ═══ */}
         <Chapter
-          label="Chapter III — The Emergence Map"
+          label="Chapter III - The Emergence Map"
           title="Agent primitives map to civilizational institutions"
         >
           <EmergenceMapSVG />
@@ -866,7 +866,7 @@ export default function MultiAgentCiv() {
 
         {/* ═══ CH IV: THE GOD PROBLEM ═══ */}
         <Chapter
-          label="Chapter IV — The God Problem"
+          label="Chapter IV - The God Problem"
           title="You're the god of this system. But you can't scale."
         >
           <EscalationDiagram />
@@ -882,7 +882,7 @@ export default function MultiAgentCiv() {
               }}
             >
               <span style={{ ...serif, fontSize: 14, color: BONE }}>
-                10,000 years of organizational theory —{" "}
+                10,000 years of organizational theory -{" "}
                 <span style={{ color: GHOST }}>recapitulated in a weekend</span>
                 .
               </span>

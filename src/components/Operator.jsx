@@ -711,9 +711,18 @@ export default function Operator({ onBegin }) {
   const mountRef = useRef(null);
   const [progress, setProgress] = useState(0);
 
-  // Reset window scroll when component mounts
+  // Reset window scroll and lazy-load Fraunces display font when Operator mounts
   useEffect(() => {
     window.scrollTo(0, 0);
+    const id = "operator-fonts";
+    if (!document.getElementById(id)) {
+      const link = document.createElement("link");
+      link.id = id;
+      link.rel = "stylesheet";
+      link.href =
+        "https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,200..600;1,9..144,200..600&display=swap";
+      document.head.appendChild(link);
+    }
   }, []);
 
   useEffect(() => {
@@ -1311,7 +1320,7 @@ export default function Operator({ onBegin }) {
           <section key={b.id} style={{ height: "100vh", display: "flex", alignItems: "center", justifyContent: "center", padding: "0 24px" }}>
             <div style={{ textAlign: "center", maxWidth: 640, pointerEvents: "none" }}>
               <p style={{ fontFamily: MONO, fontSize: 10, letterSpacing: "0.45em", color: "rgba(255,200,120,0.45)", marginBottom: 24 }}>
-                — {b.id} —
+                - {b.id} -
               </p>
               <p style={{
                 fontFamily: SERIF,

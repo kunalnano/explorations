@@ -3,7 +3,7 @@ import { C, F } from "../design.js";
 
 /* ═══════════════════════════════════════════════════════════════
    TECHNOLOGY AS ENTROPY
-   Technology is a dissipative structure — once complex enough,
+   Technology is a dissipative structure - once complex enough,
    its march toward ASI becomes thermodynamically inevitable.
    ═══════════════════════════════════════════════════════════════ */
 
@@ -18,7 +18,7 @@ const GREEN = "#34d399";
 const FAINT = "rgba(255,255,255,0.03)";
 const LINE = "rgba(255,255,255,0.06)";
 
-// Apple typographic stack — interior identity colors stay
+// Apple typographic stack - interior identity colors stay
 const sans = { fontFamily: F.display };
 const serif = { fontFamily: F.text };
 const mono = { fontFamily: F.mono };
@@ -89,7 +89,7 @@ function Chapter({ label, title, children }) {
   );
 }
 
-// ── ENTROPY CURVE — animated S-curve with phase transition markers ──
+// ── ENTROPY CURVE - animated S-curve with phase transition markers ──
 const PHASES = [
   { x: 0.05, label: "Fire", year: "~1M yrs ago", color: EMBER, icon: "🔥" },
   {
@@ -363,7 +363,7 @@ function EntropyCurve() {
   );
 }
 
-// ── PHASE TRANSITION — particles reorganizing through states ──
+// ── PHASE TRANSITION - particles reorganizing through states ──
 function PhaseTransitionVis() {
   const canvasRef = useRef(null);
   const [phase, setPhase] = useState(0); // 0=chaos, 1=ordering, 2=structure, 3=new chaos
@@ -421,11 +421,11 @@ function PhaseTransitionVis() {
 
       for (const p of pts) {
         if (phase === 0) {
-          // Chaos — random brownian
+          // Chaos - random brownian
           p.vx += (Math.random() - 0.5) * 0.8;
           p.vy += (Math.random() - 0.5) * 0.8;
         } else if (phase === 1) {
-          // Ordering — attract to cluster centers
+          // Ordering - attract to cluster centers
           const angle = Math.atan2(p.y - cy, p.x - cx);
           const clustR = 80;
           p.targetX = cx + Math.cos(angle) * clustR;
@@ -433,7 +433,7 @@ function PhaseTransitionVis() {
           p.vx += (p.targetX - p.x) * 0.008;
           p.vy += (p.targetY - p.y) * 0.008;
         } else if (phase === 2) {
-          // Structure — orbit in formation
+          // Structure - orbit in formation
           const idx = pts.indexOf(p);
           const ring = Math.floor(idx / 20);
           const angleOffset =
@@ -445,7 +445,7 @@ function PhaseTransitionVis() {
           p.vx += (p.targetX - p.x) * 0.03;
           p.vy += (p.targetY - p.y) * 0.03;
         } else {
-          // Phase transition — expand then re-coalesce into two structures
+          // Phase transition - expand then re-coalesce into two structures
           const idx = pts.indexOf(p);
           const side = idx < 40 ? -1 : 1;
           const localCx = cx + side * 140;
@@ -567,7 +567,7 @@ function PhaseTransitionVis() {
   );
 }
 
-// ── DISSIPATIVE STRUCTURE — interactive energy flow diagram ──
+// ── DISSIPATIVE STRUCTURE - interactive energy flow diagram ──
 function DissipativeStructure() {
   const ref = useRef(null);
   const [vis, setVis] = useState(false);
@@ -813,7 +813,7 @@ function DissipativeStructure() {
             fontFamily="monospace"
           >
             PRIGOGINE'S INSIGHT: Order emerges from energy flow, not despite
-            entropy — because of it
+            entropy - because of it
           </text>
         </svg>
       </div>
@@ -821,7 +821,7 @@ function DissipativeStructure() {
   );
 }
 
-// ── TECH CASCADE — animated flow from monolith→microservices→AI ──
+// ── TECH CASCADE - animated flow from monolith→microservices→AI ──
 const CASCADE_STAGES = [
   {
     id: "mono",
@@ -1108,7 +1108,7 @@ function TechCascadeFlow() {
   );
 }
 
-// ── INEVITABILITY THERMOMETER — are we past the point of no return? ──
+// ── INEVITABILITY THERMOMETER - are we past the point of no return? ──
 function InevitabilityGauge() {
   const ref = useRef(null);
   const [vis, setVis] = useState(false);
@@ -1289,7 +1289,7 @@ function InevitabilityGauge() {
           {[
             "Thermodynamic analogy ≠ thermodynamic law",
             "Civilizations have collapsed (Bronze Age, Rome)",
-            "Selection bias — we only see surviving systems",
+            "Selection bias - we only see surviving systems",
             "Intentionality changes the equation",
           ].map((t, i) => (
             <div
@@ -1345,7 +1345,7 @@ export default function TechEntropy() {
           padding: "0 24px",
         }}
       >
-        {/* HERO — Apple typographic frame */}
+        {/* HERO - Apple typographic frame */}
         <section
           style={{
             padding: "112px 0 80px",
@@ -1412,7 +1412,7 @@ export default function TechEntropy() {
 
         {/* CH I: THE CURVE */}
         <Chapter
-          label="Chapter I — The Curve"
+          label="Chapter I - The Curve"
           title="Every phase transition compresses the interval before the next"
         >
           <EntropyCurve />
@@ -1434,7 +1434,7 @@ export default function TechEntropy() {
 
         {/* CH II: PHASE TRANSITIONS */}
         <Chapter
-          label="Chapter II — Phase Transitions"
+          label="Chapter II - Phase Transitions"
           title="Order doesn't resist entropy. It rides it."
         >
           <PhaseTransitionVis />
@@ -1442,7 +1442,7 @@ export default function TechEntropy() {
 
         {/* CH III: DISSIPATIVE STRUCTURES */}
         <Chapter
-          label="Chapter III — The Engine"
+          label="Chapter III - The Engine"
           title="Prigogine's insight: structure requires energy flow"
         >
           <DissipativeStructure />
@@ -1464,7 +1464,7 @@ export default function TechEntropy() {
 
         {/* CH IV: THE CASCADE */}
         <Chapter
-          label="Chapter IV — The Cascade"
+          label="Chapter IV - The Cascade"
           title="Each architecture stage widens the entropy it must manage"
         >
           <TechCascadeFlow />
@@ -1472,7 +1472,7 @@ export default function TechEntropy() {
 
         {/* CH V: THE ARGUMENT */}
         <Chapter
-          label="Chapter V — The Question"
+          label="Chapter V - The Question"
           title="Is ASI thermodynamically inevitable?"
         >
           <InevitabilityGauge />
@@ -1487,7 +1487,7 @@ export default function TechEntropy() {
                 marginTop: 16,
               }}
             >
-              3.8 billion years of increasing complexity — never once reversed.
+              3.8 billion years of increasing complexity - never once reversed.
             </div>
           </Reveal>
         </Chapter>

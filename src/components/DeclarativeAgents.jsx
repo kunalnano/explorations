@@ -18,7 +18,7 @@ const GREEN = "#34d399";
 const FAINT = "rgba(255,255,255,0.03)";
 const LINE = "rgba(255,255,255,0.06)";
 
-// Apple-direction font tokens — sans-first, mono retained for accents.
+// Apple-direction font tokens - sans-first, mono retained for accents.
 const sans = { fontFamily: F.display };
 const serif = { fontFamily: F.text };
 const mono = { fontFamily: F.mono };
@@ -63,7 +63,7 @@ function Chapter({ label, title, children }) {
 }
 
 // ═══════════════════════════════════════════════════════
-// CODE COMPARISON — IMPERATIVE VS DECLARATIVE
+// CODE COMPARISON - IMPERATIVE VS DECLARATIVE
 // Animated side-by-side showing the paradigm shift
 // ═══════════════════════════════════════════════════════
 function CodeCompare() {
@@ -334,7 +334,7 @@ export default function DeclarativeAgents() {
       }} />
       <div style={{ position: "relative", zIndex: 1, maxWidth: 720, margin: "0 auto", padding: "0 24px" }}>
 
-        {/* ═══ HERO — Apple-direction, hairline accent rule + short accent line under title ═══ */}
+        {/* ═══ HERO - Apple-direction, hairline accent rule + short accent line under title ═══ */}
         <section style={{ padding: "112px 22px 80px", textAlign: "center" }}>
           <Reveal>
             <div style={{
@@ -372,25 +372,25 @@ export default function DeclarativeAgents() {
           </Reveal>
         </section>
 
-        <Chapter label="Chapter I — The Shift" title="From step-by-step to describe-and-go">
+        <Chapter label="Chapter I - The Shift" title="From step-by-step to describe-and-go">
           <Reveal><div style={{ ...serif, fontSize: 16, lineHeight: 1.7, color: ASH, maxWidth: 540, marginBottom: 32 }}>
             What took an hour of imperative orchestration code now takes <span style={{ color: GREEN }}>five minutes of configuration</span>. The transition is as profound as SQL was for databases.
           </div></Reveal>
           <CodeCompare />
         </Chapter>
 
-        <Chapter label="Chapter II — The Collapse" title="Where did the complexity go?">
+        <Chapter label="Chapter II - The Collapse" title="Where did the complexity go?">
           <Reveal><div style={{ ...serif, fontSize: 16, lineHeight: 1.7, color: ASH, maxWidth: 540, marginBottom: 32 }}>
             Every hard problem got commoditized into an API call. Toggle between eras to see the collapse.
           </div></Reveal>
           <AbstractionCollapse />
         </Chapter>
 
-        <Chapter label="Chapter III — The Commoditization" title="The hard parts became config screens">
+        <Chapter label="Chapter III - The Commoditization" title="The hard parts became config screens">
           <CommoditizationTimeline />
         </Chapter>
 
-        <Chapter label="Chapter IV — The New Role" title="Developer → Director">
+        <Chapter label="Chapter IV - The New Role" title="Developer → Director">
           <Reveal><div style={{ ...serif, fontSize: 16, lineHeight: 1.7, color: ASH, maxWidth: 540, marginBottom: 32 }}>
             The value shifted from <span style={{ color: EMBER }}>"can you build it?"</span> to <span style={{ color: GREEN }}>"what should it be?"</span> The remaining moat: knowing how it works underneath lets you customize beyond what the UI allows.
           </div></Reveal>

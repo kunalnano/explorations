@@ -62,7 +62,7 @@ const EXPERIENCE = [
     accent: C.accent,
     live: true,
     bullets: [
-      "Designed and stood up the Americas Technical Success Management practice from scratch — defined roles, hiring profiles, operating cadence, and the enterprise engagement model across a Fortune 500 portfolio spanning financial services, telecom, and professional services.",
+      "Designed and stood up the Americas Technical Success Management practice from scratch: defined roles, hiring profiles, operating cadence, and the enterprise engagement model across a Fortune 500 portfolio spanning financial services, telecom, and professional services.",
       "Created a three-pillar implementation methodology adopted as the company-wide post-sales delivery standard, reducing onboarding friction and accelerating time-to-first-value.",
       "Prevented churn on multiple at-risk enterprise accounts through structured risk intervention, secured multi-year renewals, and drove expansion across LATAM and North America portfolios.",
       "Built MCP-based knowledge integrations, AI-assisted escalation triage, and agentic engagement patterns across CS workflows to improve team leverage and proactive customer management.",
@@ -122,7 +122,7 @@ const EXPERIENCE = [
     context: "Cloud Infrastructure Automation (Pre-IPO)",
     accent: C.accent,
     bullets: [
-      "Guided enterprise teams through cloud operating model adoption — infrastructure-as-code, secrets management, and service mesh.",
+      "Guided enterprise teams through cloud operating model adoption: infrastructure-as-code, secrets management, and service mesh.",
       "Served as technical bridge between customer platform teams and HashiCorp product engineering.",
     ],
   },

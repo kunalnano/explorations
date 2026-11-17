@@ -1,4 +1,4 @@
-// ── Shared design tokens — DVC monochrome direction ────────
+// ── Shared design tokens - DVC monochrome direction ────────
 // Same language as darkvectorcognition.ai's default theme: black ink on
 // white, Space Grotesk display, IBM Plex Sans body, JetBrains Mono for
 // eyebrows / nav / buttons, hairline rules, square corners.
@@ -15,7 +15,7 @@ export const C = {
   rule: "rgba(5,5,8,0.11)",
   ruleStrong: "rgba(5,5,8,0.22)",
   surface: "rgba(5,5,8,0.018)",
-  accent: "#c9a84c", // amber — essays on dark surfaces only
+  accent: "#c9a84c", // amber - essays on dark surfaces only
   link: "#050505",
   live: "#087a3b",
 };
@@ -105,7 +105,7 @@ export const textLink = {
   color: C.ink, cursor: "pointer", textDecoration: "none",
 };
 
-// Site wordmark — full name, links home. Colour is overridden on dark chrome.
+// Site wordmark - full name, links home. Colour is overridden on dark chrome.
 export const wordmark = {
   fontFamily: F.display, fontWeight: 600, fontSize: 16,
   letterSpacing: "-0.02em", color: C.ink,

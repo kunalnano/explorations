@@ -3,7 +3,7 @@ import { C, F, L, wordmark } from "../design.js";
 
 // ── PageFrame ──────────────────────────────────────────────
 // Floats a consistent DVC-style nav over every page so the chrome is
-// identical site-wide. PageFrame also owns the body background — that
+// identical site-wide. PageFrame also owns the body background - that
 // prevents white-leak underneath short dark essays where the page
 // content doesn't fill the viewport.
 //

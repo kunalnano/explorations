@@ -4,7 +4,7 @@ import { C, F } from "../design.js";
 /* ═══════════════════════════════════════════════════════════════
    PATH DEPENDENCY OF INNOVATION
    Why Tesla and Waymo built completely different self-driving
-   architectures — and why both were "correct."
+   architectures - and why both were "correct."
    ═══════════════════════════════════════════════════════════════ */
 
 const BG = "#050508";
@@ -20,7 +20,7 @@ const WAYMO_BLUE = "#4285f4";
 const FAINT = "rgba(255,255,255,0.03)";
 const LINE = "rgba(255,255,255,0.06)";
 
-// Apple-direction font tokens — sans-first.
+// Apple-direction font tokens - sans-first.
 const sans = { fontFamily: F.display };
 const serif = { fontFamily: F.text };
 const mono = { fontFamily: F.mono };
@@ -91,7 +91,7 @@ function Chapter({ label, title, children }) {
   );
 }
 
-// ── ANIMATED BRANCHING TREE — grows on scroll ──
+// ── ANIMATED BRANCHING TREE - grows on scroll ──
 function BranchingTree() {
   const ref = useRef(null);
   const [progress, setProgress] = useState(0);
@@ -168,7 +168,7 @@ function BranchingTree() {
             Same goal, different ecosystems
           </text>
 
-          {/* Branch lines — animate with dashoffset */}
+          {/* Branch lines - animate with dashoffset */}
           <path
             d="M 260 60 Q 200 85 150 110"
             fill="none"
@@ -469,7 +469,7 @@ function BranchingTree() {
   );
 }
 
-// ── SENSOR VISUALIZATION — camera vs LiDAR side by side ──
+// ── SENSOR VISUALIZATION - camera vs LiDAR side by side ──
 function SensorComparison() {
   const ref = useRef(null);
   const [vis, setVis] = useState(false);
@@ -676,7 +676,7 @@ function SensorComparison() {
   );
 }
 
-// ── RADAR CHART — interactive comparison ──
+// ── RADAR CHART - interactive comparison ──
 const DIMENSIONS = [
   { label: "Scale", tesla: 0.9, waymo: 0.3 },
   { label: "Precision", tesla: 0.5, waymo: 0.95 },
@@ -843,7 +843,7 @@ function RadarChart() {
   );
 }
 
-// ── CONSTRAINT FILTER — shows how starting ecosystems narrow option sets ──
+// ── CONSTRAINT FILTER - shows how starting ecosystems narrow option sets ──
 function ConstraintFilter() {
   const [hover, setHover] = useState(null);
   const rows = [
@@ -1034,7 +1034,7 @@ function ConstraintFilter() {
   );
 }
 
-// ── PATH ORIGIN VIS — shows pattern across industries ──
+// ── PATH ORIGIN VIS - shows pattern across industries ──
 function PathOriginVis() {
   const [hover, setHover] = useState(null);
   const cases = [
@@ -1346,15 +1346,15 @@ export default function PathDependency() {
             Tesla and Waymo didn&rsquo;t choose different strategies. Their ecosystems chose for them.
           </p>
         </section>
-        {/* Black-bleed break — subtle full-width pause before chapters */}
+        {/* Black-bleed break - subtle full-width pause before chapters */}
         <div style={{
           height: 1, background: C.accent, width: 56,
           margin: "0 auto 80px",
         }} />
 
-        {/* CH I: THE THESIS — visual constraint filter */}
+        {/* CH I: THE THESIS - visual constraint filter */}
         <Chapter
-          label="Chapter I — The Thesis"
+          label="Chapter I - The Thesis"
           title="Innovation is path-dependent, not rational"
         >
           <ConstraintFilter />
@@ -1376,7 +1376,7 @@ export default function PathDependency() {
 
         {/* CH II: THE TWO PATHS */}
         <Chapter
-          label="Chapter II — The Two Paths"
+          label="Chapter II - The Two Paths"
           title="Same problem, different ecosystems, opposite architectures"
         >
           <BranchingTree />
@@ -1384,7 +1384,7 @@ export default function PathDependency() {
 
         {/* CH III: SENSOR COMPARISON */}
         <Chapter
-          label="Chapter III — The Sensors"
+          label="Chapter III - The Sensors"
           title="Two fundamentally different ways to see the road"
         >
           <SensorComparison />
@@ -1392,7 +1392,7 @@ export default function PathDependency() {
 
         {/* CH IV: RADAR COMPARISON */}
         <Chapter
-          label="Chapter IV — The Comparison"
+          label="Chapter IV - The Comparison"
           title="Neither was wrong. Both were constrained."
         >
           <RadarChart />
@@ -1407,15 +1407,15 @@ export default function PathDependency() {
                 marginTop: 8,
               }}
             >
-              Hover each shape to isolate. Note generalization — unsolved by
+              Hover each shape to isolate. Note generalization - unsolved by
               both.
             </div>
           </Reveal>
         </Chapter>
 
-        {/* CH V: THE PRINCIPLE — visual pattern table */}
+        {/* CH V: THE PRINCIPLE - visual pattern table */}
         <Chapter
-          label="Chapter V — The Principle"
+          label="Chapter V - The Principle"
           title="The general framework"
         >
           <ConvergenceFunnel />
@@ -1431,7 +1431,7 @@ export default function PathDependency() {
                 marginTop: 8,
               }}
             >
-              The origin story isn't just history — it's architecture.
+              The origin story isn't just history - it's architecture.
             </div>
           </Reveal>
         </Chapter>

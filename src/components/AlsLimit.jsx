@@ -8,7 +8,7 @@ import {
 } from "./AlsLimitVisuals";
 
 /* ═══════════════════════════════════════════════════════════════
-   AL'S LIMIT — A Kardashev Scale for Software Complexity
+   AL'S LIMIT - A Kardashev Scale for Software Complexity
    Software systems grow through discrete cognitive complexity
    regimes. Each transition feels like liberation but actually
    unlocks the next entropy regime.
@@ -17,7 +17,7 @@ import {
 export default function AlsLimit() {
   return (
     <div style={{ background: BG, minHeight: "100vh", color: BONE, ...sans }}>
-      {/* ═══ HERO — Apple-direction, gold period + hairline accent under title ═══ */}
+      {/* ═══ HERO - Apple-direction, gold period + hairline accent under title ═══ */}
       <header style={{
         padding: "112px 22px 80px", textAlign: "center", position: "relative",
       }}>
@@ -132,7 +132,7 @@ export default function AlsLimit() {
             <p style={{ ...serif, fontSize: 14, color: ASH, fontStyle: "italic", marginBottom: 8 }}>
               "The treadmill doesn't stop. It just gets a bigger motor."
             </p>
-            <p style={{ ...mono, fontSize: 9, color: ASH, letterSpacing: 2 }}>AL'S LIMIT — 2026</p>
+            <p style={{ ...mono, fontSize: 9, color: ASH, letterSpacing: 2 }}>AL'S LIMIT - 2026</p>
           </div>
         </Reveal>
       </div>

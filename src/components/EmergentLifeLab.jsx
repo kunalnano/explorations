@@ -16,7 +16,7 @@ export default function EmergentLifeLab() {
   return (
     <div style={{ background: BG, minHeight: "100vh", color: "#e8e4dc" }}>
 
-      {/* ═══ HERO — Apple-direction, cyan accent rule under title ═══ */}
+      {/* ═══ HERO - Apple-direction, cyan accent rule under title ═══ */}
       <section style={{
         padding: "112px 22px 64px", textAlign: "center",
         maxWidth: 1024, margin: "0 auto",
@@ -49,7 +49,7 @@ export default function EmergentLifeLab() {
         </p>
       </section>
 
-      {/* ═══ LAB FRAME — the interactive iframe lives in a constrained surface ═══ */}
+      {/* ═══ LAB FRAME - the interactive iframe lives in a constrained surface ═══ */}
       <div style={{
         maxWidth: 1280, margin: "0 auto", padding: "0 22px 80px",
       }}>

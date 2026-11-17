@@ -2,7 +2,7 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 
 /* ═══════════════════════════════════════════════════════════════
-   AL'S LIMIT — Visualization subcomponents
+   AL'S LIMIT - Visualization subcomponents
    ═══════════════════════════════════════════════════════════════ */
 
 export const BG = "#050508";
@@ -43,7 +43,7 @@ export const TIERS = [
     id: 2, label: "Type II", name: "Institutional Cognitive Range", color: GHOST,
     nodeCount: 96, edgeDensity: 0.06,
     aiRole: "Modeling second-order effects", aiExample: "Predicting cascade failures across services no human team fully maps",
-    description: "System exceeds any team's comprehension. Understood only statistically — metrics, observability, emergent behavior.",
+    description: "System exceeds any team's comprehension. Understood only statistically - metrics, observability, emergent behavior.",
     conwaysLaw: "Conway's Law becomes Conway's Fog. Nobody chose this architecture; it emerged.",
     ceiling: "You hit the wall when the system's behavior surprises its own operators.",
     effortToImpact: 0.25, icon: "◈",
@@ -200,7 +200,7 @@ function NetworkCanvas({ tier, width, height, transitioning }) {
       }
 
       ctx.font = "10px monospace"; ctx.fillStyle = t.color + "60";
-      ctx.textAlign = "left"; ctx.fillText(`${t.label} — ${t.name}`, 16, height - 14);
+      ctx.textAlign = "left"; ctx.fillText(`${t.label} - ${t.name}`, 16, height - 14);
       ctx.textAlign = "right"; ctx.fillText(`${net.nodes.length} nodes · ${net.edges.length} edges`, width - 16, height - 14);
       frameRef.current = requestAnimationFrame(tick);
     }
@@ -317,7 +317,7 @@ export function EntropyRatchet() {
     <Reveal>
       <div ref={ref} style={{ maxWidth: 620, margin: "0 auto" }}>
         <div style={{ ...mono, fontSize: 9, letterSpacing: 2, color: ASH, textTransform: "uppercase", marginBottom: 20, textAlign: "center" }}>
-          Same effort, shrinking output — the ratchet only turns one way
+          Same effort, shrinking output - the ratchet only turns one way
         </div>
         {tiers.map((t, i) => (
           <div key={t.label} onMouseEnter={() => setHovered(i)} onMouseLeave={() => setHovered(null)}
@@ -352,7 +352,7 @@ export function EntropyRatchet() {
 }
 
 // ═══════════════════════════════════════════════════════════════
-// CEILING BREAKER — Phase transition visualization
+// CEILING BREAKER - Phase transition visualization
 // ═══════════════════════════════════════════════════════════════
 
 function CeilingCanvas({ phase, color }) {

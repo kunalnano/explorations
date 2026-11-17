@@ -21,8 +21,15 @@ function readCachedRepos() {
   return null;
 }
 
+const SAFE_GITHUB_URL = /^https:\/\/github\.com\//;
+
 function DetailPanel({ selected, onClose }) {
   if (!selected) return null;
+  const safeUrl =
+    typeof selected.html_url === "string" && SAFE_GITHUB_URL.test(selected.html_url)
+      ? selected.html_url
+      : null;
+
   return (
     <div
       style={{
@@ -54,23 +61,38 @@ function DetailPanel({ selected, onClose }) {
         x
       </button>
 
-      <a
-        href={selected.html_url}
-        target="_blank"
-        rel="noopener noreferrer"
-        style={{
-          fontFamily: FONTS.mono,
-          fontSize: 15,
-          fontWeight: 600,
-          color: COLORS.gold,
-          textDecoration: "none",
-          display: "block",
-          marginBottom: 8,
-          lineHeight: 1.3,
-        }}
-      >
-        {selected.name}
-      </a>
+      {safeUrl ? (
+        <a
+          href={safeUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          style={{
+            fontFamily: FONTS.mono,
+            fontSize: 15,
+            fontWeight: 600,
+            color: COLORS.gold,
+            textDecoration: "none",
+            display: "block",
+            marginBottom: 8,
+            lineHeight: 1.3,
+          }}
+        >
+          {selected.name}
+        </a>
+      ) : (
+        <div
+          style={{
+            fontFamily: FONTS.mono,
+            fontSize: 15,
+            fontWeight: 600,
+            color: COLORS.gold,
+            marginBottom: 8,
+            lineHeight: 1.3,
+          }}
+        >
+          {selected.name}
+        </div>
+      )}
 
       {selected.description && (
         <p
@@ -167,20 +189,22 @@ function DetailPanel({ selected, onClose }) {
         </div>
       )}
 
-      <a
-        href={selected.html_url}
-        target="_blank"
-        rel="noopener noreferrer"
-        style={{
-          fontFamily: FONTS.mono,
-          fontSize: 11,
-          color: COLORS.gold,
-          textDecoration: "none",
-          letterSpacing: "0.05em",
-        }}
-      >
-        View on GitHub &rarr;
-      </a>
+      {safeUrl && (
+        <a
+          href={safeUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          style={{
+            fontFamily: FONTS.mono,
+            fontSize: 11,
+            color: COLORS.gold,
+            textDecoration: "none",
+            letterSpacing: "0.05em",
+          }}
+        >
+          View on GitHub &rarr;
+        </a>
+      )}
     </div>
   );
 }
@@ -371,7 +395,7 @@ export default function GitHubConstellation() {
 
   return (
     <div style={{ background: COLORS.bg, minHeight: "100vh", color: COLORS.bone }}>
-      {/* ═══ HERO — Apple-direction, gold dot in eyebrow + gold period on title ═══ */}
+      {/* HERO: Apple-direction, gold dot in eyebrow + gold period on title */}
       <section style={{ padding: "112px 22px 64px", textAlign: "center", position: "relative" }}>
         <div style={{ maxWidth: 1024, margin: "0 auto" }}>
           <div

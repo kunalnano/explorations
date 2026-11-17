@@ -26,7 +26,7 @@ const FAINT = "rgba(255,255,255,0.03)";
 const LINE = "rgba(255,255,255,0.06)";
 const CRIMSON = "#e6394a";
 
-// Apple-direction font tokens — sans-first, mono retained for accents.
+// Apple-direction font tokens - sans-first, mono retained for accents.
 const sans = { fontFamily: F.display };
 const serif = { fontFamily: F.text };
 const mono = { fontFamily: F.mono };
@@ -105,7 +105,7 @@ function Prose({ children }) {
 export default function EntropyFilter() {
   return (
     <div style={{ background: BG, color: BONE, minHeight: "100vh" }}>
-      {/* ═══ HERO — Apple-direction, ember accent rule under title ═══ */}
+      {/* ═══ HERO - Apple-direction, ember accent rule under title ═══ */}
       <header style={{
         padding: "112px 22px 80px", textAlign: "center",
         maxWidth: 1024, margin: "0 auto",
@@ -266,7 +266,7 @@ export default function EntropyFilter() {
                   background: FAINT, border: `1px solid ${LINE}`, borderRadius: 12, padding: 20,
                 }}>
                   <div style={{ ...mono, fontSize: 10, color: era.color, letterSpacing: 2, marginBottom: 8 }}>
-                    {era.year} — {era.label}
+                    {era.year} - {era.label}
                   </div>
                   {era.choices.map((c, i) => (
                     <div key={i} style={{

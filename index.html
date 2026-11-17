@@ -4,17 +4,14 @@
     <meta charset="UTF-8" />
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><circle cx='16' cy='16' r='8' fill='%23c9a84c'/><circle cx='16' cy='16' r='12' fill='none' stroke='%23c9a84c' stroke-width='1' opacity='0.4'/></svg>" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="Al Sharma — post-sales executive for developer platforms. 15 years across HashiCorp, Snyk, Harness and Port: $125M cumulative ARR book, 135%+ NRR, teams built from scratch. Founder of Dark Vector Cognition." />
-    <meta property="og:title" content="Al Sharma — Post-Sales Executive for Developer Platforms" />
+    <meta name="description" content="Al Sharma: post-sales executive for developer platforms. 15 years across HashiCorp, Snyk, Harness and Port: $125M cumulative ARR book, 135%+ NRR, teams built from scratch. Founder of Dark Vector Cognition." />
+    <meta property="og:title" content="Al Sharma - Post-Sales Executive for Developer Platforms" />
     <meta property="og:description" content="Customer success, support and services leadership through HashiCorp, Snyk, Harness and Port. Builds and ships the agents he asks customers to adopt." />
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://alsharma.com" />
-    <title>Al Sharma — Post-Sales Executive for Developer Platforms</title>
+    <title>Al Sharma - Post-Sales Executive for Developer Platforms</title>
     <link rel="canonical" href="https://alsharma.com/" />
     <script type="application/ld+json">{"@context":"https://schema.org","@type":"Person","name":"Al Sharma","alternateName":"Kunal Sharma","url":"https://alsharma.com/","jobTitle":"Head of Technical Success, Americas","worksFor":{"@type":"Organization","name":"Port.io"},"address":{"@type":"PostalAddress","addressLocality":"Austin","addressRegion":"TX","addressCountry":"US"},"alumniOf":[{"@type":"Organization","name":"Harness"},{"@type":"Organization","name":"Snyk"},{"@type":"Organization","name":"HashiCorp"},{"@type":"Organization","name":"Western Digital"}],"knowsAbout":["Customer Success","Post-sales leadership","Platform engineering","Application security","AI agents","Model Context Protocol"],"sameAs":["https://www.linkedin.com/in/alsharma","https://github.com/kunalnano","https://darkvectorcognition.ai/"]}</script>
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,200..600;1,9..144,200..600&family=JetBrains+Mono:wght@300;400&display=swap" />
     <link rel="preload" href="/fonts/space-grotesk-600.ttf" as="font" type="font/ttf" crossorigin />
     <style>
       /* Self-hosted, same faces as darkvectorcognition.ai */
@@ -35,79 +32,27 @@
   <body>
     <div id="root"></div>
     <script type="module" src="/src/main.jsx"></script>
-    <script>
-      // Animated favicon — pulsing AI node
-      (function() {
-        const S = 32, H = S / 2;
-        const canvas = document.createElement('canvas');
-        canvas.width = S;
-        canvas.height = S;
-        const ctx = canvas.getContext('2d');
-        const link = document.querySelector("link[rel='icon']");
-        let t = 0;
-
-        function draw() {
-          t += 0.025;
-          ctx.clearRect(0, 0, S, S);
-          const pulse = Math.sin(t) * 0.3 + 0.7;
-
-          // Outer ring
-          ctx.beginPath();
-          ctx.arc(H, H, 12, 0, Math.PI * 2);
-          ctx.strokeStyle = 'rgba(201,168,76,' + (0.3 * pulse) + ')';
-          ctx.lineWidth = 1;
-          ctx.stroke();
-
-          // Glow
-          const g = ctx.createRadialGradient(H, H, 0, H, H, 10 + pulse * 3);
-          g.addColorStop(0, 'rgba(201,168,76,' + (0.35 * pulse) + ')');
-          g.addColorStop(1, 'transparent');
-          ctx.fillStyle = g;
-          ctx.fillRect(0, 0, S, S);
-
-          // Core node
-          ctx.beginPath();
-          ctx.arc(H, H, 5 + pulse * 1.5, 0, Math.PI * 2);
-          const ng = ctx.createRadialGradient(H - 2, H - 2, 0, H, H, 7);
-          ng.addColorStop(0, '#e8d48b');
-          ng.addColorStop(1, '#8b7a3a');
-          ctx.fillStyle = ng;
-          ctx.fill();
-
-          link.href = canvas.toDataURL('image/png');
-          requestAnimationFrame(draw);
-        }
-        requestAnimationFrame(draw);
-      })();
-    </script>
-    <!-- ═══ CONTACT PANEL ═══ opened by the "Get in touch" CTAs via the open-contact event -->
-    <div id="contact-backdrop" onclick="toggleContact(false)" style="position:fixed;inset:0;z-index:9998;background:rgba(5,5,8,0.16);backdrop-filter:blur(4px);opacity:0;pointer-events:none;transition:opacity 0.3s;"></div>
+    <!-- CONTACT PANEL: opened by the "Get in touch" CTAs via the open-contact event -->
+    <div id="contact-backdrop" style="position:fixed;inset:0;z-index:9998;background:rgba(5,5,8,0.16);backdrop-filter:blur(4px);opacity:0;pointer-events:none;transition:opacity 0.3s;"></div>
     <div id="contact-panel" role="dialog" aria-modal="true" aria-labelledby="contact-title" inert style="position:fixed;top:0;right:0;bottom:0;width:min(430px,calc(100vw - 22px));z-index:9999;background:#fff;border-left:1px solid rgba(5,5,8,0.14);transform:translateX(100%);transition:transform 0.35s cubic-bezier(0.16,1,0.3,1);display:flex;flex-direction:column;overflow:hidden;">
       <div style="padding:24px 28px 20px;display:flex;justify-content:space-between;align-items:flex-start;border-bottom:1px solid rgba(5,5,8,0.11);">
         <div>
           <p style="font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:500;color:rgba(5,5,5,0.58);letter-spacing:0.14em;text-transform:uppercase;margin:0;">Replies within 24 hours</p>
           <p id="contact-title" style="font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:26px;letter-spacing:-0.035em;color:#050505;margin:8px 0 0;">Get in touch.</p>
         </div>
-        <button aria-label="Close contact form" onclick="toggleContact(false)" style="background:none;border:none;color:rgba(5,5,5,0.69);font-size:28px;cursor:pointer;width:44px;height:44px;line-height:1;">&times;</button>
+        <button id="contact-close" type="button" aria-label="Close contact form" style="background:none;border:none;color:rgba(5,5,5,0.69);font-size:28px;cursor:pointer;width:44px;height:44px;line-height:1;">&times;</button>
       </div>
       <div id="contact-body" style="flex:1;overflow-y:auto;padding:28px;">
         <div style="display:flex;flex-direction:column;gap:20px;">
-          <div><label for="cf-name" style="font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:500;color:rgba(5,5,5,0.58);letter-spacing:0.14em;text-transform:uppercase;display:block;margin-bottom:8px;">Name</label><input id="cf-name" autocomplete="name" style="width:100%;padding:13px 14px;font-family:'IBM Plex Sans',sans-serif;font-size:16px;background:#fff;border:1px solid rgba(5,5,8,0.22);border-radius:0;color:#050505;box-sizing:border-box;" /></div>
-          <div><label for="cf-email" style="font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:500;color:rgba(5,5,5,0.58);letter-spacing:0.14em;text-transform:uppercase;display:block;margin-bottom:8px;">Email</label><input id="cf-email" type="email" autocomplete="email" style="width:100%;padding:13px 14px;font-family:'IBM Plex Sans',sans-serif;font-size:16px;background:#fff;border:1px solid rgba(5,5,8,0.22);border-radius:0;color:#050505;box-sizing:border-box;" /></div>
-          <div><label for="cf-msg" style="font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:500;color:rgba(5,5,5,0.58);letter-spacing:0.14em;text-transform:uppercase;display:block;margin-bottom:8px;">Message</label><textarea id="cf-msg" rows="6" style="width:100%;padding:13px 14px;font-family:'IBM Plex Sans',sans-serif;font-size:16px;background:#fff;border:1px solid rgba(5,5,8,0.22);border-radius:0;color:#050505;box-sizing:border-box;resize:vertical;min-height:120px;"></textarea></div>
+          <input id="cf-gotcha" type="text" name="_gotcha" tabindex="-1" autocomplete="off" aria-hidden="true" style="display:none;" />
+          <div><label for="cf-name" style="font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:500;color:rgba(5,5,5,0.58);letter-spacing:0.14em;text-transform:uppercase;display:block;margin-bottom:8px;">Name</label><input id="cf-name" name="name" maxlength="100" autocomplete="name" style="width:100%;padding:13px 14px;font-family:'IBM Plex Sans',sans-serif;font-size:16px;background:#fff;border:1px solid rgba(5,5,8,0.22);border-radius:0;color:#050505;box-sizing:border-box;" /></div>
+          <div><label for="cf-email" style="font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:500;color:rgba(5,5,5,0.58);letter-spacing:0.14em;text-transform:uppercase;display:block;margin-bottom:8px;">Email</label><input id="cf-email" name="email" type="email" maxlength="254" autocomplete="email" style="width:100%;padding:13px 14px;font-family:'IBM Plex Sans',sans-serif;font-size:16px;background:#fff;border:1px solid rgba(5,5,8,0.22);border-radius:0;color:#050505;box-sizing:border-box;" /></div>
+          <div><label for="cf-msg" style="font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:500;color:rgba(5,5,5,0.58);letter-spacing:0.14em;text-transform:uppercase;display:block;margin-bottom:8px;">Message</label><textarea id="cf-msg" name="message" maxlength="5000" rows="6" style="width:100%;padding:13px 14px;font-family:'IBM Plex Sans',sans-serif;font-size:16px;background:#fff;border:1px solid rgba(5,5,8,0.22);border-radius:0;color:#050505;box-sizing:border-box;resize:vertical;min-height:120px;"></textarea></div>
           <p id="cf-error" role="alert" style="font-family:'IBM Plex Sans',sans-serif;font-size:14px;line-height:1.5;color:#a01818;margin:0;display:none;"></p>
-          <button id="cf-submit" onclick="submitContact()" style="font-family:'JetBrains Mono',monospace;min-height:48px;padding:0 22px;font-size:11px;font-weight:500;letter-spacing:0.08em;text-transform:uppercase;border-radius:0;cursor:pointer;background:#050505;color:#fff;border:1px solid #050505;">Send message</button>
+          <button id="cf-submit" type="button" style="font-family:'JetBrains Mono',monospace;min-height:48px;padding:0 22px;font-size:11px;font-weight:500;letter-spacing:0.08em;text-transform:uppercase;border-radius:0;cursor:pointer;background:#050505;color:#fff;border:1px solid #050505;">Send message</button>
           <p style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.08em;text-transform:uppercase;color:rgba(5,5,5,0.58);margin:0;">Or email <a href="mailto:hello@darkvectorcognition.ai" style="color:#050505;">hello@darkvectorcognition.ai</a></p>
         </div>
       </div>
     </div>
-    <script>
-      var contactReturnFocus=null;
-      function toggleContact(open){var p=document.getElementById('contact-panel'),b=document.getElementById('contact-backdrop');if(open){contactReturnFocus=document.activeElement;p.inert=false;p.style.transform='translateX(0)';p.style.boxShadow='-28px 0 90px rgba(5,5,8,0.12)';b.style.opacity='1';b.style.pointerEvents='auto';var n=document.getElementById('cf-name');if(n)setTimeout(function(){n.focus();},60);}else{p.inert=true;p.style.transform='translateX(100%)';p.style.boxShadow='none';b.style.opacity='0';b.style.pointerEvents='none';if(contactReturnFocus&&contactReturnFocus.focus)contactReturnFocus.focus();}}
-      function contactFail(msg){var btn=document.getElementById('cf-submit'),err=document.getElementById('cf-error');btn.textContent='Send message';btn.style.opacity='1';btn.disabled=false;err.textContent=msg;err.style.display='block';}
-      function submitContact(){var n=document.getElementById('cf-name').value.trim(),e=document.getElementById('cf-email').value.trim(),m=document.getElementById('cf-msg').value.trim(),btn=document.getElementById('cf-submit'),err=document.getElementById('cf-error');err.style.display='none';if(!n||!e||!m){contactFail('Name, email and a message are all needed.');return;}if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(e)){contactFail('That email address does not look right.');return;}btn.textContent='Sending\u2026';btn.style.opacity='0.5';btn.disabled=true;fetch('https://formspree.io/f/mykboegz',{method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json'},body:JSON.stringify({name:n,email:e,message:m})}).then(function(r){if(!r.ok)throw new Error();document.getElementById('contact-body').innerHTML='<div style="padding-top:40px;"><p style="font-family:Space Grotesk,sans-serif;font-weight:600;font-size:30px;letter-spacing:-0.04em;color:#050505;margin:0 0 12px;">Message received.</p><p style="font-family:IBM Plex Sans,sans-serif;font-size:17px;line-height:1.6;color:rgba(5,5,5,0.69);margin:0 0 28px;">I will reply within 24 hours.</p><button onclick="toggleContact(false)" style="font-family:JetBrains Mono,monospace;min-height:48px;padding:0 22px;font-size:11px;font-weight:500;letter-spacing:0.08em;text-transform:uppercase;border-radius:0;cursor:pointer;background:transparent;color:#050505;border:1px solid rgba(5,5,8,0.22);">Close</button></div>';}).catch(function(){contactFail('That did not send. Email hello@darkvectorcognition.ai instead.');});}
-      document.addEventListener('keydown',function(ev){if(ev['key']==='Escape')toggleContact(false);});
-      window.addEventListener('open-contact',function(){toggleContact(true);});
-    </script>
   </body>
 </html>

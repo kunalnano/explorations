@@ -85,7 +85,7 @@ const EXPLORATIONS = [
     title: "Al’s Limit.",
     eyebrow: "Complexity",
     description:
-      "A Kardashev scale for software complexity. Software grows through discrete cognitive regimes. AI doesn’t eliminate the transitions — it enables them.",
+      "A Kardashev scale for software complexity. Software grows through discrete cognitive regimes. AI doesn’t eliminate the transitions - it enables them.",
     color: "#9b8fff",
     visual:
       "radial-gradient(circle at 50% 50%, rgba(155,143,255,0.42), transparent 55%), linear-gradient(135deg, #14122a, #1a1736)",
@@ -140,7 +140,7 @@ const EXPLORATIONS = [
     title: "The software theory of civilization.",
     eyebrow: "Civilization",
     description:
-      "Civilization doesn’t just use software — civilization IS software. From oral tradition to probabilistic intelligence.",
+      "Civilization doesn’t just use software - civilization IS software. From oral tradition to probabilistic intelligence.",
     color: "#9b8fff",
     visual:
       "radial-gradient(circle at 60% 40%, rgba(155,143,255,0.4), transparent 55%), linear-gradient(135deg, #14122a, #1a1736)",
@@ -173,7 +173,7 @@ const EXPLORATIONS = [
     title: "Path dependency of innovation.",
     eyebrow: "Strategy",
     description:
-      "Why Tesla and Waymo built completely different self-driving architectures — and why both were ‘correct.’ Your ecosystem chooses your solution.",
+      "Why Tesla and Waymo built completely different self-driving architectures - and why both were ‘correct.’ Your ecosystem chooses your solution.",
     color: "#fbbf24",
     visual:
       "radial-gradient(circle at 55% 45%, rgba(251,191,36,0.36), transparent 55%), linear-gradient(135deg, #2b2a14, #1a1810)",
@@ -217,11 +217,11 @@ const EXPLORATIONS = [
     title: "Derivative universes.",
     eyebrow: "Hive mind",
     description:
-      "Child universes gain power through mutation. Your brain is already a hive mind — Neuralink just scales it up. Copy with noise equals evolution.",
+      "Child universes gain power through mutation. Your brain is already a hive mind - Neuralink just scales it up. Copy with noise equals evolution.",
     color: "#ff4d2e",
     visual:
       "radial-gradient(circle at 40% 55%, rgba(255,77,46,0.4), transparent 55%), linear-gradient(135deg, #2a1414, #1a0e0e)",
-    date: "2025 — 2026",
+    date: "2025 - 2026",
   },
   {
     id: "final-five-years",
@@ -250,7 +250,7 @@ const EXPLORATIONS = [
     title: "Declarative agents.",
     eyebrow: "Direction",
     description:
-      "You’re not a developer anymore — you’re a director casting AI actors. The imperative-to-declarative shift that turned coding into configuration.",
+      "You’re not a developer anymore - you’re a director casting AI actors. The imperative-to-declarative shift that turned coding into configuration.",
     color: "#6ee7f0",
     visual:
       "radial-gradient(circle at 55% 50%, rgba(110,231,240,0.4), transparent 55%), linear-gradient(135deg, #102428, #1a2a30)",
@@ -452,7 +452,7 @@ export default function Explorations({ onNavigate }) {
           textAlign: "center",
         }}
       >
-        2025 — 2026 · alsharma.com
+        2025 - 2026 · alsharma.com
       </footer>
     </div>
   );
