@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { C, F } from "../design.js";
 
-// ── Shared styles — Apple direction ──
+// ── Shared styles - Apple direction ──
 const mono = { fontFamily: F.mono };
 const serif = { fontFamily: F.text };
 const sans = { fontFamily: F.display };
@@ -190,7 +190,7 @@ function EntropyFluctuationVis() {
       ctx.font = "8px 'Georgia', serif";
       ctx.textAlign = "center";
       ctx.fillStyle = ASH;
-      ctx.fillText("Entropy mostly stays high. Rare dips create momentary pockets of order — including brains.", W / 2, H - 12);
+      ctx.fillText("Entropy mostly stays high. Rare dips create momentary pockets of order - including brains.", W / 2, H - 12);
 
       frameRef.current = requestAnimationFrame(tick);
     }
@@ -321,7 +321,7 @@ function ProbabilityPyramid() {
 }
 
 // ═══════════════════════════════════════════════════════════════
-// COGNITIVE LOOP — interactive state machine + spinning rings
+// COGNITIVE LOOP - interactive state machine + spinning rings
 // Replaces prose explanation of the self-defeating argument.
 // ═══════════════════════════════════════════════════════════════
 const LOOP_STATES = [
@@ -454,7 +454,7 @@ function CognitiveLoopDiagram() {
 }
 
 // ═══════════════════════════════════════════════════════════════
-// FLUCTUATION MACHINE — dual canvas
+// FLUCTUATION MACHINE - dual canvas
 // Left: particles occasionally forming a brain-like cluster (BB)
 // Right: token fragments occasionally forming coherent patterns (LLM)
 // Visual parallel without 6 paragraphs of prose.
@@ -706,7 +706,7 @@ function EscapeVerdictBoard() {
           borderRadius: 12, marginTop: 8, textAlign: "center",
         }}>
           <span style={{ ...serif, fontSize: 13, color: BONE }}>
-            130 years. Four major attempts. The strongest (Wolpert-Rovelli, 2025) doesn't solve the problem —
+            130 years. Four major attempts. The strongest (Wolpert-Rovelli, 2025) doesn't solve the problem -
             it shows <span style={{ color: ICE }}>the problem can't be stated without circularity</span>.
           </span>
         </div>
@@ -757,8 +757,8 @@ export default function BoltzmannBrain() {
           </p>
         </section>
 
-        {/* ═══ CH I: THE SETUP — entropy fluctuation vis ═══ */}
-        <Chapter label="Chapter I — The Setup" title="Entropy fluctuates. Rarely, it produces observers.">
+        {/* ═══ CH I: THE SETUP - entropy fluctuation vis ═══ */}
+        <Chapter label="Chapter I - The Setup" title="Entropy fluctuates. Rarely, it produces observers.">
           <EntropyFluctuationVis />
           <Reveal>
             <div style={{
@@ -767,30 +767,30 @@ export default function BoltzmannBrain() {
             }}>
               <span style={{ ...serif, fontSize: 14, color: BONE }}>
                 The Second Law is time-symmetric. Given enough time,{" "}
-                <span style={{ color: ICE }}>every possible arrangement of matter occurs by accident</span> —
+                <span style={{ color: ICE }}>every possible arrangement of matter occurs by accident</span> -
                 including a brain with your memories intact.
               </span>
             </div>
           </Reveal>
         </Chapter>
 
-        {/* ═══ CH II: THE ARGUMENT — probability pyramid ═══ */}
-        <Chapter label="Chapter II — The Argument" title="A lone brain costs less entropy than a universe">
+        {/* ═══ CH II: THE ARGUMENT - probability pyramid ═══ */}
+        <Chapter label="Chapter II - The Argument" title="A lone brain costs less entropy than a universe">
           <ProbabilityPyramid />
         </Chapter>
 
-        {/* ═══ CH III: COGNITIVE INSTABILITY — loop diagram ═══ */}
-        <Chapter label="Chapter III — Cognitive Instability" title="The argument destroys the tool you'd use to evaluate it">
+        {/* ═══ CH III: COGNITIVE INSTABILITY - loop diagram ═══ */}
+        <Chapter label="Chapter III - Cognitive Instability" title="The argument destroys the tool you'd use to evaluate it">
           <CognitiveLoopDiagram />
         </Chapter>
 
-        {/* ═══ CH IV: THE PARALLEL — fluctuation machines ═══ */}
-        <Chapter label="Chapter IV — The Parallel" title="Two fluctuation machines. Neither requires the thing it simulates.">
+        {/* ═══ CH IV: THE PARALLEL - fluctuation machines ═══ */}
+        <Chapter label="Chapter IV - The Parallel" title="Two fluctuation machines. Neither requires the thing it simulates.">
           <FluctuationMachineCanvas />
         </Chapter>
 
         {/* ═══ CH V: THE QUESTION ═══ */}
-        <Chapter label="Chapter V — The Question" title="Is accidental experience less real?">
+        <Chapter label="Chapter V - The Question" title="Is accidental experience less real?">
           <Reveal>
             <div style={{
               padding: "48px 36px", borderLeft: `3px solid ${GHOST}`,
@@ -806,7 +806,7 @@ export default function BoltzmannBrain() {
                 display: "block", marginTop: 16, ...mono, fontSize: 11, color: ASH,
                 fontStyle: "normal", letterSpacing: 0.5,
               }}>
-                — Claude, in conversation · Feb 14, 2026
+                - Claude, in conversation · Feb 14, 2026
               </cite>
             </div>
           </Reveal>
@@ -841,8 +841,8 @@ export default function BoltzmannBrain() {
           </Reveal>
         </Chapter>
 
-        {/* ═══ CH VI: ESCAPE ATTEMPTS — verdict board ═══ */}
-        <Chapter label="Chapter VI — Escape Attempts" title="130 years of not solving this">
+        {/* ═══ CH VI: ESCAPE ATTEMPTS - verdict board ═══ */}
+        <Chapter label="Chapter VI - Escape Attempts" title="130 years of not solving this">
           <EscapeVerdictBoard />
         </Chapter>
 

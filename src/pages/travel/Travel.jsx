@@ -30,8 +30,8 @@ const GRAIN_SVG = encodeURIComponent(
   </svg>`
 );
 
-// Status badge palette — variants kept for forward compatibility as
-// destinations move along the pipeline (researching → must-see → booked).
+// Status badge palette: variants kept for forward compatibility as
+// destinations move along the pipeline (researching -> must-see -> booked).
 const BADGE = {
   amber: { bg: "rgba(251, 191, 36, 0.14)", fg: "#fbbf24", border: "rgba(251, 191, 36, 0.45)" },
   blue:  { bg: "rgba(96, 165, 250, 0.14)", fg: "#93c5fd", border: "rgba(96, 165, 250, 0.45)" },
@@ -49,7 +49,7 @@ const STATUS_VARIANT = {
 const mapsUrl = (lat, lng) =>
   `https://www.google.com/maps?q=${lat},${lng}`;
 
-// "46.6455°, 11.7175°" — signed decimals, the way the source data is shaped.
+// "46.6455°, 11.7175°": signed decimals, the way the source data is shaped.
 const fmtCoords = (lat, lng) => `${lat}°, ${lng}°`;
 
 // ── Destination data ──────────────────────────────────────
@@ -67,13 +67,13 @@ const DESTINATIONS = [
     color: "#2d6a4f",
     accent: "#95d5b2",
     description:
-      "The Panoramaweg viewpoint above Santa Maddalena village — church spire framed by the Odle/Geisler mountain group catching golden alpenglow at sunset.",
+      "The Panoramaweg viewpoint above Santa Maddalena village: church spire framed by the Odle/Geisler mountain group catching golden alpenglow at sunset.",
     highlights: [
       "Panoramaweg viewpoint (///received.singed.clever)",
       "Chiesa di Santa Maddalena",
       "Church of St. John in Ranui (€4 entry)",
       "Adolf Munkel Trail from Zanses",
-      "Hotel Tyrol Dolomites — book Geisler Blick room",
+      "Hotel Tyrol Dolomites: book Geisler Blick room",
     ],
     logistics:
       "Fly Venice/Innsbruck → rent car → 30min from Bressanone. Park at Fermeda Parkplatz (€4/day). 20min walk to viewpoint.",
@@ -97,7 +97,7 @@ const DESTINATIONS = [
     color: "#c1121f",
     accent: "#fdf0d5",
     description:
-      "Swiss precision meets raw alpine beauty — glaciers, lakes, trains threading through impossible passes.",
+      "Swiss precision meets raw alpine beauty: glaciers, lakes, trains threading through impossible passes.",
     highlights: [
       "Jungfrau Region (Grindelwald, Lauterbrunnen)",
       "Zermatt & the Matterhorn",
@@ -136,7 +136,7 @@ const DESTINATIONS = [
       "Mezcal tastings",
     ],
     logistics:
-      "Fly PVR (Puerto Vallarta). 45min drive north. Stay in town — walking distance to everything.",
+      "Fly PVR (Puerto Vallarta). 45min drive north. Stay in town, within walking distance of everything.",
     bestTime: "Nov–Apr (dry season, best surf). Avoid Aug (rain + humidity).",
     coords: { lat: 20.8684, lng: -105.4413 },
     gallery: [
@@ -187,13 +187,13 @@ const DESTINATIONS = [
       "One of the best places on Earth to see the aurora borealis. Midnight sun in summer, polar night in winter. Raw, remote, and humbling.",
     highlights: [
       "Northern Lights hunting (Sep–Mar)",
-      "Alta Canyon — northern Europe's largest",
+      "Alta Canyon: northern Europe's largest",
       "Sámi culture & reindeer sledding",
       "Ice hotel / igloo stays",
       "Midnight sun (May–Jul)",
     ],
     logistics:
-      "Fly Oslo → Alta (SAS/Widerøe). Rent a car — chase clear skies. Dress for -20°C in winter.",
+      "Fly Oslo → Alta (SAS/Widerøe). Rent a car to chase clear skies. Dress for -20°C in winter.",
     bestTime: "Sep–Mar for Northern Lights. Nov–Jan for polar night drama. Jun–Jul for midnight sun.",
     coords: { lat: 69.9689, lng: 23.2716 },
     gallery: [
@@ -240,8 +240,7 @@ export default function Travel() {
   const [filter, setFilter] = useState("all");
   const [expanded, setExpanded] = useState(null);
 
-  // Inject Google Fonts (Crimson Pro + JetBrains Mono). System fallbacks
-  // keep the page readable if the network is blocked.
+  // Inject Crimson Pro display serif; JetBrains Mono is self-hosted in index.html.
   useEffect(() => {
     const id = "travel-fonts";
     if (document.getElementById(id)) return;
@@ -256,7 +255,7 @@ export default function Travel() {
     link.id = id;
     link.rel = "stylesheet";
     link.href =
-      "https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,400;0,500;0,600;1,400&family=JetBrains+Mono:wght@400;500;600&display=swap";
+      "https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,400;0,500;0,600;1,400&display=swap";
     document.head.appendChild(preconnect1);
     document.head.appendChild(preconnect2);
     document.head.appendChild(link);

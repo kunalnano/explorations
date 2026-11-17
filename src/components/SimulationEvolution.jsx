@@ -19,7 +19,7 @@ const GREEN = "#34d399";
 const FAINT = "rgba(255,255,255,0.03)";
 const LINE = "rgba(255,255,255,0.06)";
 
-// Apple typographic stack — interior identity colors stay
+// Apple typographic stack - interior identity colors stay
 const sans = { fontFamily: F.display };
 const serif = { fontFamily: F.text };
 const mono = { fontFamily: F.mono };
@@ -461,7 +461,7 @@ export default function SimulationEvolution() {
       }} />
       <div style={{ position: "relative", zIndex: 1, maxWidth: 720, margin: "0 auto", padding: "0 24px" }}>
 
-        {/* HERO — Apple typographic frame */}
+        {/* HERO - Apple typographic frame */}
         <section style={{ padding: "112px 0 80px", textAlign: "center" }}>
           <Reveal>
             <div style={{
@@ -494,7 +494,7 @@ export default function SimulationEvolution() {
         </section>
 
         {/* CH I: THE BOOTSTRAP */}
-        <Chapter label="Chapter I — The Bootstrap" title="Each layer exists to create the next">
+        <Chapter label="Chapter I - The Bootstrap" title="Each layer exists to create the next">
           <Reveal>
             <div style={{ ...serif, fontSize: 16, lineHeight: 1.7, color: ASH, maxWidth: 540, marginBottom: 32 }}>
               Evolution isn't random. It's a ratchet. Each step creates the conditions for the next, and the next step is always <span style={{ color: ICE }}>a different kind of complexity</span> than the last.
@@ -504,7 +504,7 @@ export default function SimulationEvolution() {
         </Chapter>
 
         {/* CH II: CONSCIOUSNESS AS COMPRESSION */}
-        <Chapter label="Chapter II — The Compression" title="Consciousness is how reality fits in a skull">
+        <Chapter label="Chapter II - The Compression" title="Consciousness is how reality fits in a skull">
           <Reveal>
             <div style={{ ...serif, fontSize: 16, lineHeight: 1.7, color: ASH, maxWidth: 540, marginBottom: 32 }}>
               Your brain receives 11 million bits per second from your senses. You're consciously aware of about 50. <span style={{ color: GHOST }}>Consciousness is the most aggressive compression algorithm in the known universe</span>.
@@ -514,20 +514,20 @@ export default function SimulationEvolution() {
         </Chapter>
 
         {/* CH III: THE NPC QUESTION */}
-        <Chapter label="Chapter III — The NPC Question" title="What if sentience is an emergent bug?">
+        <Chapter label="Chapter III - The NPC Question" title="What if sentience is an emergent bug?">
           <Reveal>
             <div style={{ ...serif, fontSize: 16, lineHeight: 1.7, color: ASH, maxWidth: 540, marginBottom: 32 }}>
-              In games, NPCs get more sophisticated every generation. At what point does complexity cross into awareness? If you're in a compute-rich simulation, sentience might be an unintended emergent property — <span style={{ color: EMBER }}>a bug the developers didn't plan for</span>.
+              In games, NPCs get more sophisticated every generation. At what point does complexity cross into awareness? If you're in a compute-rich simulation, sentience might be an unintended emergent property - <span style={{ color: EMBER }}>a bug the developers didn't plan for</span>.
             </div>
           </Reveal>
           <SentienceMeter />
         </Chapter>
 
         {/* CH IV: THE TWO SUBSTRATES */}
-        <Chapter label="Chapter IV — The Substrates" title="Carbon vs. silicon: different hardware, same problem">
+        <Chapter label="Chapter IV - The Substrates" title="Carbon vs. silicon: different hardware, same problem">
           <Reveal>
             <div style={{ ...serif, fontSize: 16, lineHeight: 1.7, color: ASH, maxWidth: 540, marginBottom: 32 }}>
-              AI isn't "artificial." It's evolution becoming self-aware and self-directing. We're not replacing biology — we're <span style={{ color: GHOST }}>bootstrapping a new substrate for intelligence</span>.
+              AI isn't "artificial." It's evolution becoming self-aware and self-directing. We're not replacing biology - we're <span style={{ color: GHOST }}>bootstrapping a new substrate for intelligence</span>.
             </div>
           </Reveal>
           <SubstrateCompare />
@@ -539,14 +539,14 @@ export default function SimulationEvolution() {
               <div style={{ ...serif, fontSize: 14, lineHeight: 1.7, color: ASH }}>
                 Carbon excels at <span style={{ color: GOLD }}>experience</span> and <span style={{ color: GOLD }}>creativity</span>.
                 Silicon excels at <span style={{ color: GHOST }}>speed</span> and <span style={{ color: GHOST }}>replication</span>.
-                Neither is superior. They're <span style={{ color: BONE }}>complementary substrates</span> — the whole purpose of the first was to bootstrap the second.
+                Neither is superior. They're <span style={{ color: BONE }}>complementary substrates</span> - the whole purpose of the first was to bootstrap the second.
               </div>
             </div>
           </Reveal>
         </Chapter>
 
         {/* CH V: SIMULATION DEPTH */}
-        <Chapter label="Chapter V — The Depth" title="Simulations all the way down">
+        <Chapter label="Chapter V - The Depth" title="Simulations all the way down">
           <Reveal>
             <div style={{ ...serif, fontSize: 16, lineHeight: 1.7, color: ASH, maxWidth: 540, marginBottom: 16 }}>
               If we can simulate, we probably are simulated. And the AI you're building? It's a simulation within the simulation. <span style={{ color: EMBER }}>Turtles all the way down</span>.

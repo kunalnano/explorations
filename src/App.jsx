@@ -28,20 +28,9 @@ import { ROUTE_META } from "./routeMeta";
 
 const Operator = lazy(() => import("./components/Operator"));
 
-const PATH_ROUTES = new Set(["travel"]);
 const HOSTNAME_ROUTES = { travel: "travel" };
 
-function getRoute() {
-  const hash = window.location.hash.replace("#", "");
-  if (hash) return hash;
-  const path = window.location.pathname.replace(/^\/+|\/+$/g, "");
-  if (PATH_ROUTES.has(path)) return path;
-  const hostPrefix = window.location.hostname.split(".")[0];
-  if (HOSTNAME_ROUTES[hostPrefix]) return HOSTNAME_ROUTES[hostPrefix];
-  return "home";
-}
-
-// Map of route id → { component, getProps(navHelpers) }
+// Map of route id -> { component, getProps(navHelpers) }
 const ROUTES = {
   "operator":              { C: Operator, props: (h) => ({ onBegin: h.finishIntro }) },
   "explorations":          { C: Explorations, props: (h) => ({ onNavigate: h.navigate, onBack: h.goHome }) },
@@ -69,6 +58,18 @@ const ROUTES = {
   "travel":                { C: Travel, props: (h) => ({ onBack: h.goHome }) },
 };
 
+const PATH_ROUTES = new Set(Object.keys(ROUTES));
+
+function getRoute() {
+  const hash = window.location.hash.replace("#", "");
+  if (hash) return hash;
+  const path = window.location.pathname.replace(/^\/+|\/+$/g, "");
+  if (PATH_ROUTES.has(path)) return path;
+  const hostPrefix = window.location.hostname.split(".")[0];
+  if (HOSTNAME_ROUTES[hostPrefix]) return HOSTNAME_ROUTES[hostPrefix];
+  return "home";
+}
+
 // Routes that need the PageFrame chrome (not Home or Operator)
 const FRAMED = new Set(Object.keys(ROUTE_META));
 
@@ -95,48 +96,63 @@ export default function App() {
   const [route, setRoute] = useState(getRoute);
 
   useEffect(() => {
-    // Back/forward and deep links change the hash without going through
+    // Back/forward and deep links change the hash or path without going through
     // navigate(), so reset scroll here or the next page opens mid-scroll.
-    const onHash = () => {
+    const onNavChange = () => {
       setRoute(getRoute());
       window.scrollTo(0, 0);
     };
-    window.addEventListener("hashchange", onHash);
-    return () => window.removeEventListener("hashchange", onHash);
+    window.addEventListener("hashchange", onNavChange);
+    window.addEventListener("popstate", onNavChange);
+    return () => {
+      window.removeEventListener("hashchange", onNavChange);
+      window.removeEventListener("popstate", onNavChange);
+    };
+  }, []);
+
+  const resetPathIfNeeded = useCallback(() => {
+    const hostPrefix = window.location.hostname.split(".")[0];
+    if (window.location.pathname !== "/" && !HOSTNAME_ROUTES[hostPrefix]) {
+      window.history.pushState(null, "", "/");
+    }
   }, []);
 
   const goHome = useCallback(() => {
+    resetPathIfNeeded();
     window.location.hash = "";
     setRoute("home");
     window.scrollTo(0, 0);
-  }, []);
+  }, [resetPathIfNeeded]);
 
   const finishIntro = useCallback(() => {
+    resetPathIfNeeded();
     window.location.hash = "";
     setRoute("home");
     window.scrollTo(0, 0);
-  }, []);
+  }, [resetPathIfNeeded]);
 
   const goExplorations = useCallback(() => {
+    resetPathIfNeeded();
     window.location.hash = "explorations";
     setRoute("explorations");
     window.scrollTo(0, 0);
-  }, []);
+  }, [resetPathIfNeeded]);
 
   const navigate = useCallback((id) => {
+    resetPathIfNeeded();
     window.location.hash = id;
     setRoute(id);
     window.scrollTo(0, 0);
-  }, []);
+  }, [resetPathIfNeeded]);
 
   const helpers = { goHome, finishIntro, goExplorations, navigate };
 
-  // Home — no chrome wrapper, has its own nav
+  // Home: no chrome wrapper, has its own nav
   if (route === "home" || route === "intro") {
     return <Home onNavigate={navigate} />;
   }
 
-  // Operator — full-bleed cinematic, no chrome
+  // Operator: full-bleed cinematic, no chrome
   if (route === "operator") {
     return (
       <Suspense fallback={<OperatorFallback />}>

@@ -18,7 +18,7 @@ const GREEN = "#34d399";
 const FAINT = "rgba(255,255,255,0.03)";
 const LINE = "rgba(255,255,255,0.06)";
 
-// Apple typographic stack — interior identity colors stay
+// Apple typographic stack - interior identity colors stay
 const sans = { fontFamily: F.display };
 const serif = { fontFamily: F.text };
 const mono = { fontFamily: F.mono };
@@ -120,7 +120,7 @@ const CATEGORIES = [
   { id: "structure", label: "Structure & Distance", color: GREEN },
 ];
 
-// ── DRAMATIC COUNTER — big reveal with particle burst ──
+// ── DRAMATIC COUNTER - big reveal with particle burst ──
 function DramaticCounter() {
   const ref = useRef(null);
   const [count, setCount] = useState(0);
@@ -221,7 +221,7 @@ function DramaticCounter() {
   );
 }
 
-// ── DOMINO CASCADE — click to topple ──
+// ── DOMINO CASCADE - click to topple ──
 function DominoCascade() {
   const [toppled, setToppled] = useState(-1);
   const timerRef = useRef(null);
@@ -400,7 +400,7 @@ function DominoCascade() {
   );
 }
 
-// ── CMB DEPENDENCY GRAPH — radial layout showing what depends on CMB ──
+// ── CMB DEPENDENCY GRAPH - radial layout showing what depends on CMB ──
 function DependencyGraph() {
   const [hovered, setHovered] = useState(null);
   const cx = 320,
@@ -621,7 +621,7 @@ function DependencyGraph() {
   );
 }
 
-// ── GALAXY TIMELINE — JWST discovery markers on cosmic timeline ──
+// ── GALAXY TIMELINE - JWST discovery markers on cosmic timeline ──
 const DISCOVERIES = [
   {
     year: 2022.5,
@@ -633,7 +633,7 @@ const DISCOVERIES = [
   {
     year: 2022.7,
     label: "First deep field",
-    desc: "SMACS 0723 — earliest galaxies seen",
+    desc: "SMACS 0723 - earliest galaxies seen",
     color: ICE,
     type: "finding",
   },
@@ -647,7 +647,7 @@ const DISCOVERIES = [
   {
     year: 2023.3,
     label: "JADES survey",
-    desc: "Galaxy at z=14.3 — just 290M years post-BB",
+    desc: "Galaxy at z=14.3 - just 290M years post-BB",
     color: EMBER,
     type: "finding",
   },
@@ -900,7 +900,7 @@ export default function JWSTDominoes() {
           padding: "0 24px",
         }}
       >
-        {/* HERO — Apple typographic frame */}
+        {/* HERO - Apple typographic frame */}
         <section style={{
           padding: "112px 0 80px",
           textAlign: "center",
@@ -957,7 +957,7 @@ export default function JWSTDominoes() {
 
         {/* CH I: THE COUNT */}
         <Chapter
-          label="Chapter I — The Scale"
+          label="Chapter I - The Scale"
           title="If the CMB isn't primordial, everything built on it is suspect"
         >
           <DramaticCounter />
@@ -965,7 +965,7 @@ export default function JWSTDominoes() {
 
         {/* CH II: THE TIMELINE */}
         <Chapter
-          label="Chapter II — The Discovery Arc"
+          label="Chapter II - The Discovery Arc"
           title="Two years of escalating findings"
         >
           <GalaxyTimeline />
@@ -973,7 +973,7 @@ export default function JWSTDominoes() {
 
         {/* CH III: DEPENDENCY GRAPH */}
         <Chapter
-          label="Chapter III — The Web"
+          label="Chapter III - The Web"
           title="Everything connects back to the CMB"
         >
           <DependencyGraph />
@@ -981,7 +981,7 @@ export default function JWSTDominoes() {
 
         {/* CH IV: THE CASCADE */}
         <Chapter
-          label="Chapter IV — The Dominoes"
+          label="Chapter IV - The Dominoes"
           title="Click to topple the first one"
         >
           <DominoCascade />
@@ -989,7 +989,7 @@ export default function JWSTDominoes() {
 
         {/* CH V: THE CAVEAT */}
         <Chapter
-          label="Chapter V — The Caveat"
+          label="Chapter V - The Caveat"
           title="Science doesn't collapse in a day"
         >
           <Reveal>
@@ -1020,7 +1020,7 @@ export default function JWSTDominoes() {
                   WHY IT MIGHT BE OK
                 </div>
                 {[
-                  "One paper — needs replication",
+                  "One paper - needs replication",
                   "ΛCDM is battle-tested for decades",
                   "JWST was literally built to challenge models",
                   "Science is designed for revision",
@@ -1068,7 +1068,7 @@ export default function JWSTDominoes() {
                   WHY IT MIGHT NOT BE
                 </div>
                 {[
-                  "This isn't a tweak — it's a foundation crack",
+                  "This isn't a tweak - it's a foundation crack",
                   "20 findings across 4 categories affected",
                   "The Hubble tension was already a warning sign",
                   "Wrong-but-useful → less-wrong-but-more-useful",

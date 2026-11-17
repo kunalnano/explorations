@@ -7,8 +7,10 @@
     "dev": "vite",
     "build": "vite build",
     "lint": "eslint .",
-    "preview": "npm run build && wrangler pages dev dist/client",
-    "deploy": "npm run build && wrangler pages deploy dist/client --project-name alsharma-com --branch main --commit-dirty=true"
+    "verify": "node scripts/verify-build.mjs",
+    "test": "node scripts/verify-build.mjs",
+    "preview": "npm run build && wrangler pages dev dist",
+    "deploy": "npm run build && npm run verify && wrangler pages deploy dist --project-name alsharma-com --branch main"
   },
   "dependencies": {
     "react": "^19.2.0",
@@ -16,7 +18,6 @@
     "three": "^0.184.0"
   },
   "devDependencies": {
-    "@cloudflare/vite-plugin": "^1.39.0",
     "@eslint/js": "^9.39.1",
     "@types/react": "^19.2.7",
     "@types/react-dom": "^19.2.3",
@@ -25,7 +26,11 @@
     "eslint-plugin-react-hooks": "^7.0.1",
     "eslint-plugin-react-refresh": "^0.4.24",
     "globals": "^16.5.0",
-    "vite": "^7.3.1",
-    "wrangler": "^4.95.0"
+    "vite": "^7.3.8",
+    "wrangler": "^4.163.0"
+  },
+  "overrides": {
+    "undici": ">=7.30.2",
+    "flatted": ">=3.4.0"
   }
 }

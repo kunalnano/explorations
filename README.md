@@ -12,7 +12,7 @@ An interactive concept map connecting six major philosophical traditions through
 
 A visual essay on the 130-year-old unsolved problem in physics: thermodynamics + infinite time implies your memories, identity, and experience of reading this sentence are probably a temporary accident in an infinite void.
 
-Explores the parallel between cosmological fluctuations producing disembodied brains with false memories, and language models producing coherent meaning through next-token prediction — neither requires the thing it simulates.
+Explores the parallel between cosmological fluctuations producing disembodied brains with false memories, and language models producing coherent meaning through next-token prediction - neither requires the thing it simulates.
 
 *From a conversation between a human and a language model · Valentine's Day, 2026*
 

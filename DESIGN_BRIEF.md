@@ -1,10 +1,10 @@
-# alsharma.com Redesign — Brief for /canvas-design + /design
+# alsharma.com Redesign - Brief for /canvas-design + /design
 
 **Branch:** `redesign/apple-home`
 **Last checkpoint:** `01d0cb7`
 **Build:** ✅ `npm run build` green (1.3s, 1.1 MB main bundle)
 
-> **SUPERSEDED 2026-09-19 — enterprise-advisory direction** (branch `redesign/dvc-monochrome`).
+> **SUPERSEDED 2026-09-19 - enterprise-advisory direction** (branch `redesign/dvc-monochrome`).
 > Source: the "make darkvectorcognition.ai an enterprise advisory site" brief (dvc-web PR #72).
 > Applied here as:
 > - **One job.** Home exists to get a hiring exec, board member or recruiter to get in touch.
@@ -12,7 +12,7 @@
 > - **Order:** hero → track record → operating thesis → the arc → shipped → final CTA →
 >   "Also on this site" strip → footer.
 > - **Demote, don't delete.** Explorations, The Operator, Enablement and DVC get one line each
->   in the bottom strip — no images, no big headings. Their pages stay live and unchanged.
+>   in the bottom strip - no images, no big headings. Their pages stay live and unchanged.
 > - **No toys above the fold.** No floating widget, no cinematic stage in the hero.
 > - **No drift.** Home and Résumé carry the same positioning line.
 > - **Visual system** = darkvectorcognition.ai default theme: Space Grotesk / IBM Plex Sans /
@@ -40,10 +40,10 @@ The work is to bring the essays UP to meet the Apple direction, not pull Home do
 - **Surface:** white (`#ffffff`) primary, soft grey (`#f5f5f7`) for section breaks, black (`#000000`) for dramatic moments (the DVC editorial block on Home, certain essay heros).
 - **Color:** restrained. One amber accent (`#c9a84c`) that nods to the Operator galaxy. Apple link blue (`#0066cc`) for actions. No multi-accent palettes.
 - **Buttons:** pill, rounded 999px, two variants (filled blue, ghost blue text-link).
-- **Spacing:** generous — 96–112px section padding, 22px gutters, max-width 1024px.
+- **Spacing:** generous - 96–112px section padding, 22px gutters, max-width 1024px.
 - **Chrome:** sticky nav with `backdrop-filter: blur(20px)` and `saturate(180%)`. Sentence case nav links.
 
-Counter-example: Apple's product pages are **not** uniformly white. Dark hero shots, vivid product images, and black sections live happily inside an Apple-typographic frame. The chrome is constant; the content can be its own visual world. **This is the model for the essays** — keep their interior visual identity, force their chrome and typography into the Apple system.
+Counter-example: Apple's product pages are **not** uniformly white. Dark hero shots, vivid product images, and black sections live happily inside an Apple-typographic frame. The chrome is constant; the content can be its own visual world. **This is the model for the essays** - keep their interior visual identity, force their chrome and typography into the Apple system.
 
 ---
 
@@ -102,7 +102,7 @@ import { C, F, T } from "../design.js";
 const sans = { fontFamily: "'Segoe UI', system-ui, ..." };
 const serif = { fontFamily: "'Georgia', serif" };
 
-// after — use the shared tokens
+// after - use the shared tokens
 // F.display for h1/h2, F.text for body, F.mono for monospace labels
 // Or use T.h1, T.h2, T.lede, T.body, T.small, T.eyebrow as preset objects
 ```
@@ -116,7 +116,7 @@ Replace ad-hoc paddings with Apple rhythm:
 - Gutter: 22px
 - Card border-radius: 22px
 
-### 3. Hero treatment (creative — per essay)
+### 3. Hero treatment (creative - per essay)
 
 Each essay's hero needs an Apple-flavored opener. Pattern:
 
@@ -158,7 +158,7 @@ The essay's interior visualizations / interactive bits stay. Their surrounding c
 | `explorations` (index) | light | Apple white grid |
 | `travel` | light | Photo essays |
 
-Operator stays as-is — full-bleed cinematic, no chrome. It's the destination behind the galaxy stage on Home.
+Operator stays as-is - full-bleed cinematic, no chrome. It's the destination behind the galaxy stage on Home.
 
 ---
 
@@ -166,7 +166,7 @@ Operator stays as-is — full-bleed cinematic, no chrome. It's the destination b
 
 1. **Three.js bundle weight.** Operator imports load eagerly. `React.lazy(() => import("./Operator"))` is a 5-min follow-up.
 2. **SSR / static HTML.** Site is fully client-rendered. Meta tags now do the OG job statically, but full SSG (Astro? Vite SSG?) is a separate project.
-3. **AncientWisdomMap** uses `onClose` not `onBack` — verify routing wiring.
+3. **AncientWisdomMap** uses `onClose` not `onBack` - verify routing wiring.
 
 ---
 
@@ -174,7 +174,7 @@ Operator stays as-is — full-bleed cinematic, no chrome. It's the destination b
 
 1. Convert the **resume** and **explorations index** first (light surface, simplest, sets the Apple pattern).
 2. Then the four featured essays from Home: `the-tell`, `software-factory`, `intelligence-currency`, `als-limit`.
-3. Then the remaining 15 essays in any order — each one is mechanical once the pattern is locked.
+3. Then the remaining 15 essays in any order - each one is mechanical once the pattern is locked.
 4. Visual QA pass: every page should feel like the same site as Home, regardless of internal surface color.
 
 ---

@@ -154,7 +154,7 @@ function Hero({ onNav }) {
             color: C.ink, margin: 0, maxWidth: 560,
           }}>Post-sales executive for developer platforms.</p>
           <div>
-            <p style={{ ...T.lede, maxWidth: 620 }}>Fifteen years running customer success, support and services through developer-platform scale-ups &mdash; HashiCorp, Snyk, Harness &mdash; and now Technical Success for the Americas at Port. I build the AI agents I ask enterprise customers to adopt, and I ship them.</p>
+            <p style={{ ...T.lede, maxWidth: 620 }}>Fifteen years running customer success, support and services through developer-platform scale-ups (HashiCorp, Snyk, Harness) and now Technical Success for the Americas at Port. I build the AI agents I ask enterprise customers to adopt, and I ship them.</p>
             <div style={{ display: "flex", gap: 12, flexWrap: "wrap", marginTop: 32 }}>
               <button onClick={() => window.dispatchEvent(new CustomEvent("open-contact"))} style={pillFilled}>Get in touch <span aria-hidden="true">{"\u2192"}</span></button>
               <button onClick={() => onNav("resume")} style={pillGhost}>Read the r&eacute;sum&eacute;</button>
@@ -218,8 +218,8 @@ function SectionHead({ eyebrow, title, children }) {
 
 const THESES = [
   { k: "01", t: "Agents dissolve absorbed complexity.", b: "Any product whose moat is \u201Cwe aggregate context so you don\u2019t have to\u201D is exposed the moment agents do that aggregation natively. Post-sales has to sell outcomes the agent can\u2019t reach on its own, or it is selling a shrinking asset." },
-  { k: "02", t: "Telemetry is the durable layer.", b: "Agents generate data; they don\u2019t replace it. Observability, audit and evidence get structurally safer as workflows go agent-native \u2014 so that is where a post-sales org should anchor its value and its renewals." },
-  { k: "03", t: "Security has to stay a third party.", b: "Codegen vendors can\u2019t credibly police their own output. An agnostic layer has to do it \u2014 which is why the customer-engineering motion around AI security is a leadership job, not a support queue." },
+  { k: "02", t: "Telemetry is the durable layer.", b: "Agents generate data; they don\u2019t replace it. Observability, audit and evidence get structurally safer as workflows go agent-native, so that is where a post-sales org should anchor its value and its renewals." },
+  { k: "03", t: "Security has to stay a third party.", b: "Codegen vendors can\u2019t credibly police their own output. An agnostic layer has to do it, which is why the customer-engineering motion around AI security is a leadership job, not a support queue." },
 ];
 
 function Thesis() {

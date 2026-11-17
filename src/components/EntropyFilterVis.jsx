@@ -43,7 +43,7 @@ function Reveal({ children, delay = 0, style }) {
 
 
 // ══════════════════════════════════════════════════════════════
-// The Narrowing Corridor — capability vs coordination
+// The Narrowing Corridor - capability vs coordination
 // ══════════════════════════════════════════════════════════════
 
 export function CorridorVisualization() {
@@ -220,7 +220,7 @@ export function CorridorVisualization() {
 
 
 // ══════════════════════════════════════════════════════════════
-// Bootstrap Paradox — circular dependency loop
+// Bootstrap Paradox - circular dependency loop
 // ══════════════════════════════════════════════════════════════
 
 const BOOTSTRAP_NODES = [
@@ -349,7 +349,7 @@ export function BootstrapParadoxVis() {
 
 
 // ══════════════════════════════════════════════════════════════
-// Fragility Map — chokepoints of civilization
+// Fragility Map - chokepoints of civilization
 // ══════════════════════════════════════════════════════════════
 
 const CHOKEPOINTS = [
@@ -540,7 +540,7 @@ export function DestructionEconVis() {
 
 
 // ══════════════════════════════════════════════════════════════
-// Stargate Collapse — the golden triangle
+// Stargate Collapse - the golden triangle
 // ══════════════════════════════════════════════════════════════
 
 export function StargateCollapseVis() {
@@ -582,7 +582,7 @@ export function StargateCollapseVis() {
           <div style={{
             ...mono, fontSize: 9, letterSpacing: 2,
             color: ASH, textTransform: "uppercase", marginBottom: 16, textAlign: "center",
-          }}>THE GOLDEN TRIANGLE — FRAGMENTING</div>
+          }}>THE GOLDEN TRIANGLE - FRAGMENTING</div>
           <svg viewBox="0 0 500 360" style={{ width: "100%", maxWidth: 500, display: "block", margin: "0 auto" }}>
             <text x={250} y={190} textAnchor="middle" fill={CRIMSON}
               style={{ fontSize: 10, fontFamily: mono.fontFamily, letterSpacing: 2 }}>STARGATE</text>

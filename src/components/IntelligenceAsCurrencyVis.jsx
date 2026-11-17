@@ -32,7 +32,7 @@ function useReveal(threshold = 0.12) {
 }
 
 // ═══════════════════════════════════════════════════════
-// THESIS I — DOUBLE HELIX
+// THESIS I - DOUBLE HELIX
 // ═══════════════════════════════════════════════════════
 export function DoubleHelixVis() {
   const canvasRef = useRef(null);
@@ -145,7 +145,7 @@ export function DoubleHelixVis() {
 }
 
 // ═══════════════════════════════════════════════════════
-// THESIS II — DATA OCEAN
+// THESIS II - DATA OCEAN
 // ═══════════════════════════════════════════════════════
 export function DataOceanVis() {
   const canvasRef = useRef(null);
@@ -261,7 +261,7 @@ export function DataOceanVis() {
 }
 
 // ═══════════════════════════════════════════════════════
-// THESIS III — BRAIN ARCHITECTURE
+// THESIS III - BRAIN ARCHITECTURE
 // ═══════════════════════════════════════════════════════
 export function BrainArchitectureVis() {
   const canvasRef = useRef(null);
@@ -365,7 +365,7 @@ export function BrainArchitectureVis() {
 }
 
 // ═══════════════════════════════════════════════════════
-// THESIS IV — CREDENTIALISM TIMELINE
+// THESIS IV - CREDENTIALISM TIMELINE
 // ═══════════════════════════════════════════════════════
 export function CredentialismTimeline() {
   const [ref, vis] = useReveal(0.2);
@@ -432,7 +432,7 @@ export function CredentialismTimeline() {
 }
 
 // ═══════════════════════════════════════════════════════
-// THESIS V — COMPUTE VS GOLD TOGGLE
+// THESIS V - COMPUTE VS GOLD TOGGLE
 // ═══════════════════════════════════════════════════════
 export function ComputeGoldToggle() {
   const [mode, setMode] = useState("gold");
@@ -539,7 +539,7 @@ export function ComputeGoldToggle() {
 }
 
 // ═══════════════════════════════════════════════════════
-// THESIS VI — GITA CYCLE
+// THESIS VI - GITA CYCLE
 // ═══════════════════════════════════════════════════════
 export function GitaCycleVis() {
   const canvasRef = useRef(null);
@@ -629,7 +629,7 @@ export function GitaCycleVis() {
 }
 
 // ═══════════════════════════════════════════════════════
-// THESIS VII — INNOVATION STACK
+// THESIS VII - INNOVATION STACK
 // ═══════════════════════════════════════════════════════
 export function InnovationStackVis() {
   const [ref, vis] = useReveal(0.2);

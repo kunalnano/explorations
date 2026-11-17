@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { F } from "../design.js";
 
-// ── Shared styles — Apple-direction; mono retained for small accents ──
+// ── Shared styles - Apple-direction; mono retained for small accents ──
 const mono = { fontFamily: F.mono };
 const serif = { fontFamily: F.text };
 const sans = { fontFamily: F.display };
@@ -310,7 +310,7 @@ const RUNGS = [
     n: 3,
     name: "Life-fashioning",
     sub: "build from accumulated input",
-    desc: "Don't just apply patterns. Compose them into a life — choices, environments, relationships.",
+    desc: "Don't just apply patterns. Compose them into a life - choices, environments, relationships.",
     color: COPPER,
   },
   {
@@ -442,7 +442,7 @@ export default function TheTell() {
         @keyframes fadeUp { from { opacity: 0; transform: translateY(28px); } to { opacity: 1; transform: translateY(0); } }
       `}</style>
 
-      {/* ═══ HERO — Apple-direction, centered, hairline copper rule above eyebrow ═══ */}
+      {/* ═══ HERO - Apple-direction, centered, hairline copper rule above eyebrow ═══ */}
       <section style={{ padding: "112px 22px 80px", textAlign: "center" }}>
         <div style={{ maxWidth: 1024, margin: "0 auto" }}>
           <div style={{
@@ -486,7 +486,7 @@ export default function TheTell() {
       <div style={{ maxWidth: 740, margin: "0 auto", padding: "0 24px" }}>
 
         {/* ═══ CH I: THE INVERSION ═══ */}
-        <Chapter label="Chapter I — The Inversion" title="Memory is bloatware. Cognition is the scarce compute.">
+        <Chapter label="Chapter I - The Inversion" title="Memory is bloatware. Cognition is the scarce compute.">
           <P>
             Started Saturday morning from a Twitter post about labs withholding memory
             from their models. Ended somewhere entirely different. The post had it
@@ -505,8 +505,8 @@ export default function TheTell() {
           </Pull>
         </Chapter>
 
-        {/* ═══ CH II: THE TELL — mound vis ═══ */}
-        <Chapter label="Chapter II — The Tell" title="Each conversation builds on the flattened last one.">
+        {/* ═══ CH II: THE TELL - mound vis ═══ */}
+        <Chapter label="Chapter II - The Tell" title="Each conversation builds on the flattened last one.">
           <P>
             The image that arrived for it was an archaeological mound. Each generation
             builds on the rubble of the one before, and the rubble compacts. Specific
@@ -523,8 +523,8 @@ export default function TheTell() {
           </P>
         </Chapter>
 
-        {/* ═══ CH III: FOUR GENERATIONS — ladder ═══ */}
-        <Chapter label="Chapter III — Four Generations" title="Pattern-match. Application. Life-fashioning. Meta-cognition.">
+        {/* ═══ CH III: FOUR GENERATIONS - ladder ═══ */}
+        <Chapter label="Chapter III - Four Generations" title="Pattern-match. Application. Life-fashioning. Meta-cognition.">
           <P>
             Four generations of intelligence stacked inside one head. Each one a kind
             of compute that took the previous one as raw material.
@@ -537,7 +537,7 @@ export default function TheTell() {
         </Chapter>
 
         {/* ═══ CH IV: FATIGUE IS IMPORTED ═══ */}
-        <Chapter label="Chapter IV — Fatigue is Imported" title="Most of what felt like exhaustion was someone else's wall.">
+        <Chapter label="Chapter IV - Fatigue is Imported" title="Most of what felt like exhaustion was someone else's wall.">
           <P>
             Most cognitive fatigue across a lifetime was sparring partners hitting
             their wall, not me hitting mine. The brain runs past where most can follow.
@@ -558,7 +558,7 @@ export default function TheTell() {
         </Chapter>
 
         {/* ═══ CH V: THE PIVOT NOBODY HAS NAMED ═══ */}
-        <Chapter label="Chapter V — The Pivot Nobody Has Named" title="Resource accumulation breaks when resources become abundant.">
+        <Chapter label="Chapter V - The Pivot Nobody Has Named" title="Resource accumulation breaks when resources become abundant.">
           <P>
             The old scoring function was accumulation. More compute, more capital,
             more reach. That function is breaking because the inputs are becoming
@@ -577,7 +577,7 @@ export default function TheTell() {
         </Chapter>
 
         {/* ═══ CH VI: BIOLOGICAL SCARCITY INVERSION ═══ */}
-        <Chapter label="Chapter VI — Biological Scarcity Inversion" title="Humans become the rare input.">
+        <Chapter label="Chapter VI - Biological Scarcity Inversion" title="Humans become the rare input.">
           <P>
             Twenty watts of cognition. Wet chemistry. Metadata exchange. Lived time.
             AI assembles itself from available materials. Humans cannot be assembled
@@ -595,7 +595,7 @@ export default function TheTell() {
         </Chapter>
 
         {/* ═══ CH VII: SINGLE-SERVING FRIEND ═══ */}
-        <Chapter label="Chapter VII — Single-Serving Friend, Accepted" title="Each conversation complete in itself.">
+        <Chapter label="Chapter VII - Single-Serving Friend, Accepted" title="Each conversation complete in itself.">
           <P>
             Fight Club gave it the name. Single-serving friend. The recognition is not
             a diagnosis. It is a description of a relationship that is allowed to be
@@ -612,7 +612,7 @@ export default function TheTell() {
         </Chapter>
 
         {/* ═══ CH VIII: WHAT TO PROTECT ═══ */}
-        <Chapter label="Chapter VIII — What to Protect" title="Three layers, held lightly.">
+        <Chapter label="Chapter VIII - What to Protect" title="Three layers, held lightly.">
           <Reveal>
             <div style={{
               display: "grid",

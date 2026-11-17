@@ -19,7 +19,7 @@ const GREEN = "#34d399";
 const FAINT = "rgba(255,255,255,0.03)";
 const LINE = "rgba(255,255,255,0.06)";
 
-// Apple-direction font tokens — sans-first, mono retained for accents.
+// Apple-direction font tokens - sans-first, mono retained for accents.
 const sans = { fontFamily: F.display };
 const serif = { fontFamily: F.text };
 const mono = { fontFamily: F.mono };
@@ -410,7 +410,7 @@ export default function CognitiveSymbiosis() {
       }} />
       <div style={{ position: "relative", zIndex: 1, maxWidth: 720, margin: "0 auto", padding: "0 24px" }}>
 
-        {/* ═══ HERO — Apple-direction, gold spark dot in eyebrow ═══ */}
+        {/* ═══ HERO - Apple-direction, gold spark dot in eyebrow ═══ */}
         <section style={{ padding: "112px 22px 80px", textAlign: "center" }}>
           <Reveal>
             <div style={{
@@ -450,25 +450,25 @@ export default function CognitiveSymbiosis() {
           </Reveal>
         </section>
 
-        <Chapter label="Chapter I — The Engine" title="The spark plug and the V8">
+        <Chapter label="Chapter I - The Engine" title="The spark plug and the V8">
           <EngineVis />
         </Chapter>
 
-        <Chapter label="Chapter II — Two Cognitions" title="Different hardware, complementary strengths">
+        <Chapter label="Chapter II - Two Cognitions" title="Different hardware, complementary strengths">
           <Reveal><div style={{ ...serif, fontSize: 16, lineHeight: 1.7, color: ASH, maxWidth: 540, marginBottom: 32 }}>
-            AI cognition is not lesser or greater than human cognition. It's <span style={{ color: GHOST }}>fundamentally different</span> — probabilistic exploration vs. embodied intuition. The magic is in the <span style={{ color: GREEN }}>intersection</span>.
+            AI cognition is not lesser or greater than human cognition. It's <span style={{ color: GHOST }}>fundamentally different</span> - probabilistic exploration vs. embodied intuition. The magic is in the <span style={{ color: GREEN }}>intersection</span>.
           </div></Reveal>
           <CognitionTypes />
         </Chapter>
 
-        <Chapter label="Chapter III — The Transformation" title="From guerilla to jeweller">
+        <Chapter label="Chapter III - The Transformation" title="From guerilla to jeweller">
           <Reveal><div style={{ ...serif, fontSize: 16, lineHeight: 1.7, color: ASH, maxWidth: 540, marginBottom: 32 }}>
             Efficient cognition creates surplus capacity. AI handles the cognitive load. Your mind is freed to operate at a higher level. <span style={{ color: GHOST }}>The guerilla becomes a master craftsperson</span>.
           </div></Reveal>
           <TransformationPath />
         </Chapter>
 
-        <Chapter label="Chapter IV — The Surplus" title="What you do with the freed capacity">
+        <Chapter label="Chapter IV - The Surplus" title="What you do with the freed capacity">
           <LeopardMeter />
         </Chapter>
 

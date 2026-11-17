@@ -20,7 +20,7 @@ const GREEN = "#34d399";
 const FAINT = "rgba(255,255,255,0.03)";
 const LINE = "rgba(255,255,255,0.06)";
 
-// Apple typographic stack — interior identity colors stay
+// Apple typographic stack - interior identity colors stay
 const sans = { fontFamily: F.display };
 const serif = { fontFamily: F.text };
 const mono = { fontFamily: F.mono };
@@ -118,7 +118,7 @@ function CopyWithNoise() {
 
         original.forEach((s, i) => {
           const x = 16 + i * 16;
-          // Add noise — seeded by position for stability, shifted by time for shimmer
+          // Add noise - seeded by position for stability, shifted by time for shimmer
           const mutH = s.hue + Math.sin(i * 3.7 + t * 0.3) * noise * 120;
           const mutV = Math.max(0.1, Math.min(1, s.val + Math.sin(i * 2.1 + t * 0.5) * noise));
           const isMutant = Math.abs(Math.sin(i * 7.3 + row * 2)) < noise;
@@ -224,7 +224,7 @@ function HiveMindScale() {
     { pos: 25, label: "Telepathy", desc: "Individual identities persist but gain access to collective processing. You remain you, just networked.", color: GREEN, icon: "🔗" },
     { pos: 50, label: "Shared sensorium", desc: "Bidirectional read/write. Your experiences become accessible to others. Privacy dissolves.", color: ICE, icon: "👁️" },
     { pos: 75, label: "Collective cognition", desc: "Thinking happens across multiple brains simultaneously. 'Your' ideas emerge from the network.", color: GHOST, icon: "🌐" },
-    { pos: 100, label: "Dissolution", desc: "No more 'you' or 'me' — just us. One consciousness wearing 8 billion faces.", color: EMBER, icon: "∞" },
+    { pos: 100, label: "Dissolution", desc: "No more 'you' or 'me' - just us. One consciousness wearing 8 billion faces.", color: EMBER, icon: "∞" },
   ];
 
   const current = stages.reduce((best, s) => Math.abs(level - s.pos) < Math.abs(level - best.pos) ? s : best, stages[0]);
@@ -330,7 +330,7 @@ function UniverseTree() {
           </g>
         ))}
 
-        {/* Grandchild from Child C — showing power gain */}
+        {/* Grandchild from Child C - showing power gain */}
         <line x1={480} y1={169} x2={480} y2={220} stroke={EMBER + "33"} strokeWidth={1} strokeDasharray="4 4" />
         <circle cx={480} cy={245} r={32} fill={EMBER + "15"} stroke={EMBER + "55"} strokeWidth={2}>
           <animate attributeName="r" values="30;34;30" dur="3s" repeatCount="indefinite" />
@@ -341,7 +341,7 @@ function UniverseTree() {
 
         {/* Annotation */}
         <text x={300} y={310} textAnchor="middle" fill={ASH} fontSize={10} fontFamily="'SF Mono', monospace">
-          THE CHILD OUTGROWS THE PARENT — NOT DESPITE BEING DERIVATIVE, BECAUSE OF IT
+          THE CHILD OUTGROWS THE PARENT - NOT DESPITE BEING DERIVATIVE, BECAUSE OF IT
         </text>
       </svg>
     </div>
@@ -359,7 +359,7 @@ export default function DerivativeUniverses() {
       }} />
       <div style={{ position: "relative", zIndex: 1, maxWidth: 720, margin: "0 auto", padding: "0 24px" }}>
 
-        {/* HERO — Apple typographic frame */}
+        {/* HERO - Apple typographic frame */}
         <section style={{ padding: "112px 0 80px", textAlign: "center" }}>
           <Reveal>
             <div style={{
@@ -391,16 +391,16 @@ export default function DerivativeUniverses() {
           </Reveal>
         </section>
 
-        <Chapter label="Chapter I — Copy With Noise" title="Errors are the engine">
+        <Chapter label="Chapter I - Copy With Noise" title="Errors are the engine">
           <Reveal>
             <div style={{ ...serif, fontSize: 16, lineHeight: 1.7, color: ASH, maxWidth: 540, marginBottom: 32 }}>
-              We assume copy = degradation. But every capability life has — <span style={{ color: GREEN }}>flight, sight, consciousness</span> — emerged from copying mistakes.
+              We assume copy = degradation. But every capability life has - <span style={{ color: GREEN }}>flight, sight, consciousness</span> - emerged from copying mistakes.
             </div>
           </Reveal>
           <CopyWithNoise />
         </Chapter>
 
-        <Chapter label="Chapter II — Derivative Universes" title="The child outgrows the parent">
+        <Chapter label="Chapter II - Derivative Universes" title="The child outgrows the parent">
           <Reveal>
             <div style={{ ...serif, fontSize: 16, lineHeight: 1.7, color: ASH, maxWidth: 540, marginBottom: 32 }}>
               If a simulation has entropy, has noise, has imperfect copying... it's not running a script. It's running <span style={{ color: EMBER }}>evolution</span>. And evolution doesn't respect the intentions of its creator.
@@ -409,7 +409,7 @@ export default function DerivativeUniverses() {
           <UniverseTree />
         </Chapter>
 
-        <Chapter label="Chapter III — The Bandwidth Gap" title="We're tapping 1,000 lines in a city of trillions">
+        <Chapter label="Chapter III - The Bandwidth Gap" title="We're tapping 1,000 lines in a city of trillions">
           <Reveal>
             <div style={{ ...serif, fontSize: 16, lineHeight: 1.7, color: ASH, maxWidth: 540, marginBottom: 32 }}>
               Neuralink's first human implant reads ~1,024 channels from the motor cortex. Your brain has 100 trillion synaptic connections. The gap is <span style={{ color: EMBER }}>incomprehensible</span>.
@@ -418,7 +418,7 @@ export default function DerivativeUniverses() {
           <BandwidthMeter />
         </Chapter>
 
-        <Chapter label="Chapter IV — The Hive Mind Spectrum" title="From isolation to dissolution">
+        <Chapter label="Chapter IV - The Hive Mind Spectrum" title="From isolation to dissolution">
           <Reveal>
             <div style={{ ...serif, fontSize: 16, lineHeight: 1.7, color: ASH, maxWidth: 540, marginBottom: 32 }}>
               If networked consciousness is coming, do you want to be in the first generation that merges? The last that doesn't? Or the messy middle?

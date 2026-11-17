@@ -3,7 +3,7 @@ import { C, F } from "../design.js";
 
 /* ═══════════════════════════════════════════════════════════════
    THE SOFTWARE THEORY OF CIVILIZATION
-   Civilization doesn't just use software — civilization IS software.
+   Civilization doesn't just use software - civilization IS software.
    From a conversation between a human and a language model.
    ═══════════════════════════════════════════════════════════════ */
 
@@ -18,7 +18,7 @@ const GREEN = "#34d399";
 const FAINT = "rgba(255,255,255,0.03)";
 const LINE = "rgba(255,255,255,0.06)";
 
-// Apple-direction font tokens — sans-first.
+// Apple-direction font tokens - sans-first.
 const sans = { fontFamily: F.display };
 const serif = { fontFamily: F.text };
 const mono = { fontFamily: F.mono };
@@ -94,7 +94,7 @@ function Chapter({ label, title, children }) {
 const LAYERS = [
   {
     id: "v4",
-    label: "v4.0 — Probabilistic Intelligence",
+    label: "v4.0 - Probabilistic Intelligence",
     sub: "Vectors · Embeddings · Weights",
     color: GHOST,
     icon: "🧠",
@@ -102,7 +102,7 @@ const LAYERS = [
   },
   {
     id: "v3",
-    label: "v3.0 — The Executable Era",
+    label: "v3.0 - The Executable Era",
     sub: "Binary · Logic Gates · Algorithms",
     color: GREEN,
     icon: "💻",
@@ -110,7 +110,7 @@ const LAYERS = [
   },
   {
     id: "v2",
-    label: "v2.0 — The Persistence Era",
+    label: "v2.0 - The Persistence Era",
     sub: "Text · Scripture · Legal Code",
     color: ICE,
     icon: "📜",
@@ -118,7 +118,7 @@ const LAYERS = [
   },
   {
     id: "v1",
-    label: "v1.0 — The Biological Era",
+    label: "v1.0 - The Biological Era",
     sub: "Speech · Gesture · Memory",
     color: GOLD,
     icon: "🗣️",
@@ -387,7 +387,7 @@ function AnimatedStack() {
   );
 }
 
-// ── COMPRESSION TIMELINE — intervals shrink exponentially ──
+// ── COMPRESSION TIMELINE - intervals shrink exponentially ──
 function CompressionTimeline() {
   const ref = useRef(null);
   const [vis, setVis] = useState(false);
@@ -518,7 +518,7 @@ function CompressionTimeline() {
   );
 }
 
-// ── BOTTLENECK GAUGES — animated meters ──
+// ── BOTTLENECK GAUGES - animated meters ──
 const BOTTLENECKS = [
   {
     icon: "⚖️",
@@ -754,7 +754,7 @@ function GatekeeperFlow() {
     <Reveal>
       <div ref={ref} style={{ margin: "40px auto", maxWidth: 600 }}>
         <svg viewBox="0 0 600 300" style={{ width: "100%", display: "block" }}>
-          {/* Power funnel — each era's gatekeeper controls a wider scope */}
+          {/* Power funnel - each era's gatekeeper controls a wider scope */}
           {keepers.map((k, i) => {
             const y = 30 + i * 65;
             const x = 300 - k.w / 2;
@@ -900,7 +900,7 @@ function GatekeeperFlow() {
   );
 }
 
-// ── ABSTRACTION FLOW — each layer wraps the previous ──
+// ── ABSTRACTION FLOW - each layer wraps the previous ──
 function AbstractionFlow() {
   const [active, setActive] = useState(null);
   const transitions = [
@@ -1032,7 +1032,7 @@ function AbstractionFlow() {
 }
 
 // ═══════════════════════════════════════════════════════════════
-// THESIS BEAMS — animated SVG showing version transitions
+// THESIS BEAMS - animated SVG showing version transitions
 // Replaces the text card grid with a visual arrow flow.
 // ═══════════════════════════════════════════════════════════════
 function ThesisBeams() {
@@ -1241,7 +1241,7 @@ function ThesisBeams() {
 }
 
 // ═══════════════════════════════════════════════════════════════
-// CLAIM STRENGTH VIS — replaces text-based counterargument cards
+// CLAIM STRENGTH VIS - replaces text-based counterargument cards
 // Visual strength meter comparing unfalsifiable vs testable claims.
 // ═══════════════════════════════════════════════════════════════
 function ClaimStrengthVis() {
@@ -1432,7 +1432,7 @@ export default function SoftwareTheory() {
         }}
       />
 
-      {/* Back button — fixed position */}
+      {/* Back button - fixed position */}
       <div
         style={{
           position: "relative",
@@ -1473,7 +1473,7 @@ export default function SoftwareTheory() {
 
         {/* ═══ CH I: CORE THESIS ═══ */}
         <Chapter
-          label="Chapter I — The Core Thesis"
+          label="Chapter I - The Core Thesis"
           title="Every upgrade to how we transmit information rewrites civilization"
         >
           <ThesisBeams />
@@ -1481,7 +1481,7 @@ export default function SoftwareTheory() {
 
         {/* ═══ CH II: THE STACK ═══ */}
         <Chapter
-          label="Chapter II — The Stack"
+          label="Chapter II - The Stack"
           title="Four version updates to our collective processing capacity"
         >
           <AnimatedStack />
@@ -1490,7 +1490,7 @@ export default function SoftwareTheory() {
 
         {/* ═══ CH III: THE BOTTLENECK ═══ */}
         <Chapter
-          label="Chapter III — The Bottleneck"
+          label="Chapter III - The Bottleneck"
           title="The system outgrew its operators"
         >
           <BottleneckGauges />
@@ -1498,8 +1498,8 @@ export default function SoftwareTheory() {
 
         {/* ═══ CH IV: THE PATTERN ═══ */}
         <Chapter
-          label="Chapter IV — The Pattern"
-          title="Each layer abstracts over the previous — never replaces it"
+          label="Chapter IV - The Pattern"
+          title="Each layer abstracts over the previous - never replaces it"
         >
           <AbstractionFlow />
           <Reveal>
@@ -1523,7 +1523,7 @@ export default function SoftwareTheory() {
 
         {/* ═══ CH V: GATEKEEPERS ═══ */}
         <Chapter
-          label="Chapter V — The Implication"
+          label="Chapter V - The Implication"
           title="If civilization is software, who controls the compiler?"
         >
           <GatekeeperFlow />
@@ -1531,7 +1531,7 @@ export default function SoftwareTheory() {
 
         {/* ═══ CH VI: COUNTERARGUMENT ═══ */}
         <Chapter
-          label="Chapter VI — The Counterargument"
+          label="Chapter VI - The Counterargument"
           title='Was this "inevitable"?'
         >
           <ClaimStrengthVis />

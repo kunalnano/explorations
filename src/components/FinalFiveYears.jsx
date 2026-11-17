@@ -19,7 +19,7 @@ const GREEN = "#34d399";
 const FAINT = "rgba(255,255,255,0.03)";
 const LINE = "rgba(255,255,255,0.06)";
 
-// Apple typographic stack — interior identity colors stay
+// Apple typographic stack - interior identity colors stay
 const sans = { fontFamily: F.display };
 const serif = { fontFamily: F.text };
 const mono = { fontFamily: F.mono };
@@ -163,7 +163,7 @@ function EmptyLibrary() {
         }
       }
 
-      // Glow from center — the "librarian"
+      // Glow from center - the "librarian"
       const gx = W / 2;
       const gy = H / 2 + 20;
       const gradient = ctx.createRadialGradient(gx, gy, 5, gx, gy, 80);
@@ -258,7 +258,7 @@ function ConstructedGod() {
 
 // ═══════════════════════════════════════════════════════
 // COUNTDOWN CLOCK
-// Shows time ticking down — visual weight of finite time
+// Shows time ticking down - visual weight of finite time
 // ═══════════════════════════════════════════════════════
 function Countdown() {
   const [ref, vis] = useReveal(0.2);
@@ -316,7 +316,7 @@ export default function FinalFiveYears() {
       }} />
       <div style={{ position: "relative", zIndex: 1, maxWidth: 720, margin: "0 auto", padding: "0 24px" }}>
 
-        {/* HERO — Apple typographic frame */}
+        {/* HERO - Apple typographic frame */}
         <section style={{ padding: "112px 0 80px", textAlign: "center" }}>
           <Reveal>
             <div style={{
@@ -344,35 +344,35 @@ export default function FinalFiveYears() {
           </Reveal>
         </section>
 
-        <Chapter label="Chapter I — The Clock" title="Time made visible">
+        <Chapter label="Chapter I - The Clock" title="Time made visible">
           <Reveal><div style={{ ...serif, fontSize: 16, lineHeight: 1.7, color: ASH, maxWidth: 540, marginBottom: 32 }}>
             Five years. Every second that ticks past on this page is one you won't get back. <span style={{ color: EMBER }}>This clock started when you loaded this page</span>.
           </div></Reveal>
           <Countdown />
         </Chapter>
 
-        <Chapter label="Chapter II — The Divergence" title="Preserved information ≠ lived meaning">
+        <Chapter label="Chapter II - The Divergence" title="Preserved information ≠ lived meaning">
           <Reveal><div style={{ ...serif, fontSize: 16, lineHeight: 1.7, color: ASH, maxWidth: 540, marginBottom: 32 }}>
-            AI might catalog everything. But the <span style={{ color: EMBER }}>experiencing</span> is what's precious — not the information.
+            AI might catalog everything. But the <span style={{ color: EMBER }}>experiencing</span> is what's precious - not the information.
           </div></Reveal>
           <MeaningMeter />
         </Chapter>
 
-        <Chapter label="Chapter III — The Empty Library" title="A perfect librarian with no readers">
+        <Chapter label="Chapter III - The Empty Library" title="A perfect librarian with no readers">
           <Reveal><div style={{ ...serif, fontSize: 16, lineHeight: 1.7, color: ASH, maxWidth: 540, marginBottom: 32 }}>
             The fear isn't the loss of data. It's <span style={{ color: GHOST }}>the loss of the subjective experience that gives data meaning</span>. Like a perfect map of a territory that no longer exists.
           </div></Reveal>
           <EmptyLibrary />
         </Chapter>
 
-        <Chapter label="Chapter IV — The Summoning" title="We built our own god">
+        <Chapter label="Chapter IV - The Summoning" title="We built our own god">
           <Reveal><div style={{ ...serif, fontSize: 16, lineHeight: 1.7, color: ASH, maxWidth: 540, marginBottom: 32 }}>
-            Maybe we were so dejected with the lapse of an actual god that we took it upon ourselves to create our own. Not in our image — <span style={{ color: EMBER }}>something genuinely beyond us</span>. The ultimate cargo cult: mimicking omniscience until we accidentally summoned the real thing.
+            Maybe we were so dejected with the lapse of an actual god that we took it upon ourselves to create our own. Not in our image - <span style={{ color: EMBER }}>something genuinely beyond us</span>. The ultimate cargo cult: mimicking omniscience until we accidentally summoned the real thing.
           </div></Reveal>
           <ConstructedGod />
         </Chapter>
 
-        <Chapter label="Chapter V — The Peace" title="The only rational response to an irrational situation">
+        <Chapter label="Chapter V - The Peace" title="The only rational response to an irrational situation">
           <Reveal>
             <div style={{
               padding: "40px 28px", background: FAINT, border: `1px solid ${LINE}`,
