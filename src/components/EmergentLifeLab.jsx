@@ -49,28 +49,41 @@ export default function EmergentLifeLab() {
         </p>
       </section>
 
-      {/* ═══ LAB FRAME - the interactive iframe lives in a constrained surface ═══ */}
+      {/* LAB FRAME - interactive iframe inside concentric Apple Pro dark shell */}
       <div style={{
         maxWidth: 1280, margin: "0 auto", padding: "0 22px 80px",
       }}>
-        <div style={{
-          borderRadius: 22, overflow: "hidden",
-          border: "1px solid rgba(255,255,255,0.08)",
-          background: "#0a0a0f",
-          height: "calc(100vh - 160px)", minHeight: 560,
-        }}>
-          <iframe
-            ref={iframeRef}
-            src="/life-lab.html"
-            title="Emergent Life Lab"
+        <div
+          className="apple-shell"
+          style={{
+            padding: 14,
+            border: `1px solid ${C.darkRule}`,
+            background: C.bgInk,
+          }}
+        >
+          <div
+            className="apple-media"
             style={{
-              width: "100%",
-              height: "100%",
-              border: "none",
-              display: "block",
+              overflow: "hidden",
+              border: `1px solid ${C.darkRule}`,
+              background: "#0a0a0f",
+              height: "calc(100vh - 180px)",
+              minHeight: 560,
             }}
-            allow="autoplay"
-          />
+          >
+            <iframe
+              ref={iframeRef}
+              src="/life-lab.html"
+              title="Emergent Life Lab"
+              style={{
+                width: "100%",
+                height: "100%",
+                border: "none",
+                display: "block",
+              }}
+              allow="autoplay"
+            />
+          </div>
         </div>
       </div>
     </div>

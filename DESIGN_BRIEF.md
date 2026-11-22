@@ -1,25 +1,15 @@
-# alsharma.com Redesign - Brief for /canvas-design + /design
+# alsharma.com Design Direction
 
-**Branch:** `redesign/apple-home`
-**Last checkpoint:** `01d0cb7`
-**Build:** ✅ `npm run build` green (1.3s, 1.1 MB main bundle)
+> **CURRENT DIRECTION (2026-11-22) - Apple 66% Concentric Shells & HIG system.**
+> Brings `alsharma.com` onto the full Apple Floating Hardware Shells and 66% concentric squircle design system while keeping the executive-profile content structure and information hierarchy intact:
+> - **Concentric 66% squircle geometry:** global CSS variables in `src/index.css` (`--sq-mult: 1; --sq-shape: round;` upgraded inside `@supports (corner-shape: superellipse(1.36))` to `--sq-mult: 1.23; --sq-shape: superellipse(1.36);`), paired with `--radius-xs` (10px), `--radius-sm` (14px), `--radius-md` (18px), `--radius-lg` (24px), `--radius-xl` (32px), and `--radius-pill` (980px). Nested shells obey `R_outer = R_inner + padding` with zero `border-radius: 0` hard edges on visible containers, cards, controls, inputs, tags, or sheets.
+> - **Apple Floating Hardware Shells:** `#f5f5f7` page canvas with elevated `#ffffff` floating shells (`1px solid rgba(0, 0, 0, 0.08)` hairline, quiet ambient luminance lift), recessed `#f5f5f7` inner trays, and `#1d1d1f` / `#000000` Apple Pro dark shells for high-emphasis closing statements.
+> - **Apple HIG color system:** primary ink `#1d1d1f`, soft ink `#515154`, muted ink `#6e6e73`, primary CTA fill `#0071e3` (`#0077ed` hover, `#ffffff` label, continuous `980px` pill), link blue `#0066cc`, dark interactive blue `#2997ff`, semantic green `#1d7a36`, semantic red `#c92a2a`, and high-contrast Apple focus rings (`3px solid #0066cc` light / `3px solid #2997ff` dark).
+> - **Typography & chrome:** Apple SF Pro Display / SF Pro Text / SF Mono primary stacks with self-hosted `IBM Plex Sans` and `JetBrains Mono` fallbacks (`public/fonts`). Sticky frosted translucent navigation (`rgba(251, 251, 253, 0.82)` light / `rgba(22, 22, 23, 0.80)` dark, `backdrop-filter: saturate(180%) blur(20px)`), minimum `44px` nav links and `48px` primary buttons and form inputs, and `prefers-reduced-motion` support.
+> - **Preserved architecture:** the executive Home page order (hero, track record, operating thesis, career arc, shipped work, final CTA, compact footer links), the PageFrame chrome contract, and the dark interactive visual essays (including `Operator.jsx`) stay intact inside the Apple frame. Shared tokens live in `src/index.css` and `src/design.js` (`C`, `F`, `L`, `R`, `SHADOW`, `T`, `pill`, `textLink`, `wordmark`).
 
-> **SUPERSEDED 2026-09-19 - enterprise-advisory direction** (branch `redesign/dvc-monochrome`).
-> Source: the "make darkvectorcognition.ai an enterprise advisory site" brief (dvc-web PR #72).
-> Applied here as:
-> - **One job.** Home exists to get a hiring exec, board member or recruiter to get in touch.
->   One primary CTA ("Get in touch") in nav, hero and the closing section; résumé is secondary.
-> - **Order:** hero → track record → operating thesis → the arc → shipped → final CTA →
->   "Also on this site" strip → footer.
-> - **Demote, don't delete.** Explorations, The Operator, Enablement and DVC get one line each
->   in the bottom strip - no images, no big headings. Their pages stay live and unchanged.
-> - **No toys above the fold.** No floating widget, no cinematic stage in the hero.
-> - **No drift.** Home and Résumé carry the same positioning line.
-> - **Visual system** = darkvectorcognition.ai default theme: Space Grotesk / IBM Plex Sans /
->   JetBrains Mono (self-hosted in `public/fonts`), black ink on white, hairline rules, square
->   corners. Tokens in `src/design.js` (`C`, `F`, `L`, `T`, `pill`, `textLink`, `wordmark`).
-> The PageFrame contract and "essays keep their interior world" below still hold; the Apple
-> typography / colour / pill specifics and the old identity lines do not.
+> **HISTORICAL (2026-09-19, superseded 2026-11-22) - enterprise-advisory monochrome pass.**
+> Kept the executive-profile order and positioning while temporarily applying black-on-white square corners (`borderRadius: 0`). The square-corner visual pass is now replaced by the 2026-11-22 Apple 66% Concentric Shells direction above; the executive Home order, positioning, and demoted bottom strip remain in force.
 
 ---
 

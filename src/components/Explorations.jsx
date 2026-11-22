@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from "react";
+import { useCallback } from "react";
 import { C, F, L, T } from "../design.js";
 import imgTheTell from "../assets/explorations/the-tell.jpg";
 import imgGitHubConstellation from "../assets/explorations/github-constellation.jpg";
@@ -82,10 +82,10 @@ const EXPLORATIONS = [
   },
   {
     id: "als-limit",
-    title: "Al’s Limit.",
+    title: "Al\u2019s Limit.",
     eyebrow: "Complexity",
     description:
-      "A Kardashev scale for software complexity. Software grows through discrete cognitive regimes. AI doesn’t eliminate the transitions - it enables them.",
+      "A Kardashev scale for software complexity. Software grows through discrete cognitive regimes. AI doesn\u2019t eliminate the transitions - it enables them.",
     color: "#9b8fff",
     visual:
       "radial-gradient(circle at 50% 50%, rgba(155,143,255,0.42), transparent 55%), linear-gradient(135deg, #14122a, #1a1736)",
@@ -96,7 +96,7 @@ const EXPLORATIONS = [
     title: "The Entropy Filter.",
     eyebrow: "Fermi",
     description:
-      "A thermodynamic answer to Fermi. The corridor between ‘smart enough to try’ and ‘coordinated enough to succeed’ narrows as complexity increases.",
+      "A thermodynamic answer to Fermi. The corridor between \u2018smart enough to try\u2019 and \u2018coordinated enough to succeed\u2019 narrows as complexity increases.",
     color: "#ff4d2e",
     visual:
       "radial-gradient(circle at 45% 55%, rgba(255,77,46,0.4), transparent 55%), linear-gradient(135deg, #2a1414, #1a0e0e)",
@@ -107,7 +107,7 @@ const EXPLORATIONS = [
     title: "Emergent Life Lab.",
     eyebrow: "Cellular",
     description:
-      "Conway’s Game of Life on acid. Eight cellular automata rulesets, six visual modes, real-time sonification, and a mutation engine.",
+      "Conway\u2019s Game of Life on acid. Eight cellular automata rulesets, six visual modes, real-time sonification, and a mutation engine.",
     color: "#00ffd5",
     visual:
       "radial-gradient(circle at 35% 45%, rgba(0,255,213,0.35), transparent 55%), linear-gradient(135deg, #0a2424, #112e2e)",
@@ -140,7 +140,7 @@ const EXPLORATIONS = [
     title: "The software theory of civilization.",
     eyebrow: "Civilization",
     description:
-      "Civilization doesn’t just use software - civilization IS software. From oral tradition to probabilistic intelligence.",
+      "Civilization doesn\u2019t just use software - civilization IS software. From oral tradition to probabilistic intelligence.",
     color: "#9b8fff",
     visual:
       "radial-gradient(circle at 60% 40%, rgba(155,143,255,0.4), transparent 55%), linear-gradient(135deg, #14122a, #1a1736)",
@@ -173,7 +173,7 @@ const EXPLORATIONS = [
     title: "Path dependency of innovation.",
     eyebrow: "Strategy",
     description:
-      "Why Tesla and Waymo built completely different self-driving architectures - and why both were ‘correct.’ Your ecosystem chooses your solution.",
+      "Why Tesla and Waymo built completely different self-driving architectures - and why both were \u2018correct.\u2019 Your ecosystem chooses your solution.",
     color: "#fbbf24",
     visual:
       "radial-gradient(circle at 55% 45%, rgba(251,191,36,0.36), transparent 55%), linear-gradient(135deg, #2b2a14, #1a1810)",
@@ -195,7 +195,7 @@ const EXPLORATIONS = [
     title: "The cosmic domino collapse.",
     eyebrow: "Cosmology",
     description:
-      "JWST discovered galaxies that shouldn’t exist. If these findings hold, 20 flagship results of modern cosmology are thrown into question.",
+      "JWST discovered galaxies that shouldn\u2019t exist. If these findings hold, 20 flagship results of modern cosmology are thrown into question.",
     color: "#6ee7f0",
     visual:
       "radial-gradient(circle at 50% 40%, rgba(110,231,240,0.38), transparent 55%), linear-gradient(135deg, #102428, #1a2a30)",
@@ -225,7 +225,7 @@ const EXPLORATIONS = [
   },
   {
     id: "final-five-years",
-    title: "Humanity’s final five years.",
+    title: "Humanity\u2019s final five years.",
     eyebrow: "Meaning",
     description:
       "The difference between preserved information and lived meaning. A brilliant librarian in an empty library.",
@@ -239,7 +239,7 @@ const EXPLORATIONS = [
     title: "Cognitive symbiosis.",
     eyebrow: "Collaboration",
     description:
-      "The spark plug and the V8 engine. From guerilla cognition to jeweller’s precision. Two alien forms of intelligence that learned to tango.",
+      "The spark plug and the V8 engine. From guerilla cognition to jeweller\u2019s precision. Two alien forms of intelligence that learned to tango.",
     color: "#fbbf24",
     visual:
       "radial-gradient(circle at 45% 45%, rgba(251,191,36,0.4), transparent 55%), linear-gradient(135deg, #2b2a14, #1a1810)",
@@ -250,7 +250,7 @@ const EXPLORATIONS = [
     title: "Declarative agents.",
     eyebrow: "Direction",
     description:
-      "You’re not a developer anymore - you’re a director casting AI actors. The imperative-to-declarative shift that turned coding into configuration.",
+      "You\u2019re not a developer anymore - you\u2019re a director casting AI actors. The imperative-to-declarative shift that turned coding into configuration.",
     color: "#6ee7f0",
     visual:
       "radial-gradient(circle at 55% 50%, rgba(110,231,240,0.4), transparent 55%), linear-gradient(135deg, #102428, #1a2a30)",
@@ -270,71 +270,83 @@ const EXPLORATIONS = [
 ];
 
 function Card({ exp, onClick }) {
-  const [hovered, setHovered] = useState(false);
   const image = IMAGES[exp.id];
   return (
     <button
+      type="button"
       onClick={onClick}
-      onMouseEnter={() => setHovered(true)}
-      onMouseLeave={() => setHovered(false)}
-      style={{
-        background: C.bg,
-        border: `1px solid ${hovered ? C.ink : C.ruleStrong}`,
-        borderRadius: 0,
-        overflow: "hidden",
-        padding: 0,
-        cursor: "pointer",
-        display: "flex",
-        flexDirection: "column",
-        minHeight: 360,
-        textAlign: "left",
-        fontFamily: F.text,
-        transition: "border-color .2s ease",
-      }}
+      className="apple-card apple-exp-card"
     >
-      <div style={{ aspectRatio: "16 / 9", width: "100%", overflow: "hidden", position: "relative", background: exp.visual }}>
+      <div
+        className="apple-control"
+        style={{
+          aspectRatio: "16 / 9",
+          width: "100%",
+          overflow: "hidden",
+          position: "relative",
+          background: exp.visual,
+          border: `1px solid ${C.rule}`,
+        }}
+      >
         {image ? (
           <img
             src={image}
             alt=""
             loading="lazy"
-            style={{
-              width: "100%",
-              height: "100%",
-              objectFit: "cover",
-              display: "block",
-              transform: hovered ? "scale(1.04)" : "scale(1)",
-              transition: "transform .6s cubic-bezier(0.16,1,0.3,1)",
-            }}
+            className="apple-exp-img"
           />
         ) : (
           <div style={{ width: "100%", height: "100%", background: exp.visual }} />
         )}
       </div>
-      <div style={{ padding: "26px 26px 28px", display: "flex", flexDirection: "column", flex: 1 }}>
-        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", marginBottom: 10 }}>
-          <p style={{ ...T.eyebrow, margin: 0 }}>{exp.eyebrow}</p>
+      <div
+        style={{
+          padding: "18px 14px 14px",
+          display: "flex",
+          flexDirection: "column",
+          flex: 1,
+        }}
+      >
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+            gap: 10,
+            marginBottom: 12,
+          }}
+        >
           <span
+            className="apple-chip"
             style={{
-              ...T.meta,
+              padding: "4px 10px",
+              background: C.tray,
+              border: `1px solid ${C.rule}`,
+              fontFamily: F.text,
+              fontSize: 11,
+              fontWeight: 600,
+              letterSpacing: "0.04em",
+              textTransform: "uppercase",
+              color: C.inkMute,
             }}
           >
-            {exp.date}
+            {exp.eyebrow}
           </span>
+          <span style={{ ...T.meta, fontSize: 12 }}>{exp.date}</span>
         </div>
-        <h3
+        <h2
           style={{
             fontFamily: F.display,
             fontWeight: 600,
-            fontSize: 24,
-            lineHeight: 1.15,
-            letterSpacing: "-0.025em",
+            fontSize: 22,
+            lineHeight: 1.16,
+            letterSpacing: "-0.024em",
             color: C.ink,
             margin: "0 0 10px",
           }}
         >
           {exp.title}
-        </h3>
+        </h2>
         <p
           style={{
             margin: 0,
@@ -350,14 +362,17 @@ function Card({ exp, onClick }) {
         </p>
         <span
           style={{
-            marginTop: 18,
-            ...T.meta,
-            color: C.ink,
-            transform: hovered ? "translateX(3px)" : "translateX(0)",
-            transition: "transform .3s ease",
+            marginTop: 16,
+            fontFamily: F.text,
+            fontSize: 14,
+            fontWeight: 500,
+            color: C.link,
+            display: "inline-flex",
+            alignItems: "center",
+            gap: 4,
           }}
         >
-          Explore →
+          Explore <span className="apple-exp-arrow" aria-hidden="true">{"\u2192"}</span>
         </span>
       </div>
     </button>
@@ -365,13 +380,6 @@ function Card({ exp, onClick }) {
 }
 
 export default function Explorations({ onNavigate }) {
-  const [entered, setEntered] = useState(false);
-
-  useEffect(() => {
-    const t = setTimeout(() => setEntered(true), 80);
-    return () => clearTimeout(t);
-  }, []);
-
   const go = useCallback(
     (id) => {
       window.location.hash = id;
@@ -387,73 +395,72 @@ export default function Explorations({ onNavigate }) {
         background: C.bg,
         color: C.ink,
         fontFamily: F.text,
-        WebkitFontSmoothing: "antialiased",
-        MozOsxFontSmoothing: "grayscale",
+        minHeight: "100vh",
       }}
     >
-      {/* Hero */}
-      <section
+      <div
         style={{
-          padding: `clamp(56px, 8vw, 112px) ${L.gutter} clamp(40px, 5vw, 64px)`,
-          maxWidth: `calc(${L.max}px + 2 * ${L.gutter})`,
+          maxWidth: L.max,
           margin: "0 auto",
-          textAlign: "left",
-          opacity: entered ? 1 : 0,
-          transform: entered ? "translateY(0)" : "translateY(16px)",
-          transition: "all 0.9s cubic-bezier(0.16,1,0.3,1)",
+          padding: `clamp(18px, 2.6vw, 30px) ${L.gutter} clamp(36px, 5vw, 56px)`,
+          display: "flex",
+          flexDirection: "column",
+          gap: L.shellGap,
         }}
       >
-        <p style={{ ...T.eyebrow, marginBottom: 20 }}>
-          {EXPLORATIONS.length} visual essays
-        </p>
-        <h1
-          style={{
-            ...T.h1,
-            margin: "0 0 24px",
-          }}
-        >
-          Explorations.
-        </h1>
-        <p
-          style={{
-            ...T.lede,
-            maxWidth: 680,
-          }}
-        >
-          Interactive essays on agents, platform engineering, cosmology, and
-          the operator&apos;s craft.
-        </p>
-      </section>
+        <main style={{ display: "flex", flexDirection: "column", gap: L.shellGap }}>
+          {/* Hero Shell */}
+          <section
+            className="apple-shell apple-shell-surface"
+            style={{ padding: `clamp(30px, 5vw, 60px) clamp(24px, 4.5vw, 52px)` }}
+          >
+            <span
+              className="apple-chip"
+              style={{
+                display: "inline-flex",
+                padding: "6px 12px",
+                background: C.tray,
+                border: `1px solid ${C.rule}`,
+                ...T.eyebrow,
+                marginBottom: 20,
+              }}
+            >
+              {EXPLORATIONS.length} visual essays
+            </span>
+            <h1 style={{ ...T.h1, margin: "0 0 18px" }}>Explorations.</h1>
+            <p style={{ ...T.lede, maxWidth: 660 }}>
+              Interactive essays on agents, platform engineering, cosmology, and
+              the operator&apos;s craft.
+            </p>
+          </section>
 
-      {/* Grid */}
-      <section style={{ background: C.bgSoft, borderTop: `1px solid ${C.rule}`, padding: `clamp(40px, 5vw, 64px) ${L.gutter} ${L.section}` }}>
-        <div
+          {/* Cards Grid */}
+          <section
+            aria-label="Visual essays"
+            style={{
+              display: "grid",
+              gridTemplateColumns: "repeat(auto-fill, minmax(min(100%, 320px), 1fr))",
+              gap: 16,
+            }}
+          >
+            {EXPLORATIONS.map((exp) => (
+              <Card key={exp.id} exp={exp} onClick={() => go(exp.id)} />
+            ))}
+          </section>
+        </main>
+
+        {/* Footer Shell */}
+        <footer
+          className="apple-shell apple-shell-surface"
           style={{
-            maxWidth: L.max,
-            margin: "0 auto",
-            display: "grid",
-            gridTemplateColumns: "repeat(auto-fill, minmax(min(100%, 320px), 1fr))",
-            gap: 16,
+            ...T.meta,
+            padding: "20px 24px",
+            textAlign: "center",
           }}
         >
-          {EXPLORATIONS.map((exp) => (
-            <Card key={exp.id} exp={exp} onClick={() => go(exp.id)} />
-          ))}
-        </div>
-      </section>
-
-      {/* Footer */}
-      <footer
-        style={{
-          ...T.meta,
-          background: C.bg,
-          borderTop: `1px solid ${C.rule}`,
-          padding: `26px ${L.gutter}`,
-          textAlign: "center",
-        }}
-      >
-        2025 - 2026 · alsharma.com
-      </footer>
+          {"2025 - 2026 \u00B7 alsharma.com"}
+        </footer>
+      </div>
     </div>
   );
 }
