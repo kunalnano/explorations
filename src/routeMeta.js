@@ -24,5 +24,5 @@ export const ROUTE_META = {
   "emergent-life-lab":     { surface: "dark",  backLabel: "Explorations" },
   "entropy-filter":        { surface: "dark",  backLabel: "Explorations" },
   "github-constellation":  { surface: "dark",  backLabel: "Explorations" },
-  "travel":                { surface: "light", backLabel: "Home" },
+  "travel":                { surface: "dark",  backLabel: "Home" },
 };

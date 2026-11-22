@@ -294,6 +294,7 @@ export default function Travel() {
                 key={f.id}
                 type="button"
                 onClick={() => setFilter(f.id)}
+                className="apple-pill"
                 style={{
                   ...S.filterBtn,
                   ...(active ? S.filterBtnActive : null),
@@ -350,6 +351,7 @@ function DestinationCard({ dest, expanded, onToggle }) {
 
   return (
     <article
+      className="apple-card"
       style={cardStyle}
       onClick={handleToggle}
       role="button"
@@ -362,10 +364,11 @@ function DestinationCard({ dest, expanded, onToggle }) {
       }}
       aria-expanded={expanded}
     >
-      <div style={imgStyle} role="img" aria-label={dest.name}>
+      <div className="apple-control" style={imgStyle} role="img" aria-label={dest.name}>
         <div style={S.imageOverlay} />
-        {dest.tag && <div style={S.tagTopLeft}>★ {dest.tag}</div>}
+        {dest.tag && <div className="apple-chip" style={S.tagTopLeft}>★ {dest.tag}</div>}
         <div
+          className="apple-chip"
           style={{
             ...S.statusBadge,
             background: badge.bg,
@@ -404,6 +407,7 @@ function DestinationCard({ dest, expanded, onToggle }) {
                         e.stopPropagation();
                         setSlideIdx(i);
                       }}
+                      className="apple-control"
                       style={{
                         ...S.thumb,
                         ...(isActive ? S.thumbActive : null),
@@ -443,6 +447,7 @@ function DestinationCard({ dest, expanded, onToggle }) {
                 href={mapsUrl(dest.coords.lat, dest.coords.lng)}
                 target="_blank"
                 rel="noopener noreferrer"
+                className="apple-pill"
                 style={S.mapsLink}
                 onClick={(e) => e.stopPropagation()}
               >
@@ -519,43 +524,43 @@ const S = {
     marginBottom: 36,
   },
   filterBtn: {
-    background: "rgba(255, 255, 255, 0.04)",
-    border: "1px solid rgba(255, 255, 255, 0.14)",
-    color: "rgba(232, 230, 223, 0.78)",
-    padding: "9px 16px",
+    background: "rgba(255, 255, 255, 0.06)",
+    border: "1px solid rgba(255, 255, 255, 0.16)",
+    color: "rgba(232, 230, 223, 0.82)",
+    minHeight: 44,
+    padding: "0 18px",
     fontFamily: MONO,
     fontSize: 11,
     letterSpacing: "0.14em",
     textTransform: "uppercase",
     cursor: "pointer",
-    borderRadius: 2,
-    transition: "all 160ms ease",
+    transition: "all 180ms cubic-bezier(0.25, 0.1, 0.25, 1)",
   },
   filterBtnActive: {
-    background: "rgba(245, 243, 236, 0.92)",
-    color: "#0a0a0a",
-    borderColor: "rgba(245, 243, 236, 0.92)",
+    background: "#0071e3",
+    color: "#ffffff",
+    borderColor: "#0071e3",
   },
   grid: {
     display: "grid",
     gridTemplateColumns: "repeat(auto-fill, minmax(320px, 1fr))",
-    gap: 24,
+    gap: 20,
     alignItems: "start",
   },
   card: {
-    background: "rgba(255, 255, 255, 0.03)",
-    border: "1px solid rgba(255, 255, 255, 0.08)",
-    borderRadius: 4,
+    background: "rgba(255, 255, 255, 0.04)",
+    border: "1px solid rgba(255, 255, 255, 0.10)",
+    padding: 10,
     overflow: "hidden",
     cursor: "pointer",
     transition:
-      "transform 240ms ease, border-color 240ms ease, background 240ms ease",
+      "transform 240ms cubic-bezier(0.25, 0.1, 0.25, 1), border-color 240ms ease, background 240ms ease",
     gridColumn: "span 1",
   },
   cardExpanded: {
     gridColumn: "1 / -1",
-    background: "rgba(255, 255, 255, 0.05)",
-    borderColor: "rgba(255, 255, 255, 0.18)",
+    background: "rgba(255, 255, 255, 0.06)",
+    borderColor: "rgba(255, 255, 255, 0.20)",
   },
   cardImage: {
     width: "100%",
@@ -563,7 +568,8 @@ const S = {
     backgroundSize: "cover",
     backgroundPosition: "center",
     position: "relative",
-    transition: "height 280ms ease",
+    overflow: "hidden",
+    transition: "height 280ms cubic-bezier(0.25, 0.1, 0.25, 1)",
   },
   imageOverlay: {
     position: "absolute",
@@ -577,14 +583,13 @@ const S = {
     left: 12,
     fontFamily: MONO,
     fontSize: 10,
-    letterSpacing: "0.18em",
+    letterSpacing: "0.14em",
     textTransform: "uppercase",
     color: "#f5f3ec",
-    background: "rgba(10, 10, 10, 0.55)",
+    background: "rgba(10, 10, 10, 0.60)",
     border: "1px solid rgba(245, 243, 236, 0.35)",
-    padding: "4px 9px",
-    borderRadius: 2,
-    backdropFilter: "blur(4px)",
+    padding: "5px 10px",
+    backdropFilter: "blur(8px)",
   },
   statusBadge: {
     position: "absolute",
@@ -592,12 +597,11 @@ const S = {
     right: 12,
     fontFamily: MONO,
     fontSize: 10,
-    letterSpacing: "0.18em",
+    letterSpacing: "0.14em",
     textTransform: "uppercase",
-    padding: "4px 9px",
+    padding: "5px 10px",
     border: "1px solid",
-    borderRadius: 2,
-    backdropFilter: "blur(4px)",
+    backdropFilter: "blur(8px)",
   },
   nameOverlay: {
     position: "absolute",
@@ -656,13 +660,12 @@ const S = {
     width: 88,
     height: 60,
     padding: 0,
-    border: "1px solid rgba(255, 255, 255, 0.14)",
-    borderRadius: 3,
+    border: "1px solid rgba(255, 255, 255, 0.16)",
     backgroundColor: "rgba(255, 255, 255, 0.04)",
     backgroundSize: "cover",
     backgroundPosition: "center",
     cursor: "pointer",
-    opacity: 0.6,
+    opacity: 0.65,
     transition: "opacity 160ms ease, border-color 160ms ease, transform 160ms ease",
     overflow: "hidden",
   },
@@ -739,15 +742,17 @@ const S = {
     color: "rgba(232, 230, 223, 0.6)",
   },
   mapsLink: {
+    display: "inline-flex",
+    alignItems: "center",
+    minHeight: 44,
     fontFamily: MONO,
     fontSize: 11,
-    letterSpacing: "0.14em",
+    letterSpacing: "0.12em",
     textTransform: "uppercase",
-    color: "#93c5fd",
+    color: "#2997ff",
     textDecoration: "none",
-    border: "1px solid rgba(147, 197, 253, 0.4)",
-    padding: "7px 12px",
-    borderRadius: 2,
+    border: "1px solid rgba(41, 151, 255, 0.42)",
+    padding: "0 16px",
   },
   empty: {
     fontFamily: MONO,

@@ -1,13 +1,20 @@
 import { useState, useEffect, useRef } from "react";
 import { C, F, L, T } from "../design.js";
 
-// ── Scroll reveal ──
-function useReveal(threshold = 0.12) {
+function prefersReducedMotion() {
+  return (
+    typeof window !== "undefined" &&
+    window.matchMedia("(prefers-reduced-motion: reduce)").matches
+  );
+}
+
+function useReveal(threshold = 0.01) {
   const ref = useRef(null);
-  const [visible, setVisible] = useState(false);
+  const [visible, setVisible] = useState(prefersReducedMotion);
   useEffect(() => {
+    if (visible) return undefined;
     const el = ref.current;
-    if (!el) return;
+    if (!el) return undefined;
     const obs = new IntersectionObserver(
       ([e]) => {
         if (e.isIntersecting) {
@@ -15,11 +22,11 @@ function useReveal(threshold = 0.12) {
           obs.unobserve(el);
         }
       },
-      { threshold }
+      { threshold, rootMargin: "0px 0px 140px 0px" }
     );
     obs.observe(el);
     return () => obs.disconnect();
-  }, [threshold]);
+  }, [threshold, visible]);
   return [ref, visible];
 }
 
@@ -30,8 +37,8 @@ function Reveal({ children, delay = 0, style }) {
       ref={ref}
       style={{
         opacity: visible ? 1 : 0,
-        transform: visible ? "translateY(0)" : "translateY(20px)",
-        transition: `all 0.8s cubic-bezier(0.16,1,0.3,1) ${delay}s`,
+        transform: visible ? "translateY(0)" : "translateY(16px)",
+        transition: `opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1) ${delay}s, transform 0.6s cubic-bezier(0.16, 1, 0.3, 1) ${delay}s`,
         ...style,
       }}
     >
@@ -59,7 +66,6 @@ const EXPERIENCE = [
     company: "Port.io",
     period: "Aug 2025 - Present",
     context: "Series C Internal Developer Platform",
-    accent: C.accent,
     live: true,
     bullets: [
       "Designed and stood up the Americas Technical Success Management practice from scratch: defined roles, hiring profiles, operating cadence, and the enterprise engagement model across a Fortune 500 portfolio spanning financial services, telecom, and professional services.",
@@ -74,9 +80,8 @@ const EXPERIENCE = [
     company: "Harness",
     period: "Jun 2024 - Sep 2025",
     context: "CI/CD and Software Delivery Platform (Series D)",
-    accent: C.accent,
     bullets: [
-      "Individually managed 7 of Harness’s largest enterprise relationships totaling $45M+ ARR, driving adoption of Kubernetes-based delivery pipelines and advanced deployment strategies.",
+      "Individually managed 7 of Harness\u2019s largest enterprise relationships totaling $45M+ ARR, driving adoption of Kubernetes-based delivery pipelines and advanced deployment strategies.",
       "Oversaw post-sales delivery standards across Professional Services, Solutions Architects, Product, Support, and Partner channels.",
       "Partnered directly with product and engineering to align platform capabilities with enterprise requirements.",
     ],
@@ -86,7 +91,6 @@ const EXPERIENCE = [
     company: "Harness",
     period: "Oct 2023 - Jul 2024",
     context: "CI/CD and Software Delivery Platform (Series D)",
-    accent: C.accent,
     bullets: [
       "Led growth and adoption initiatives for strategic accounts through cross-functional customer engagement.",
       "Guided enterprise teams through secure CI/CD adoption, application security programs, and risk management.",
@@ -97,7 +101,6 @@ const EXPERIENCE = [
     company: "Snyk",
     period: "Sep 2021 - Nov 2023",
     context: "Application Security Leader (Series F)",
-    accent: C.accent,
     bullets: [
       "Led implementation and adoption of cloud-native application security for strategic accounts.",
       "Advised enterprise teams on secure software development and vulnerability management, and brought adoption feedback to product teams.",
@@ -108,7 +111,6 @@ const EXPERIENCE = [
     company: "Snyk",
     period: "Feb 2023 - Sep 2023",
     context: "Application Security Leader (Series F)",
-    accent: C.accent,
     bullets: [
       "Hired and developed a team of 12+ Technical CSMs managing a $100M+ ARR enterprise portfolio. Designed career frameworks and enablement programs.",
       "Repositioned CS as a revenue contributor through cross-functional collaboration. Maintained 135%+ net revenue retention across the enterprise portfolio.",
@@ -120,7 +122,6 @@ const EXPERIENCE = [
     company: "HashiCorp",
     period: "Jan 2021 - Sep 2021",
     context: "Cloud Infrastructure Automation (Pre-IPO)",
-    accent: C.accent,
     bullets: [
       "Guided enterprise teams through cloud operating model adoption: infrastructure-as-code, secrets management, and service mesh.",
       "Served as technical bridge between customer platform teams and HashiCorp product engineering.",
@@ -131,7 +132,6 @@ const EXPERIENCE = [
     company: "Western Digital",
     period: "Apr 2013 - Jan 2021",
     context: "Fortune 200 Data Infrastructure ($16B Revenue)",
-    accent: C.accent,
     bullets: [
       "Led cross-functional teams of engineers, researchers, and technicians. Built performance frameworks driving sustained productivity and high talent retention.",
       "Led global quality audits achieving full compliance across departments and geographies.",
@@ -142,7 +142,6 @@ const EXPERIENCE = [
     company: "Element Energy",
     period: "Jan 2010 - Jul 2012",
     context: "Renewable Energy",
-    accent: C.accent,
     bullets: [
       "Led business development and market entry for solar and other renewable energy projects in India and Southeast Asia.",
       "Supported solar product registration, testing and compliance, and helped develop a 5 kW hybrid wind-solar system.",
@@ -165,44 +164,45 @@ const CERTS = [
 ];
 
 function TimelineRole({ role, index, last }) {
-  const [ref, visible] = useReveal(0.1);
+  const [ref, visible] = useReveal(0.05);
   return (
     <div
       ref={ref}
       style={{
         opacity: visible ? 1 : 0,
-        transform: visible ? "translateY(0)" : "translateY(32px)",
-        transition: `all 0.8s cubic-bezier(0.16,1,0.3,1) ${index * 0.08}s`,
+        transform: visible ? "translateY(0)" : "translateY(20px)",
+        transition: `opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1) ${Math.min(index * 0.05, 0.25)}s, transform 0.6s cubic-bezier(0.16, 1, 0.3, 1) ${Math.min(index * 0.05, 0.25)}s`,
         position: "relative",
-        paddingLeft: 40,
-        paddingBottom: last ? 0 : 48,
+        paddingLeft: 32,
+        paddingBottom: last ? 0 : 18,
       }}
     >
-      {/* Timeline line */}
       {!last && (
         <div
+          aria-hidden="true"
           style={{
             position: "absolute",
             left: 6,
-            top: 18,
-            bottom: 16,
-            width: 1,
-            background: C.rule,
+            top: 24,
+            bottom: 0,
+            width: 2,
+            background: C.ruleStrong,
+            borderRadius: 999,
           }}
         />
       )}
 
-      {/* Timeline dot */}
       <div
+        aria-hidden="true"
         style={{
           position: "absolute",
           left: 0,
-          top: 10,
-          width: 13,
-          height: 13,
-          borderRadius: 0,
-          border: `2px solid ${role.accent}`,
-          background: C.bg,
+          top: 18,
+          width: 14,
+          height: 14,
+          borderRadius: "50%",
+          border: `2px solid ${role.live ? C.blue : C.controlBorder}`,
+          background: C.surface,
         }}
       >
         {role.live && (
@@ -211,87 +211,106 @@ function TimelineRole({ role, index, last }) {
               position: "absolute",
               top: 2,
               left: 2,
-              width: 5,
-              height: 5,
-              borderRadius: 0,
+              width: 6,
+              height: 6,
+              borderRadius: "50%",
               background: C.live,
             }}
           />
         )}
       </div>
 
-      {/* Period */}
-      <div style={{ ...T.eyebrow, marginBottom: 8 }}>{role.period}</div>
-
-      {/* Title */}
-      <div
+      <article
+        className="apple-card"
         style={{
-          fontFamily: F.display,
-          fontSize: 22,
-          fontWeight: 600,
-          letterSpacing: "-0.022em",
-          color: C.ink,
-          marginBottom: 4,
-          lineHeight: 1.2,
+          background: C.tray,
+          border: `1px solid ${C.rule}`,
+          padding: "clamp(20px, 2.5vw, 28px)",
         }}
       >
-        {role.title}
-      </div>
-
-      {/* Company */}
-      <div
-        style={{
-          fontFamily: F.text,
-          fontSize: 16,
-          color: C.ink,
-          marginBottom: 2,
-          fontWeight: 500,
-        }}
-      >
-        {role.company}
-      </div>
-
-      {/* Context */}
-      <div
-        style={{
-          fontFamily: F.text,
-          fontSize: 14,
-          color: C.inkMute,
-          marginBottom: 18,
-        }}
-      >
-        {role.context}
-      </div>
-
-      {/* Bullets */}
-      <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
-        {role.bullets.map((bullet, j) => (
-          <div
-            key={j}
+        <div
+          style={{
+            display: "flex",
+            flexWrap: "wrap",
+            alignItems: "center",
+            justifyContent: "space-between",
+            gap: 10,
+            marginBottom: 10,
+          }}
+        >
+          <span
+            className="apple-chip"
             style={{
-              fontFamily: F.text,
-              fontSize: 15,
-              lineHeight: 1.55,
-              color: C.inkSoft,
-              paddingLeft: 14,
-              position: "relative",
+              padding: "4px 10px",
+              background: C.surface,
+              border: `1px solid ${C.rule}`,
+              fontFamily: F.mono,
+              fontSize: 11,
+              fontWeight: 500,
+              color: role.live ? C.link : C.inkMute,
             }}
           >
-            <span
+            {role.period}
+          </span>
+          <span style={{ ...T.meta, fontSize: 13 }}>{role.context}</span>
+        </div>
+
+        <h3
+          style={{
+            fontFamily: F.display,
+            fontSize: "clamp(20px, 2.2vw, 23px)",
+            fontWeight: 600,
+            letterSpacing: "-0.022em",
+            color: C.ink,
+            margin: "0 0 4px",
+            lineHeight: 1.2,
+          }}
+        >
+          {role.title}
+        </h3>
+
+        <div
+          style={{
+            fontFamily: F.text,
+            fontSize: 16,
+            color: C.inkSoft,
+            marginBottom: 16,
+            fontWeight: 500,
+          }}
+        >
+          {role.company}
+        </div>
+
+        <ul style={{ listStyle: "none", display: "flex", flexDirection: "column", gap: 10, margin: 0, padding: 0 }}>
+          {role.bullets.map((bullet, j) => (
+            <li
+              key={j}
               style={{
-                position: "absolute",
-                left: 0,
-                top: "0.55em",
-                width: 4,
-                height: 4,
-                borderRadius: 0,
-                background: role.accent,
+                fontFamily: F.text,
+                fontSize: 15,
+                lineHeight: 1.56,
+                color: C.inkSoft,
+                paddingLeft: 16,
+                position: "relative",
               }}
-            />
-            {bullet}
-          </div>
-        ))}
-      </div>
+            >
+              <span
+                aria-hidden="true"
+                style={{
+                  position: "absolute",
+                  left: 0,
+                  top: "0.58em",
+                  width: 5,
+                  height: 5,
+                  borderRadius: "50%",
+                  background: role.live ? C.blue : C.inkMute,
+                }}
+              />
+              {bullet}
+            </li>
+          ))}
+        </ul>
+      </article>
     </div>
   );
 }
@@ -303,298 +322,324 @@ export default function Resume() {
         background: C.bg,
         color: C.ink,
         fontFamily: F.text,
-        WebkitFontSmoothing: "antialiased",
-        MozOsxFontSmoothing: "grayscale",
+        minHeight: "100vh",
       }}
     >
-      {/* ── Hero ── */}
-      <section
+      <div
         style={{
-          padding: `clamp(56px, 8vw, 112px) ${L.gutter} clamp(40px, 5vw, 64px)`,
-          maxWidth: `calc(${L.max}px + 2 * ${L.gutter})`,
+          maxWidth: L.max,
           margin: "0 auto",
-          textAlign: "left",
+          padding: `clamp(18px, 2.6vw, 30px) ${L.gutter} clamp(36px, 5vw, 56px)`,
+          display: "flex",
+          flexDirection: "column",
+          gap: L.shellGap,
         }}
       >
-        <p style={{ ...T.eyebrow, marginBottom: 20 }}>Curriculum vitæ</p>
-        <h1
-          style={{
-            ...T.h1,
-            margin: "0 0 24px",
-          }}
-        >
-          Al Sharma.
-        </h1>
-        <p
-          style={{
-            fontFamily: F.display,
-            fontWeight: 500,
-            fontSize: "clamp(22px, 2.6vw, 32px)",
-            lineHeight: 1.1,
-            letterSpacing: "-0.03em",
-            color: C.ink,
-            maxWidth: 720,
-            margin: "0 0 16px",
-          }}
-        >
-          Post-sales executive for developer platforms.
-        </p>
-        <p
-          style={{
-            fontFamily: F.text,
-            fontSize: 18,
-            color: C.inkSoft,
-            maxWidth: 640,
-            margin: "0 0 28px",
-            lineHeight: 1.5,
-          }}
-        >
-          15+ years building post-sales organizations that protect and grow
-          revenue. Cumulative book exceeding $125M ARR across developer
-          platforms, application security, and cloud infrastructure.
-        </p>
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "flex-start",
-            gap: 24,
-            flexWrap: "wrap",
-            fontFamily: F.text,
-            fontSize: 14,
-            color: C.inkMute,
-          }}
-        >
-          <span>Austin, TX</span>
-          <span aria-hidden="true">·</span>
-          <a
-            href="https://www.linkedin.com/in/alsharma"
-            target="_blank"
-            rel="noopener noreferrer"
-            style={{ color: C.ink, textDecoration: "underline", textUnderlineOffset: 3 }}
+        <main style={{ display: "flex", flexDirection: "column", gap: L.shellGap }}>
+          {/* Hero Shell */}
+          <section
+            className="apple-shell apple-shell-surface"
+            style={{ padding: `clamp(30px, 5vw, 60px) clamp(24px, 4.5vw, 52px)` }}
           >
-            linkedin.com/in/alsharma
-          </a>
-          <span aria-hidden="true">·</span>
-          <a
-            href="mailto:hello@darkvectorcognition.ai"
-            style={{ color: C.ink, textDecoration: "underline", textUnderlineOffset: 3 }}
-          >
-            hello@darkvectorcognition.ai
-          </a>
-        </div>
-      </section>
-
-      {/* ── Capabilities ── */}
-      <section style={{ background: C.bgSoft, padding: `${L.section} ${L.gutter}` }}>
-        <div style={{ maxWidth: L.max, margin: "0 auto" }}>
-          <Reveal>
-            <p style={{ ...T.eyebrow, marginBottom: 16 }}>
-              Signature capabilities
-            </p>
-            <h2
+            <span
+              className="apple-chip"
               style={{
-                ...T.h2,
-                marginBottom: "clamp(36px, 4.5vw, 60px)",
+                display: "inline-flex",
+                padding: "6px 12px",
+                background: C.tray,
+                border: `1px solid ${C.rule}`,
+                ...T.eyebrow,
+                marginBottom: 20,
               }}
             >
-              What I bring to the room.
-            </h2>
-          </Reveal>
-          <div
-            style={{
-              display: "grid",
-              gridTemplateColumns: "repeat(auto-fit, minmax(min(100%, 260px), 1fr))",
-              gap: 12,
-            }}
+              Curriculum vit&aelig;
+            </span>
+            <h1 style={{ ...T.h1, margin: "0 0 18px" }}>Al Sharma.</h1>
+            <p
+              style={{
+                fontFamily: F.display,
+                fontWeight: 600,
+                fontSize: "clamp(22px, 2.6vw, 32px)",
+                lineHeight: 1.12,
+                letterSpacing: "-0.028em",
+                color: C.ink,
+                maxWidth: 720,
+                margin: "0 0 14px",
+              }}
+            >
+              Post-sales executive for developer platforms.
+            </p>
+            <p
+              style={{
+                ...T.lede,
+                maxWidth: 660,
+                margin: "0 0 26px",
+              }}
+            >
+              15+ years building post-sales organizations that protect and grow
+              revenue. Cumulative book exceeding $125M ARR across developer
+              platforms, application security, and cloud infrastructure.
+            </p>
+            <div style={{ display: "flex", alignItems: "center", gap: 10, flexWrap: "wrap" }}>
+              <span
+                className="apple-chip"
+                style={{
+                  display: "inline-flex",
+                  alignItems: "center",
+                  minHeight: 44,
+                  padding: "0 14px",
+                  background: C.tray,
+                  border: `1px solid ${C.rule}`,
+                  fontSize: 14,
+                  fontWeight: 500,
+                  color: C.inkSoft,
+                }}
+              >
+                Austin, TX
+              </span>
+              <a
+                href="https://www.linkedin.com/in/alsharma"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="apple-also-chip apple-chip"
+                style={{ color: C.link, fontSize: 14 }}
+              >
+                linkedin.com/in/alsharma
+              </a>
+              <a
+                href="mailto:hello@darkvectorcognition.ai"
+                className="apple-also-chip apple-chip"
+                style={{ color: C.link, fontSize: 14 }}
+              >
+                hello@darkvectorcognition.ai
+              </a>
+            </div>
+          </section>
+
+          {/* Capabilities Shell */}
+          <section
+            className="apple-shell apple-shell-surface"
+            style={{ padding: `${L.shellPad}` }}
           >
-            {CAPABILITIES.map((cap, i) => (
-              <Reveal key={cap} delay={i * 0.03}>
-                <div
-                  style={{
-                    background: C.bg,
-                    border: `1px solid ${C.rule}`,
-                    borderRadius: 0,
-                    padding: "18px 22px",
-                    fontFamily: F.text,
-                    fontSize: 15,
-                    color: C.ink,
-                    lineHeight: 1.4,
-                  }}
-                >
-                  {cap}
-                </div>
-              </Reveal>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ── Experience ── */}
-      <section style={{ background: C.bg, padding: `${L.section} ${L.gutter}` }}>
-        <div style={{ maxWidth: 760, margin: "0 auto" }}>
-          <Reveal>
-            <p style={{ ...T.eyebrow, marginBottom: 14 }}>Experience</p>
-            <h2 style={{ ...T.h2, marginBottom: 56 }}>The arc.</h2>
-          </Reveal>
-          <div>
-            {EXPERIENCE.map((role, i) => (
-              <TimelineRole
-                key={`${role.company}-${role.title}`}
-                role={role}
-                index={i}
-                last={i === EXPERIENCE.length - 1}
-              />
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ── Education + Credentials ── */}
-      <section style={{ background: C.bgSoft, padding: `${L.section} ${L.gutter}` }}>
-        <div
-          style={{
-            maxWidth: L.max,
-            margin: "0 auto",
-            display: "grid",
-            gridTemplateColumns: "repeat(auto-fit, minmax(min(100%, 320px), 1fr))",
-            gap: 48,
-          }}
-        >
-          <Reveal>
-            <p style={{ ...T.eyebrow, marginBottom: 18 }}>Education</p>
-            <div style={{ display: "flex", flexDirection: "column", gap: 18 }}>
-              {EDUCATION.map((edu) => (
-                <div
-                  key={edu.degree}
-                  style={{
-                    paddingBottom: 18,
-                    borderBottom: `1px solid ${C.rule}`,
-                  }}
-                >
+            <Reveal>
+              <p style={{ ...T.eyebrow, marginBottom: 12 }}>Signature capabilities</p>
+              <h2 style={{ ...T.h2, marginBottom: "clamp(26px, 3.5vw, 42px)" }}>
+                What I bring to the room.
+              </h2>
+            </Reveal>
+            <div
+              style={{
+                display: "grid",
+                gridTemplateColumns: "repeat(auto-fit, minmax(min(100%, 240px), 1fr))",
+                gap: 12,
+              }}
+            >
+              {CAPABILITIES.map((cap, i) => (
+                <Reveal key={cap} delay={Math.min(i * 0.02, 0.16)}>
                   <div
+                    className="apple-control"
                     style={{
-                      fontFamily: F.display,
-                      fontSize: 18,
-                      fontWeight: 600,
-                      color: C.ink,
-                      letterSpacing: "-0.018em",
-                      marginBottom: 4,
-                    }}
-                  >
-                    {edu.degree}
-                  </div>
-                  <div
-                    style={{
+                      background: C.tray,
+                      border: `1px solid ${C.rule}`,
+                      padding: "16px 18px",
                       fontFamily: F.text,
                       fontSize: 15,
-                      color: C.inkSoft,
+                      fontWeight: 500,
+                      color: C.ink,
+                      lineHeight: 1.4,
+                      height: "100%",
                     }}
                   >
-                    {edu.school}
+                    {cap}
                   </div>
-                </div>
+                </Reveal>
               ))}
             </div>
-          </Reveal>
-          <Reveal delay={0.1}>
-            <p style={{ ...T.eyebrow, marginBottom: 18 }}>Credentials</p>
-            <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
-              {CERTS.map((cert) => (
+          </section>
+
+          {/* Experience Shell */}
+          <section
+            className="apple-shell apple-shell-surface"
+            style={{ padding: `${L.shellPad}` }}
+          >
+            <div style={{ maxWidth: 860, margin: "0 auto" }}>
+              <Reveal>
+                <p style={{ ...T.eyebrow, marginBottom: 12 }}>Experience</p>
+                <h2 style={{ ...T.h2, marginBottom: "clamp(28px, 3.8vw, 44px)" }}>The arc.</h2>
+              </Reveal>
+              <div>
+                {EXPERIENCE.map((role, i) => (
+                  <TimelineRole
+                    key={`${role.company}-${role.title}`}
+                    role={role}
+                    index={i}
+                    last={i === EXPERIENCE.length - 1}
+                  />
+                ))}
+              </div>
+            </div>
+          </section>
+
+          {/* Education + Credentials Shell */}
+          <section
+            className="apple-shell apple-shell-surface"
+            style={{ padding: 14 }}
+          >
+            <div
+              style={{
+                display: "grid",
+                gridTemplateColumns: "repeat(auto-fit, minmax(min(100%, 300px), 1fr))",
+                gap: 14,
+              }}
+            >
+              <Reveal>
                 <div
-                  key={cert}
+                  className="apple-media"
                   style={{
-                    background: C.bg,
+                    background: C.tray,
                     border: `1px solid ${C.rule}`,
-                    borderRadius: 0,
-                    padding: "9px 12px",
-                    fontFamily: F.mono,
-                    fontSize: 10,
-                    fontWeight: 500,
-                    color: C.ink,
-                    letterSpacing: "0.08em",
-                    textTransform: "uppercase",
+                    padding: "clamp(22px, 2.6vw, 28px)",
+                    height: "100%",
                   }}
                 >
-                  {cert}
+                  <p style={{ ...T.eyebrow, marginBottom: 18 }}>Education</p>
+                  <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
+                    {EDUCATION.map((edu, idx) => (
+                      <div
+                        key={edu.degree}
+                        style={{
+                          paddingBottom: idx === EDUCATION.length - 1 ? 0 : 16,
+                          borderBottom:
+                            idx === EDUCATION.length - 1 ? "none" : `1px solid ${C.rule}`,
+                        }}
+                      >
+                        <div
+                          style={{
+                            fontFamily: F.display,
+                            fontSize: 18,
+                            fontWeight: 600,
+                            color: C.ink,
+                            letterSpacing: "-0.018em",
+                            marginBottom: 4,
+                          }}
+                        >
+                          {edu.degree}
+                        </div>
+                        <div style={{ fontFamily: F.text, fontSize: 15, color: C.inkSoft }}>
+                          {edu.school}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
                 </div>
-              ))}
+              </Reveal>
+              <Reveal delay={0.08}>
+                <div
+                  className="apple-media"
+                  style={{
+                    background: C.tray,
+                    border: `1px solid ${C.rule}`,
+                    padding: "clamp(22px, 2.6vw, 28px)",
+                    height: "100%",
+                  }}
+                >
+                  <p style={{ ...T.eyebrow, marginBottom: 18 }}>Credentials</p>
+                  <div style={{ display: "flex", flexWrap: "wrap", gap: 10 }}>
+                    {CERTS.map((cert) => (
+                      <div
+                        key={cert}
+                        className="apple-chip"
+                        style={{
+                          background: C.surface,
+                          border: `1px solid ${C.rule}`,
+                          padding: "9px 14px",
+                          fontFamily: F.text,
+                          fontSize: 13,
+                          fontWeight: 500,
+                          color: C.ink,
+                          letterSpacing: "-0.008em",
+                        }}
+                      >
+                        {cert}
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </Reveal>
             </div>
-          </Reveal>
-        </div>
-      </section>
+          </section>
 
-      {/* ── AI Systems (Apple dark inset) ── */}
-      <section style={{ background: C.bgInk, padding: `${L.section} ${L.gutter}` }}>
-        <div
+          {/* AI Systems Apple Pro Dark Shell */}
+          <section
+            className="apple-shell apple-shell-dark apple-dark-surface"
+            style={{
+              padding: `clamp(44px, 6vw, 80px) clamp(24px, 4.5vw, 56px)`,
+              textAlign: "center",
+            }}
+          >
+            <div style={{ maxWidth: 820, margin: "0 auto" }}>
+              <Reveal>
+                <p
+                  style={{
+                    fontFamily: F.text,
+                    fontSize: 12,
+                    letterSpacing: "0.08em",
+                    textTransform: "uppercase",
+                    color: C.darkBlue,
+                    margin: "0 0 18px",
+                    fontWeight: 600,
+                  }}
+                >
+                  AI systems and technical depth
+                </p>
+                <h2
+                  style={{
+                    fontFamily: F.display,
+                    fontWeight: 600,
+                    fontSize: "clamp(30px, 4.2vw, 48px)",
+                    lineHeight: 1.08,
+                    letterSpacing: "-0.03em",
+                    margin: "0 0 18px",
+                    color: C.darkInk,
+                  }}
+                >
+                  I build the agents I&apos;d want enterprises to use.
+                </h2>
+                <p
+                  style={{
+                    fontFamily: F.text,
+                    fontWeight: 400,
+                    fontSize: "clamp(18px, 2vw, 23px)",
+                    lineHeight: 1.45,
+                    letterSpacing: "-0.014em",
+                    color: C.darkInkMute,
+                    margin: "0 auto",
+                    maxWidth: 680,
+                  }}
+                >
+                  MCP-based knowledge systems, agentic AI workflows, local LLM
+                  evaluation environments, and multi-agent orchestration patterns
+                  for post-sales teams.
+                </p>
+              </Reveal>
+            </div>
+          </section>
+        </main>
+
+        {/* Footer Shell */}
+        <footer
+          className="apple-shell apple-shell-surface"
           style={{
-            maxWidth: 920,
-            margin: "0 auto",
+            padding: "20px 24px",
+            fontFamily: F.text,
+            fontSize: 13,
+            color: C.inkMute,
             textAlign: "center",
           }}
         >
-          <Reveal>
-            <p
-              style={{
-                fontFamily: F.text,
-                fontSize: 13,
-                letterSpacing: "0.18em",
-                textTransform: "uppercase",
-                color: C.accent,
-                margin: "0 0 28px",
-                fontWeight: 500,
-              }}
-            >
-              AI systems and technical depth
-            </p>
-            <h2
-              style={{
-                fontFamily: F.display,
-                fontWeight: 500,
-                fontSize: "clamp(32px, 4.4vw, 50px)",
-                lineHeight: 1.12,
-                letterSpacing: "-0.03em",
-                margin: "0 0 22px",
-                color: "#f5f5f7",
-              }}
-            >
-              I build the agents I&apos;d want enterprises to use.
-            </h2>
-            <p
-              style={{
-                fontFamily: F.display,
-                fontWeight: 400,
-                fontSize: "clamp(20px, 2.4vw, 28px)",
-                lineHeight: 1.32,
-                letterSpacing: "-0.022em",
-                color: "rgba(245,245,247,0.78)",
-                margin: "0 auto",
-                maxWidth: 720,
-              }}
-            >
-              MCP-based knowledge systems, agentic AI workflows, local LLM
-              evaluation environments, and multi-agent orchestration patterns
-              for post-sales teams.
-            </p>
-          </Reveal>
-        </div>
-      </section>
-
-      {/* Footer */}
-      <footer
-        style={{
-          background: C.bgSoft,
-          borderTop: `1px solid ${C.rule}`,
-          padding: `26px ${L.gutter}`,
-          fontFamily: F.text,
-          fontSize: 12,
-          color: C.inkMute,
-          textAlign: "center",
-        }}
-      >
-        <div style={{ maxWidth: L.max, margin: "0 auto" }}>
-          {"© 2026 Al Sharma. Built in Austin."}
-        </div>
-      </footer>
+          {"\u00A9 2026 Al Sharma. Built in Austin."}
+        </footer>
+      </div>
     </div>
   );
 }

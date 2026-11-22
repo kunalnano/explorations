@@ -1,6 +1,8 @@
 const COOLDOWN_KEY = 'alsharma_contact_last_sent_at'
 const COOLDOWN_MS = 60 * 1000
 const FAVICON_INTERVAL_MS = 250 // 4 fps cap
+const FOCUSABLE_SELECTOR =
+  'a[href], button:not([disabled]), input:not([disabled]):not([tabindex="-1"]), textarea:not([disabled]), select:not([disabled]), [tabindex]:not([tabindex="-1"])'
 
 let initialized = false
 let lastSentMemory = 0
@@ -113,20 +115,17 @@ function initContactPanel() {
     if (open) {
       contactReturnFocus = document.activeElement
       panel.inert = false
-      panel.style.transform = 'translateX(0)'
-      panel.style.boxShadow = '-28px 0 90px rgba(5,5,8,0.12)'
-      backdrop.style.opacity = '1'
-      backdrop.style.pointerEvents = 'auto'
+      panel.classList.add('is-open')
+      backdrop.classList.add('is-open')
       const nameInput = document.getElementById('cf-name')
-      if (nameInput) {
-        window.setTimeout(() => nameInput.focus(), 60)
+      const fallbackFocus = nameInput || closeBtn
+      if (fallbackFocus) {
+        window.setTimeout(() => fallbackFocus.focus(), 60)
       }
     } else {
       panel.inert = true
-      panel.style.transform = 'translateX(100%)'
-      panel.style.boxShadow = 'none'
-      backdrop.style.opacity = '0'
-      backdrop.style.pointerEvents = 'none'
+      panel.classList.remove('is-open')
+      backdrop.classList.remove('is-open')
       if (contactReturnFocus && typeof contactReturnFocus.focus === 'function') {
         contactReturnFocus.focus()
       }
@@ -151,39 +150,30 @@ function initContactPanel() {
     bodyEl.replaceChildren()
 
     const wrap = document.createElement('div')
-    wrap.style.paddingTop = '40px'
+    wrap.style.paddingTop = '32px'
 
     const heading = document.createElement('p')
-    heading.style.fontFamily = "'Space Grotesk', sans-serif"
+    heading.style.fontFamily =
+      '-apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "IBM Plex Sans", sans-serif'
     heading.style.fontWeight = '600'
-    heading.style.fontSize = '30px'
-    heading.style.letterSpacing = '-0.04em'
-    heading.style.color = '#050505'
+    heading.style.fontSize = '28px'
+    heading.style.letterSpacing = '-0.03em'
+    heading.style.color = '#1d1d1f'
     heading.style.margin = '0 0 12px'
     heading.textContent = 'Message received.'
 
     const copy = document.createElement('p')
-    copy.style.fontFamily = "'IBM Plex Sans', sans-serif"
+    copy.style.fontFamily =
+      '-apple-system, BlinkMacSystemFont, "SF Pro Text", "IBM Plex Sans", sans-serif'
     copy.style.fontSize = '17px'
-    copy.style.lineHeight = '1.6'
-    copy.style.color = 'rgba(5,5,5,0.69)'
+    copy.style.lineHeight = '1.55'
+    copy.style.color = '#515154'
     copy.style.margin = '0 0 28px'
     copy.textContent = 'I will reply within 24 hours.'
 
     const doneBtn = document.createElement('button')
     doneBtn.type = 'button'
-    doneBtn.style.fontFamily = "'JetBrains Mono', monospace"
-    doneBtn.style.minHeight = '48px'
-    doneBtn.style.padding = '0 22px'
-    doneBtn.style.fontSize = '11px'
-    doneBtn.style.fontWeight = '500'
-    doneBtn.style.letterSpacing = '0.08em'
-    doneBtn.style.textTransform = 'uppercase'
-    doneBtn.style.borderRadius = '0'
-    doneBtn.style.cursor = 'pointer'
-    doneBtn.style.background = 'transparent'
-    doneBtn.style.color = '#050505'
-    doneBtn.style.border = '1px solid rgba(5,5,8,0.22)'
+    doneBtn.className = 'apple-btn-secondary apple-pill'
     doneBtn.textContent = 'Close'
     doneBtn.addEventListener('click', () => toggleContact(false))
 
@@ -191,6 +181,7 @@ function initContactPanel() {
     wrap.appendChild(copy)
     wrap.appendChild(doneBtn)
     bodyEl.appendChild(wrap)
+    doneBtn.focus()
   }
 
   function submitContact() {
@@ -237,7 +228,7 @@ function initContactPanel() {
     }
 
     btn.textContent = 'Sending\u2026'
-    btn.style.opacity = '0.5'
+    btn.style.opacity = '0.55'
     btn.disabled = true
 
     fetch('https://formspree.io/f/mykboegz', {
@@ -267,7 +258,26 @@ function initContactPanel() {
   if (closeBtn) closeBtn.addEventListener('click', () => toggleContact(false))
   if (submitBtn) submitBtn.addEventListener('click', submitContact)
   document.addEventListener('keydown', (ev) => {
-    if (ev.key === 'Escape') toggleContact(false)
+    if (panel.inert) return
+    if (ev.key === 'Escape') {
+      toggleContact(false)
+      return
+    }
+    if (ev.key === 'Tab') {
+      const focusables = Array.from(panel.querySelectorAll(FOCUSABLE_SELECTOR)).filter(
+        (el) => el.offsetParent !== null
+      )
+      if (focusables.length === 0) return
+      const first = focusables[0]
+      const last = focusables[focusables.length - 1]
+      if (ev.shiftKey && document.activeElement === first) {
+        ev.preventDefault()
+        last.focus()
+      } else if (!ev.shiftKey && document.activeElement === last) {
+        ev.preventDefault()
+        first.focus()
+      }
+    }
   })
   window.addEventListener('open-contact', () => toggleContact(true))
 }
