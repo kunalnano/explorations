@@ -98,6 +98,7 @@ function Nav({ onNav }) {
   };
 
   return (
+    <>
     <nav
       aria-label="Primary"
       className={drawerOpen ? "apple-nav-bar apple-nav-bar-open" : "apple-nav-bar"}
@@ -179,37 +180,38 @@ function Nav({ onNav }) {
           </div>
         )}
       </div>
-      {drawerOpen && (
-        <>
-          <div
-            onClick={() => setOpen(false)}
-            aria-hidden="true"
-            style={{
-              position: "fixed",
-              inset: `${L.navH}px 0 0 0`,
-              background: "rgba(0, 0, 0, 0.24)",
-              backdropFilter: "blur(8px)",
-              WebkitBackdropFilter: "blur(8px)",
-              zIndex: 49,
-            }}
-          />
-          <div
-            id="site-drawer"
-            className="apple-shell apple-shell-surface"
-            style={{
-              position: "fixed",
-              top: L.navH + 10,
-              left: 12,
-              right: 12,
-              maxHeight: `calc(100dvh - ${L.navH + 22}px)`,
-              padding: 14,
-              overflowY: "auto",
-              zIndex: 51,
-              display: "flex",
-              flexDirection: "column",
-              gap: 10,
-            }}
-          >
+    </nav>
+    {drawerOpen && (
+      <>
+        <div
+          onClick={() => setOpen(false)}
+          aria-hidden="true"
+          style={{
+            position: "fixed",
+            inset: `${L.navH}px 0 0 0`,
+            background: "rgba(0, 0, 0, 0.24)",
+            backdropFilter: "blur(8px)",
+            WebkitBackdropFilter: "blur(8px)",
+            zIndex: 49,
+          }}
+        />
+        <div
+          id="site-drawer"
+          className="apple-shell apple-shell-surface"
+          style={{
+            position: "fixed",
+            top: L.navH + 10,
+            left: 12,
+            right: 12,
+            maxHeight: `calc(100dvh - ${L.navH + 22}px)`,
+            padding: 14,
+            overflowY: "auto",
+            zIndex: 51,
+            display: "flex",
+            flexDirection: "column",
+            gap: 10,
+          }}
+        >
             {items.map((it, i) => {
               const inner = (
                 <>
@@ -280,7 +282,7 @@ function Nav({ onNav }) {
           </div>
         </>
       )}
-    </nav>
+    </>
   );
 }
 

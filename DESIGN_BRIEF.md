@@ -8,7 +8,7 @@
 > - **Typography & chrome:** Apple SF Pro Display / SF Pro Text / SF Mono primary stacks with self-hosted `IBM Plex Sans` and `JetBrains Mono` fallbacks (`public/fonts`). Sticky frosted translucent navigation (`rgba(251, 251, 253, 0.82)` light / `rgba(22, 22, 23, 0.80)` dark, `backdrop-filter: saturate(180%) blur(20px)`), minimum `44px` nav links and `48px` primary buttons and form inputs, and `prefers-reduced-motion` support.
 > - **Preserved architecture:** the executive Home page order (hero, track record, operating thesis, career arc, shipped work, final CTA, compact footer links), the PageFrame chrome contract, and the dark interactive visual essays (including `Operator.jsx`) stay intact inside the Apple frame. Shared tokens live in `src/index.css` and `src/design.js` (`C`, `F`, `L`, `R`, `SHADOW`, `T`, `pill`, `textLink`, `wordmark`).
 
-> **HISTORICAL (2026-09-19, superseded 2026-11-22) - enterprise-advisory monochrome pass** (branch `redesign/dvc-monochrome`).
+> **HISTORICAL (2026-09-19, superseded 2026-11-22) - enterprise-advisory monochrome pass.**
 > Kept the executive-profile order and positioning while temporarily applying black-on-white square corners (`borderRadius: 0`). The square-corner visual pass is now replaced by the 2026-11-22 Apple 66% Concentric Shells direction above; the executive Home order, positioning, and demoted bottom strip remain in force.
 
 ---
