@@ -102,6 +102,7 @@ function recordSentAt(ts) {
 }
 
 function initContactPanel() {
+  const rootEl = document.getElementById('root')
   const panel = document.getElementById('contact-panel')
   const backdrop = document.getElementById('contact-backdrop')
   const closeBtn = document.getElementById('contact-close')
@@ -110,20 +111,30 @@ function initContactPanel() {
   if (!panel || !backdrop || !bodyEl) return
 
   let contactReturnFocus = null
+  let openFocusTimer = null
 
   function toggleContact(open) {
+    if (openFocusTimer !== null) {
+      window.clearTimeout(openFocusTimer)
+      openFocusTimer = null
+    }
     if (open) {
       contactReturnFocus = document.activeElement
+      if (rootEl) rootEl.inert = true
       panel.inert = false
       panel.classList.add('is-open')
       backdrop.classList.add('is-open')
       const nameInput = document.getElementById('cf-name')
       const fallbackFocus = nameInput || closeBtn
       if (fallbackFocus) {
-        window.setTimeout(() => fallbackFocus.focus(), 60)
+        openFocusTimer = window.setTimeout(() => {
+          openFocusTimer = null
+          if (!panel.inert) fallbackFocus.focus()
+        }, 60)
       }
     } else {
       panel.inert = true
+      if (rootEl) rootEl.inert = false
       panel.classList.remove('is-open')
       backdrop.classList.remove('is-open')
       if (contactReturnFocus && typeof contactReturnFocus.focus === 'function') {
@@ -267,13 +278,20 @@ function initContactPanel() {
       const focusables = Array.from(panel.querySelectorAll(FOCUSABLE_SELECTOR)).filter(
         (el) => el.offsetParent !== null
       )
-      if (focusables.length === 0) return
+      if (focusables.length === 0) {
+        ev.preventDefault()
+        return
+      }
       const first = focusables[0]
       const last = focusables[focusables.length - 1]
-      if (ev.shiftKey && document.activeElement === first) {
+      const active = document.activeElement
+      if (!panel.contains(active)) {
+        ev.preventDefault()
+        ;(ev.shiftKey ? last : first).focus()
+      } else if (ev.shiftKey && active === first) {
         ev.preventDefault()
         last.focus()
-      } else if (!ev.shiftKey && document.activeElement === last) {
+      } else if (!ev.shiftKey && active === last) {
         ev.preventDefault()
         first.focus()
       }
